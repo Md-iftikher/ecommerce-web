@@ -1,39 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="Styles/my_profile.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="Styles/my_profile.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
-    <div class="navbar"> 
+
+  <div class="navbar">
+  </div>
+  <section class="container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo"></div>
+        <div class="writing">
+          <p>Nazeef</p>
+          <div class="clock" id="clock"></div>
+        </div>
+      </div>
+      <div class="sidebar-list">
+        <ul>
+          <li><a href="#" id="profile-link" class="active"><i class="fa-solid fa-user"></i>My Profile</a></li>
+          <li><a href="#" id="address-link"><i class="fa-solid fa-location-dot"></i>Delivery Address</a></li>
+          <li><a href="#" id="orders-link"><i class="fa-solid fa-basket-shopping"></i>My Orders</a></li>
+        </ul>
+      </div>
     </div>
-    <section class="container">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo"></div>
-                <div class="writing">
-                    <p>Nazeef</p>
-                    <p>11:55:20 pm</p>
-                </div>
-
-            </div>
-            <div class="sidebar-list">
-                <ul>
-                    <li><a href="#">My Profile</a></li>
-                    <li><a href="#">Delivery Address</a></li>
-                    <li><a href="#">My Orders</a></li>
-                </ul>             
-            </div>
-
-        </div>
-        <div class="content-area">
-            <p>Good Morning Nazeef</p>
-            <div class="main-content">
-
-            </div>
-        </div>
-    </section>
+    <div class="content-area">
+      <p>Good Morning Nazeef</p>
+      <div class="display-box" id="display-box">
+        <!-- Dynamic content will be loaded here -->
+      </div>
+    </div>
+  </section>
+  <script src="js/script.js"></script>
 </body>
+
 </html>

@@ -1,105 +1,221 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const sidebarButtons = document.querySelectorAll('.sidebar-button');
-    const contentArea = document.getElementById('content-area');
-  
-    sidebarButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        const contentType = this.getAttribute('data-content');
-        loadContent(contentType);
-      });
+document.addEventListener("DOMContentLoaded", function () {
+    function updateClock() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, "0");
+        const minutes = now.getMinutes().toString().padStart(2, "0");
+        const seconds = now.getSeconds().toString().padStart(2, "0");
+        const timeString = `${hours}:${minutes}:${seconds}`;
+
+        document.getElementById("clock").textContent = timeString;
+    }
+
+    setInterval(updateClock, 1000); // Update every 1000 milliseconds (1 second)
+    updateClock(); // Initialize the clock immediately
+
+    const displayBox = document.getElementById("display-box");
+    const profileLink = document.getElementById("profile-link");
+    const addressLink = document.getElementById("address-link");
+    const ordersLink = document.getElementById("orders-link");
+
+    // Helper function to clear active states
+    function clearActive() {
+        profileLink.classList.remove("active");
+        addressLink.classList.remove("active");
+        ordersLink.classList.remove("active");
+    }
+
+    // Load My Profile content
+    function loadProfile() {
+        clearActive();
+        profileLink.classList.add("active");
+
+        // Update greeting text if desired
+        const greeting = document.getElementById("greeting-text");
+        if (greeting) greeting.textContent = "Good Morning! R";
+
+        displayBox.innerHTML = `
+      <div class="profile-form-container">
+        <div class="profile-form-header">
+          <h2><i class="fa-solid fa-user"></i>My Profile</h2>
+          <i class="fa-solid fa-pen-to-square" id="edit-icon"></i>
+        </div>
+
+        <!-- Row 1: First Name / Last Name -->
+        <div class="profile-form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="R" disabled />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="S" disabled />
+          </div>
+        </div>
+
+        <!-- Row 2: Email / Contact Number -->
+        <div class="profile-form-row">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Email" disabled />
+          </div>
+          <div class="form-group">
+            <label for="contactNumber">Contact Number</label>
+            <input type="text" id="contactNumber" placeholder="Contact Number" disabled />
+          </div>
+        </div>
+
+        <!-- Row 3: Birthdate / Gender -->
+        <div class="profile-form-row">
+          <div class="form-group birthdate-group">
+            <label>Birthdate</label>
+            <div class="birthdate-fields">
+              <input type="text" placeholder="DD" disabled />
+              <input type="text" placeholder="MM" disabled />
+              <input type="text" placeholder="YYYY" disabled />
+            </div>
+          </div>
+          <div class="form-group gender-group">
+            <label>Gender</label>
+            <div class="gender-options">
+              <label><input type="radio" name="gender" value="male" disabled /> Male</label>
+              <label><input type="radio" name="gender" value="female" disabled /> Female</label>
+              <label><input type="radio" name="gender" value="other" disabled /> Other</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+            <span id="saveBtn" class="button" disabled>Save</span>
+        </div>
+        
+      </div>
+    `;
+
+
+    }
+
+    // Load Delivery Address content
+    function loadAddress() {
+        clearActive();
+        addressLink.classList.add("active");
+        displayBox.innerHTML = `
+      <div class="profile-form-container">
+        <div class="profile-form-header">
+            <h2><i class="fa-solid fa-location-dot"></i>Delivery Address</h2>
+            <i class="fa-solid fa-pen-to-square" id="edit-icon-address"></i>
+        </div>
+        <div class="profile-form-row">
+            <div class="form-group">
+                <label for="delivery-address">Delivery Address</label>
+                <input type="text" id="delivery-address" placeholder="Enter your address" disabled />
+            </div>
+        </div>
+
+         <div class="form-group">
+            <span id="saveBtn-address" class="button" disabled>Save</span>
+        </div>
+        </div>
+    `;
+    const editIconAddress = document.getElementById("edit-icon-address");
+    const saveBtnAddress = document.getElementById("saveBtn-address");
+    const deliveryAddressInput = document.getElementById("delivery-address");
+
+
+    editIconAddress.addEventListener('click', function () {
+        deliveryAddressInput.disabled = false;
+        saveBtnAddress.disabled = false;
+        saveBtnAddress.style.visibility = 'visible';
     });
-  
-    function loadContent(contentType) {
-      switch (contentType) {
-        case 'profile':
-          contentArea.innerHTML = `
-            <div class="profile-form">
-              <h2>Good Morning! R</h2>
-              <div class="form-row">
-                <label>First Name</label>
-                <input type="text" value="R" readonly>
-              </div>
-              <div class="form-row">
-                <label>Last Name</label>
-                <input type="text" value="S" readonly>
-              </div>
-              <div class="form-row">
-                <label>Email</label>
-                <input type="email" value="rs@example.com" readonly>
-              </div>
-              <div class="form-row">
-                <label>Contact Number</label>
-                <input type="tel" value="123-456-7890" readonly>
-              </div>
-              <div class="form-row">
-                <label>Birthdate</label>
-                <select id="birth-day" readonly></select>
-                <select id="birth-month" readonly></select>
-                <select id="birth-year" readonly></select>
-              </div>
-              <div class="form-row">
-                <label>Gender</label>
-                <input type="radio" id="male" name="gender" value="male" checked readonly><label for="male">Male</label>
-                <input type="radio" id="female" name="gender" value="female" readonly><label for="female">Female</label>
-                <input type="radio" id="other" name="gender" value="other" readonly><label for="other">Other</label>
-              </div>
-              <button class="edit-button" id="edit-profile">Edit</button>
+
+
+    saveBtnAddress.addEventListener('click', function () {
+        const updatedAddress = deliveryAddressInput.value;
+
+        deliveryAddressInput.disabled = true;
+        saveBtnAddress.disabled = true;
+        saveBtnAddress.style.visibility = "hidden";
+
+    });
+    }
+
+
+    function loadOrders() {
+        clearActive();
+        ordersLink.classList.add("active");
+        displayBox.innerHTML = `
+        <div class="profile-form-container">
+            <div class="profile-form-header">
+                <h2><i class="fa-solid fa-basket-shopping"></i>My Orders</h2>
             </div>
-          `;
-          populateBirthdayOptions();
-          addEditProfileListener();
-          break;
-        case 'address':
-          contentArea.innerHTML = `
-            <div class="profile-form">
-              <h2>Delivery Address</h2>
-              <div class="form-row">
-                <label>Address</label>
-                <textarea id="address-text" readonly>123 Main St, Dhaka, Bangladesh</textarea>
-              </div>
-              <button class="edit-button" id="edit-address">Edit</button>
+
+             <div class="profile-form-row">
+                 <ul class="orders-list">
+                    <li>
+                        <div class="order-item">
+                            <span class="order-id">Order #1</span>
+                            <span class="order-status status-delivered">Status: Delivered</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="order-item">
+                            <span class="order-id">Order #2</span>
+                            <span class="order-status status-processing">Status: Processing</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="order-item">
+                            <span class="order-id">Order #3</span>
+                            <span class="order-status status-shipped">Status: Shipped</span>
+                        </div>
+                    </li>
+                </ul>
             </div>
-          `;
-          addEditAddressListener();
-          break;
-        case 'orders':
-          contentArea.innerHTML = `
-            <h2>My Orders</h2>
-            <div class="order-card">Order #123 - Shipped</div>
-            <div class="order-card">Order #456 - Processing</div>
-          `;
-          break;
-        default:
-          contentArea.innerHTML = '<p>Select an option from the sidebar.</p>';
-      }
+        </div>
+
+    `;
     }
-  
-    function populateBirthdayOptions() {
-      // ... (populateBirthdayOptions function from previous response) ...
-    }
-  
-    function addEditProfileListener() {
-      // ... (addEditProfileListener function from previous response) ...
-    }
-  
-    function addEditAddressListener() {
-      const editButton = document.getElementById('edit-address');
-      const addressText = document.getElementById('address-text');
-      const originalValue = addressText.value;
-  
-      editButton.addEventListener('click', function() {
-        addressText.removeAttribute('readonly');
-        editButton.textContent = 'Save';
-        editButton.removeEventListener('click', arguments.callee);
-        editButton.addEventListener('click', function() {
-          addressText.setAttribute('readonly', true);
-          editButton.textContent = 'Edit';
-          editButton.removeEventListener('click', arguments.callee);
-          addEditAddressListener();
-        });
-      });
-    }
-  
-    // Initial content
-    loadContent('profile');
-  });
+
+
+    profileLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        loadProfile();
+    });
+
+    addressLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        loadAddress();
+    });
+
+    ordersLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        loadOrders();
+    });
+
+    loadProfile();
+
+    const editIcon = document.getElementById("edit-icon");
+    const saveBtn = document.getElementById("saveBtn");
+    const inputs = document.querySelectorAll("input");
+    const firstNameInput = document.getElementById("firstName");
+    const lastNameInput = document.getElementById("lastName");
+    const emailInput = document.getElementById("email");
+    const contactNumberInput = document.getElementById("contactNumber");
+
+    editIcon.addEventListener('click', function () {
+
+        inputs.forEach(input => input.disabled = false);
+        saveBtn.disabled = false;
+        saveBtn.style.visibility = 'visible';
+    });
+
+    saveBtn.addEventListener('click', function () {
+
+        const updatedFirstName = firstNameInput.value;
+        const updatedLastName = lastNameInput.value;
+        const updatedEmail = emailInput.value;
+        const updatedContactNumber = contactNumberInput.value;
+
+        inputs.forEach(input => input.disabled = true);
+        saveBtn.disabled = true;
+        saveBtn.style.visibility = "hidden";
+    });
+});
