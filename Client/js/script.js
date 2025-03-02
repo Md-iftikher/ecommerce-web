@@ -90,6 +90,33 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
     `;
 
+    const editIcon = document.getElementById("edit-icon");
+    const saveBtn = document.getElementById("saveBtn");
+    const inputs = document.querySelectorAll("input");
+    const firstNameInput = document.getElementById("firstName");
+    const lastNameInput = document.getElementById("lastName");
+    const emailInput = document.getElementById("email");
+    const contactNumberInput = document.getElementById("contactNumber");
+  
+    editIcon.addEventListener('click', function () {
+  
+      inputs.forEach(input => input.disabled = false);
+      saveBtn.disabled = false;
+      saveBtn.style.visibility = 'visible';
+    });
+  
+    saveBtn.addEventListener('click', function () {
+  
+      const updatedFirstName = firstNameInput.value;
+      const updatedLastName = lastNameInput.value;
+      const updatedEmail = emailInput.value;
+      const updatedContactNumber = contactNumberInput.value;
+  
+      inputs.forEach(input => input.disabled = true);
+      saveBtn.disabled = true;
+      saveBtn.style.visibility = "hidden";
+    });
+
 
   }
 
@@ -192,31 +219,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   loadProfile();
 
-  const editIcon = document.getElementById("edit-icon");
-  const saveBtn = document.getElementById("saveBtn");
-  const inputs = document.querySelectorAll("input");
-  const firstNameInput = document.getElementById("firstName");
-  const lastNameInput = document.getElementById("lastName");
-  const emailInput = document.getElementById("email");
-  const contactNumberInput = document.getElementById("contactNumber");
-
-  editIcon.addEventListener('click', function () {
-
-    inputs.forEach(input => input.disabled = false);
-    saveBtn.disabled = false;
-    saveBtn.style.visibility = 'visible';
-  });
-
-  saveBtn.addEventListener('click', function () {
-
-    const updatedFirstName = firstNameInput.value;
-    const updatedLastName = lastNameInput.value;
-    const updatedEmail = emailInput.value;
-    const updatedContactNumber = contactNumberInput.value;
-
-    inputs.forEach(input => input.disabled = true);
-    saveBtn.disabled = true;
-    saveBtn.style.visibility = "hidden";
-  });
+ 
 
 });
