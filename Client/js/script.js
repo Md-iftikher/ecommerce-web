@@ -1,39 +1,39 @@
 document.addEventListener("DOMContentLoaded", function () {
-    function updateClock() {
-        const now = new Date();
-        const hours = now.getHours().toString().padStart(2, "0");
-        const minutes = now.getMinutes().toString().padStart(2, "0");
-        const seconds = now.getSeconds().toString().padStart(2, "0");
-        const timeString = `${hours}:${minutes}:${seconds}`;
+  function updateClock() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const seconds = now.getSeconds().toString().padStart(2, "0");
+    const timeString = `${hours}:${minutes}:${seconds}`;
 
-        document.getElementById("clock").textContent = timeString;
-    }
+    document.getElementById("clock").textContent = timeString;
+  }
 
-    setInterval(updateClock, 1000); // Update every 1000 milliseconds (1 second)
-    updateClock(); // Initialize the clock immediately
+  setInterval(updateClock, 1000); // Update every 1000 milliseconds (1 second)
+  updateClock(); // Initialize the clock immediately
 
-    const displayBox = document.getElementById("display-box");
-    const profileLink = document.getElementById("profile-link");
-    const addressLink = document.getElementById("address-link");
-    const ordersLink = document.getElementById("orders-link");
+  const displayBox = document.getElementById("display-box");
+  const profileLink = document.getElementById("profile-link");
+  const addressLink = document.getElementById("address-link");
+  const ordersLink = document.getElementById("orders-link");
 
-    // Helper function to clear active states
-    function clearActive() {
-        profileLink.classList.remove("active");
-        addressLink.classList.remove("active");
-        ordersLink.classList.remove("active");
-    }
+  // Helper function to clear active states
+  function clearActive() {
+    profileLink.classList.remove("active");
+    addressLink.classList.remove("active");
+    ordersLink.classList.remove("active");
+  }
 
-    // Load My Profile content
-    function loadProfile() {
-        clearActive();
-        profileLink.classList.add("active");
+  // Load My Profile content
+  function loadProfile() {
+    clearActive();
+    profileLink.classList.add("active");
 
-        // Update greeting text if desired
-        const greeting = document.getElementById("greeting-text");
-        if (greeting) greeting.textContent = "Good Morning! R";
+    // Update greeting text if desired
+    const greeting = document.getElementById("greeting-text");
+    if (greeting) greeting.textContent = "Good Morning! R";
 
-        displayBox.innerHTML = `
+    displayBox.innerHTML = `
       <div class="profile-form-container">
         <div class="profile-form-header">
           <h2><i class="fa-solid fa-user"></i>My Profile</h2>
@@ -91,13 +91,13 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
 
 
-    }
+  }
 
-    // Load Delivery Address content
-    function loadAddress() {
-        clearActive();
-        addressLink.classList.add("active");
-        displayBox.innerHTML = `
+  // Load Delivery Address content
+  function loadAddress() {
+    clearActive();
+    addressLink.classList.add("active");
+    displayBox.innerHTML = `
       <div class="profile-form-container">
         <div class="profile-form-header">
             <h2><i class="fa-solid fa-location-dot"></i>Delivery Address</h2>
@@ -121,27 +121,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     editIconAddress.addEventListener('click', function () {
-        deliveryAddressInput.disabled = false;
-        saveBtnAddress.disabled = false;
-        saveBtnAddress.style.visibility = 'visible';
+      deliveryAddressInput.disabled = false;
+      saveBtnAddress.disabled = false;
+      saveBtnAddress.style.visibility = 'visible';
     });
 
 
     saveBtnAddress.addEventListener('click', function () {
-        const updatedAddress = deliveryAddressInput.value;
+      const updatedAddress = deliveryAddressInput.value;
 
-        deliveryAddressInput.disabled = true;
-        saveBtnAddress.disabled = true;
-        saveBtnAddress.style.visibility = "hidden";
+      deliveryAddressInput.disabled = true;
+      saveBtnAddress.disabled = true;
+      saveBtnAddress.style.visibility = "hidden";
 
     });
-    }
+  }
 
 
-    function loadOrders() {
-        clearActive();
-        ordersLink.classList.add("active");
-        displayBox.innerHTML = `
+  function loadOrders() {
+    clearActive();
+    ordersLink.classList.add("active");
+    displayBox.innerHTML = `
         <div class="profile-form-container">
             <div class="profile-form-header">
                 <h2><i class="fa-solid fa-basket-shopping"></i>My Orders</h2>
@@ -172,50 +172,51 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
 
     `;
-    }
+  }
 
 
-    profileLink.addEventListener("click", function (e) {
-        e.preventDefault();
-        loadProfile();
-    });
-
-    addressLink.addEventListener("click", function (e) {
-        e.preventDefault();
-        loadAddress();
-    });
-
-    ordersLink.addEventListener("click", function (e) {
-        e.preventDefault();
-        loadOrders();
-    });
-
+  profileLink.addEventListener("click", function (e) {
+    e.preventDefault();
     loadProfile();
+  });
 
-    const editIcon = document.getElementById("edit-icon");
-    const saveBtn = document.getElementById("saveBtn");
-    const inputs = document.querySelectorAll("input");
-    const firstNameInput = document.getElementById("firstName");
-    const lastNameInput = document.getElementById("lastName");
-    const emailInput = document.getElementById("email");
-    const contactNumberInput = document.getElementById("contactNumber");
+  addressLink.addEventListener("click", function (e) {
+    e.preventDefault();
+    loadAddress();
+  });
 
-    editIcon.addEventListener('click', function () {
+  ordersLink.addEventListener("click", function (e) {
+    e.preventDefault();
+    loadOrders();
+  });
 
-        inputs.forEach(input => input.disabled = false);
-        saveBtn.disabled = false;
-        saveBtn.style.visibility = 'visible';
-    });
+  loadProfile();
 
-    saveBtn.addEventListener('click', function () {
+  const editIcon = document.getElementById("edit-icon");
+  const saveBtn = document.getElementById("saveBtn");
+  const inputs = document.querySelectorAll("input");
+  const firstNameInput = document.getElementById("firstName");
+  const lastNameInput = document.getElementById("lastName");
+  const emailInput = document.getElementById("email");
+  const contactNumberInput = document.getElementById("contactNumber");
 
-        const updatedFirstName = firstNameInput.value;
-        const updatedLastName = lastNameInput.value;
-        const updatedEmail = emailInput.value;
-        const updatedContactNumber = contactNumberInput.value;
+  editIcon.addEventListener('click', function () {
 
-        inputs.forEach(input => input.disabled = true);
-        saveBtn.disabled = true;
-        saveBtn.style.visibility = "hidden";
-    });
+    inputs.forEach(input => input.disabled = false);
+    saveBtn.disabled = false;
+    saveBtn.style.visibility = 'visible';
+  });
+
+  saveBtn.addEventListener('click', function () {
+
+    const updatedFirstName = firstNameInput.value;
+    const updatedLastName = lastNameInput.value;
+    const updatedEmail = emailInput.value;
+    const updatedContactNumber = contactNumberInput.value;
+
+    inputs.forEach(input => input.disabled = true);
+    saveBtn.disabled = true;
+    saveBtn.style.visibility = "hidden";
+  });
+
 });
