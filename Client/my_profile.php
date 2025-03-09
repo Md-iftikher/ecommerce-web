@@ -1,0 +1,159 @@
+<?php
+$_GET['profile'] = true;
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="Styles/my_profile.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+
+  <div class="navbar">
+    <a href="index.html"><i class="fa-solid fa-house"></i>Home</a>
+  </div>
+  <section class="container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo"></div>
+        <div class="writing">
+          <p>Nazeef</p>
+          <div class="clock" id="clock"></div>
+        </div>
+      </div>
+      <div class="sidebar-list">
+        <ul>
+          <li><a href="my_profile.php?profile=true" id="profile-link" class="active"><i class="fa-solid fa-user"></i>My
+              Profile</a></li>
+          <li><a href="my_profile.php?address=true" id="address-link"><i class="fa-solid fa-location-dot"></i>Delivery Address</a></li>
+          <li><a href="my_profile.php?myOrders=true" id="orders-link"><i class="fa-solid fa-basket-shopping"></i>My Orders</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="content-area">
+      <p>Good Morning Nazeef</p>
+      <div class="display-box" id="display-box">
+        <?php if(isset($_GET['profile'])): ?>
+          
+          <div class="profile-form-container">
+            <div class="profile-form-header">
+              <h2><i class="fa-solid fa-user"></i>My Profile</h2>
+              <i onclick="getEnabled()" class="fa-solid fa-pen-to-square" id="edit-icon"></i>
+            </div>
+            <form>
+            <!-- Row 1: First Name / Last Name -->
+            <div class="profile-form-row">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" placeholder="R" disabled />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" placeholder="S" disabled />
+              </div>
+            </div>
+
+            <!-- Row 2: Email / Contact Number -->
+            <div class="profile-form-row">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Email" disabled />
+              </div>
+              <div class="form-group">
+                <label for="contactNumber">Contact Number</label>
+                <input type="text" id="contactNumber" placeholder="Contact Number" disabled />
+              </div>
+            </div>
+
+            <!-- Row 3: Birthdate / Gender -->
+            <div class="profile-form-row">
+              <div class="form-group birthdate-group">
+                <label>Birthdate</label>
+                <div class="birthdate-fields">
+                  <input type="text" placeholder="DD" disabled />
+                  <input type="text" placeholder="MM" disabled />
+                  <input type="text" placeholder="YYYY" disabled />
+                </div>
+              </div>
+              <div class="form-group gender-group">
+                <label>Gender</label>
+                <div class="gender-options">
+                  <label><input type="radio" name="gender" value="male" disabled /> Male</label>
+                  <label><input type="radio" name="gender" value="female" disabled /> Female</label>
+                  <label><input type="radio" name="gender" value="other" disabled /> Other</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <span id="saveBtn" class="button" type="submit" name="save" disabled>Save</span>
+            </div>
+        </form>
+          </div>
+
+        <?php elseif(isset($_GET['address'])) : ?>
+          <div class="profile-form-container">
+              <div class="profile-form-header">
+                  <h2><i class="fa-solid fa-location-dot"></i>Delivery Address</h2>
+                  <i class="fa-solid fa-pen-to-square" id="edit-icon-address"></i>
+              </div>
+              <div class="profile-form-row">
+                  <div class="form-group">
+                      <label for="delivery-address">Delivery Address</label>
+                      <input type="text" id="delivery-address" placeholder="Enter your address" disabled />
+                  </div>
+              </div>
+
+              <div class="form-group">
+                  <span id="saveBtn-address" class="button" disabled>Save</span>
+              </div>
+          </div>
+        
+        <?php elseif(isset($_GET['myOrders'])) : ?>
+          <div class="profile-form-container">
+            <div class="profile-form-header">
+                <h2><i class="fa-solid fa-basket-shopping"></i>My Orders</h2>
+            </div>
+
+            <div class="profile-form-row">
+                 <ul class="orders-list">
+                    <li>
+                        <div class="order-item">
+                            <span class="order-id">Order #1</span>
+                            <span class="order-status status-delivered">Status: Delivered</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="order-item">
+                            <span class="order-id">Order #2</span>
+                            <span class="order-status status-processing">Status: Processing</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="order-item">
+                            <span class="order-id">Order #3</span>
+                            <span class="order-status status-shipped">Status: Shipped</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+          </div>
+
+        <?php endif; ?>
+
+
+      </div>
+    </div>
+    <script src = "./js/my_profile.js"></script>
+  </section>
+</body>
+
+</html>
