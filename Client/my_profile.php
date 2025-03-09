@@ -1,5 +1,8 @@
 <?php
 $_GET['profile'] = true;
+
+
+
 ?>
 
 
@@ -54,11 +57,11 @@ $_GET['profile'] = true;
             <div class="profile-form-row">
               <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input type="text" id="firstName" placeholder="R" disabled />
+                <input type="text" id="firstName" name= "fname" placeholder="R" disabled />
               </div>
               <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" placeholder="S" disabled />
+                <input type="text" id="lastName" name= "lname" placeholder="S" disabled />
               </div>
             </div>
 
@@ -66,11 +69,11 @@ $_GET['profile'] = true;
             <div class="profile-form-row">
               <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Email" disabled />
+                <input type="email" id="email" name= "email" placeholder="Email" disabled />
               </div>
               <div class="form-group">
                 <label for="contactNumber">Contact Number</label>
-                <input type="text" id="contactNumber" placeholder="Contact Number" disabled />
+                <input type="text" id="contactNumber" name= "contact" placeholder="Contact Number" disabled />
               </div>
             </div>
 
@@ -79,9 +82,9 @@ $_GET['profile'] = true;
               <div class="form-group birthdate-group">
                 <label>Birthdate</label>
                 <div class="birthdate-fields">
-                  <input type="text" placeholder="DD" disabled />
-                  <input type="text" placeholder="MM" disabled />
-                  <input type="text" placeholder="YYYY" disabled />
+                  <input type="text" placeholder="DD" name="dob_day" disabled />
+                  <input type="text" placeholder="MM" name="dob_month" disabled />
+                  <input type="text" placeholder="YYYY" name="dob_year" disabled />
                 </div>
               </div>
               <div class="form-group gender-group">
@@ -108,7 +111,7 @@ $_GET['profile'] = true;
               <div class="profile-form-row">
                   <div class="form-group">
                       <label for="delivery-address">Delivery Address</label>
-                      <input type="text" id="delivery-address" placeholder="Enter your address" disabled />
+                      <input type="text" id="delivery-address" name="address" placeholder="Enter your address" disabled />
                   </div>
               </div>
 
