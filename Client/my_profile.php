@@ -4,7 +4,9 @@ if (empty($_GET)) {
   exit();
 }
 
-
+if(isset($_GET['profile'])){
+  include "./php/read_profile.php";
+}
 
 ?>
 
@@ -60,11 +62,11 @@ if (empty($_GET)) {
                 <div class="profile-form-row">
                     <div class="form-group">
                         <label for="firstName">First Name</label>
-                        <input type="text" id="firstName" name="fname" placeholder="R" disabled />
+                        <input type="text" id="firstName" name="fname" placeholder="first name" value="<?= $fname ?>" disabled />
                     </div>
                     <div class="form-group">
                         <label for="lastName">Last Name</label>
-                        <input type="text" id="lastName" name="lname" placeholder="S" disabled />
+                        <input type="text" id="lastName" name="lname" placeholder="last name" value="<?= $lname ?>" disabled />
                     </div>
                 </div>
 
@@ -72,11 +74,11 @@ if (empty($_GET)) {
                 <div class="profile-form-row">
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="Email" disabled />
+                        <input type="email" id="email" name="email" placeholder="Email" value="<?= $email ?>" disabled />
                     </div>
                     <div class="form-group">
                         <label for="contactNumber">Contact Number</label>
-                        <input type="text" id="contactNumber" name="contact" placeholder="Contact Number" disabled />
+                        <input type="text" id="contactNumber" name="contact" placeholder="Contact Number" value="<?= $contact ?>" disabled />
                     </div>
                 </div>
 
@@ -85,17 +87,17 @@ if (empty($_GET)) {
                     <div class="form-group birthdate-group">
                         <label>Birthdate</label>
                         <div class="birthdate-fields">
-                            <input type="text" placeholder="DD" name="dob_day" disabled />
-                            <input type="text" placeholder="MM" name="dob_month" disabled />
-                            <input type="text" placeholder="YYYY" name="dob_year" disabled />
+                            <input type="text" placeholder="DD" name="dob_day" value="<?= $dob_day ?>" disabled />
+                            <input type="text" placeholder="MM" name="dob_month" value="<?= $dob_month ?>" disabled />
+                            <input type="text" placeholder="YYYY" name="dob_year" value="<?= $dob_year ?>" disabled />
                         </div>
                     </div>
                     <div class="form-group gender-group">
                         <label>Gender</label>
                         <div class="gender-options">
-                            <label><input type="radio" name="gender" value="M" disabled /> Male</label>
-                            <label><input type="radio" name="gender" value="F" disabled /> Female</label>
-                            <label><input type="radio" name="gender" value="O" disabled /> Other</label>
+                            <label><input type="radio" name="gender" value="M" <?= ($gender == 'M')?'checked': ''?> disabled /> Male</label>
+                            <label><input type="radio" name="gender" value="F" <?= ($gender == 'F')?'checked': ''?> disabled /> Female</label>
+                            <label><input type="radio" name="gender" value="O" <?= ($gender == 'O')?'checked': ''?> disabled /> Other</label>
                         </div>
                     </div>
                 </div>
@@ -111,7 +113,7 @@ if (empty($_GET)) {
           <div class="profile-form-container">
               <div class="profile-form-header">
                   <h2><i class="fa-solid fa-location-dot"></i>Delivery Address</h2>
-                  <i class="fa-solid fa-pen-to-square" id="edit-icon-address"></i>
+                  <i onclick="getEnabled()" class="fa-solid fa-pen-to-square" id="edit-icon"></i>
               </div>
               <div class="profile-form-row">
                   <div class="form-group">
@@ -121,7 +123,7 @@ if (empty($_GET)) {
               </div>
 
               <div class="form-group">
-                  <span id="saveBtn-address" class="button" disabled>Save</span>
+                  <span id="saveBtn" class="button" disabled>Save</span>
               </div>
           </div>
         
