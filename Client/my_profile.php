@@ -1,5 +1,8 @@
 <?php
-$_GET['profile'] = true;
+if (empty($_GET)) {
+  header("Location: ?profile=true");
+  exit();
+}
 
 
 
@@ -35,10 +38,10 @@ $_GET['profile'] = true;
       </div>
       <div class="sidebar-list">
         <ul>
-          <li><a href="my_profile.php?profile=true" id="profile-link" class="active"><i class="fa-solid fa-user"></i>My
+          <li><a href="my_profile.php?profile=true" id="profile-link" class="<?= (isset($_GET['profile'])) ? 'active': ''?>"><i class="fa-solid fa-user"></i>My
               Profile</a></li>
-          <li><a href="my_profile.php?address=true" id="address-link"><i class="fa-solid fa-location-dot"></i>Delivery Address</a></li>
-          <li><a href="my_profile.php?myOrders=true" id="orders-link"><i class="fa-solid fa-basket-shopping"></i>My Orders</a></li>
+          <li><a href="my_profile.php?address=true" id="address-link" class="<?= (isset($_GET['address'])) ? 'active': ''?>"><i class="fa-solid fa-location-dot"></i>Delivery Address</a></li>
+          <li><a href="my_profile.php?myOrders=true" id="orders-link" class="<?= (isset($_GET['myOrders'])) ? 'active': ''?>"><i class="fa-solid fa-basket-shopping"></i>My Orders</a></li>
         </ul>
       </div>
     </div>
