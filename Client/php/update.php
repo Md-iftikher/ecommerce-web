@@ -13,7 +13,12 @@ $gender = $_POST['gender'];
 
 $sql = "
 update customer
-set first_name = '$fname', last_name = '$lname', email = '$email', contact = '$contact', dob = $dob, gender = '$gender';
+set first_name = '$fname', last_name = '$lname', email = '$email', contact = '$contact', dob = '$dob', gender = '$gender'
 where customer_id = $id;
-"
+";
+
+if($conn->query($sql)) {
+    header("location: ../my_profile.php?profile=true&success=true");
+}
+
 ?>

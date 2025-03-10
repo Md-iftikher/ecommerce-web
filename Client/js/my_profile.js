@@ -19,4 +19,5 @@ function getDisabled() {
 
   document.getElementById("saveBtn").disabled = true;
   document.getElementById("saveBtn").style.visibility = 'hidden';
+  document.getElementById("profile-form").submit();
 }

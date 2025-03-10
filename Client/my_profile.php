@@ -55,54 +55,56 @@ if (empty($_GET)) {
               <h2><i class="fa-solid fa-user"></i>My Profile</h2>
               <i onclick="getEnabled()" class="fa-solid fa-pen-to-square" id="edit-icon"></i>
             </div>
-            <form>
-            <!-- Row 1: First Name / Last Name -->
-            <div class="profile-form-row">
-              <div class="form-group">
-                <label for="firstName">First Name</label>
-                <input type="text" id="firstName" name= "fname" placeholder="R" disabled />
-              </div>
-              <div class="form-group">
-                <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" name= "lname" placeholder="S" disabled />
-              </div>
-            </div>
-
-            <!-- Row 2: Email / Contact Number -->
-            <div class="profile-form-row">
-              <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name= "email" placeholder="Email" disabled />
-              </div>
-              <div class="form-group">
-                <label for="contactNumber">Contact Number</label>
-                <input type="text" id="contactNumber" name= "contact" placeholder="Contact Number" disabled />
-              </div>
-            </div>
-
-            <!-- Row 3: Birthdate / Gender -->
-            <div class="profile-form-row">
-              <div class="form-group birthdate-group">
-                <label>Birthdate</label>
-                <div class="birthdate-fields">
-                  <input type="text" placeholder="DD" name="dob_day" disabled />
-                  <input type="text" placeholder="MM" name="dob_month" disabled />
-                  <input type="text" placeholder="YYYY" name="dob_year" disabled />
+            <form id="profile-form" action="./php/update.php" method="POST">
+                <!-- Row 1: First Name / Last Name -->
+                <div class="profile-form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="fname" placeholder="R" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lname" placeholder="S" disabled />
+                    </div>
                 </div>
-              </div>
-              <div class="form-group gender-group">
-                <label>Gender</label>
-                <div class="gender-options">
-                  <label><input type="radio" name="gender" value="male" disabled /> Male</label>
-                  <label><input type="radio" name="gender" value="female" disabled /> Female</label>
-                  <label><input type="radio" name="gender" value="other" disabled /> Other</label>
+
+                <!-- Row 2: Email / Contact Number -->
+                <div class="profile-form-row">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="Email" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="contactNumber">Contact Number</label>
+                        <input type="text" id="contactNumber" name="contact" placeholder="Contact Number" disabled />
+                    </div>
                 </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <span id="saveBtn" class="button" type="submit" name="save" disabled>Save</span>
-            </div>
-        </form>
+
+                <!-- Row 3: Birthdate / Gender -->
+                <div class="profile-form-row">
+                    <div class="form-group birthdate-group">
+                        <label>Birthdate</label>
+                        <div class="birthdate-fields">
+                            <input type="text" placeholder="DD" name="dob_day" disabled />
+                            <input type="text" placeholder="MM" name="dob_month" disabled />
+                            <input type="text" placeholder="YYYY" name="dob_year" disabled />
+                        </div>
+                    </div>
+                    <div class="form-group gender-group">
+                        <label>Gender</label>
+                        <div class="gender-options">
+                            <label><input type="radio" name="gender" value="M" disabled /> Male</label>
+                            <label><input type="radio" name="gender" value="F" disabled /> Female</label>
+                            <label><input type="radio" name="gender" value="O" disabled /> Other</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <!-- have to change id value -->
+                    <input type="hidden" name="id" value= "1"> 
+                    <button  id="saveBtn" class="button" type="submit" name="save" disabled>Save</button>
+                </div>
+            </form>
           </div>
 
         <?php elseif(isset($_GET['address'])) : ?>
