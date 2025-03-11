@@ -6,6 +6,8 @@ if (empty($_GET)) {
 
 if(isset($_GET['profile'])){
   include "./php/read_profile.php";
+} else if(isset($_GET['address'])) {
+  include "./php/read_address.php";
 }
 
 ?>
@@ -57,7 +59,7 @@ if(isset($_GET['profile'])){
               <h2><i class="fa-solid fa-user"></i>My Profile</h2>
               <i onclick="getEnabled()" class="fa-solid fa-pen-to-square" id="edit-icon"></i>
             </div>
-            <form id="profile-form" action="./php/update.php" method="POST">
+            <form id="profile-form" action="./php/update_profile.php" method="POST">
                 <!-- Row 1: First Name / Last Name -->
                 <div class="profile-form-row">
                     <div class="form-group">
@@ -113,18 +115,24 @@ if(isset($_GET['profile'])){
           <div class="profile-form-container">
               <div class="profile-form-header">
                   <h2><i class="fa-solid fa-location-dot"></i>Delivery Address</h2>
-                  <i onclick="getEnabled()" class="fa-solid fa-pen-to-square" id="edit-icon"></i>
               </div>
-              <div class="profile-form-row">
-                  <div class="form-group">
-                      <label for="delivery-address">Delivery Address</label>
-                      <input type="text" id="delivery-address" name="address" placeholder="Enter your address" disabled />
+              
+                  <div class="profile-form-row">
+                      <div class="form-group">
+                          <?php while($row = $result->fetch_assoc()) : ?>
+                          <form name="address-form" action="./php/update_address.php" method="POST">
+                              <div class="address-input">
+                                  <input type="hidden" name="id" value= "1">  
+                                  <input type="hidden" name="old_address" value ="<?=$row['address'] ?>">  
+                                  <input type="text" name="address" value ="<?=$row['address'] ?>" disabled />
+                                  <i onclick="toggleEditMode('<?=$row['address']?>')" class="fa-solid fa-pen-to-square" id="edit-icon-<?=$row['address']?>"></i>
+                                  <button id="save-address-<?=$row['address']?>" class="save-address" type="submit" style="display: none;"><i class="fa-solid fa-check fa-lg"></i></button>
+                              </div>
+                          </form>
+                          <?php endwhile; ?>
+                      </div>
                   </div>
-              </div>
-
-              <div class="form-group">
-                  <span id="saveBtn" class="button" disabled>Save</span>
-              </div>
+              
           </div>
         
         <?php elseif(isset($_GET['myOrders'])) : ?>
