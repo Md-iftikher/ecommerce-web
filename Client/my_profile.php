@@ -5,9 +5,9 @@ if (empty($_GET)) {
 }
 
 if(isset($_GET['profile'])){
-  include "./php/read_profile.php";
+  include __DIR__ . "/./php/my_profile/read_profile.php";
 } else if(isset($_GET['address'])) {
-  include "./php/read_address.php";
+  include __DIR__ . "/./php/my_profile/read_address.php";
 }
 
 ?>
@@ -59,7 +59,7 @@ if(isset($_GET['profile'])){
               <h2><i class="fa-solid fa-user"></i>My Profile</h2>
               <i onclick="getEnabled()" class="fa-solid fa-pen-to-square" id="edit-icon"></i>
             </div>
-            <form id="profile-form" action="./php/update_profile.php" method="POST">
+            <form id="profile-form" action="./php/my_profile/update_profile.php" method="POST">
                 <!-- Row 1: First Name / Last Name -->
                 <div class="profile-form-row">
                     <div class="form-group">
@@ -120,7 +120,7 @@ if(isset($_GET['profile'])){
                   <div class="profile-form-row">
                       <div class="form-group">
                           <?php while($row = $result->fetch_assoc()) : ?>
-                          <form name="address-form" action="./php/update_address.php" method="POST">
+                          <form name="address-form" action="./php/my_profile/update_address.php" method="POST">
                               <div class="address-input">
                                   <input type="hidden" name="id" value= "1">  
                                   <input type="hidden" name="old_address" value ="<?=$row['address'] ?>">  

@@ -1,5 +1,5 @@
 <?php
-include "config.php";
+include __DIR__ . "/../config.php";
 
 $sql = "
 select first_name, last_name, email, contact, dob, gender 

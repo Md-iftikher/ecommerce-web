@@ -1,5 +1,6 @@
 <?php 
-include "config.php";
+include __DIR__ . "/../config.php";
+
 $id = (int) $_POST['id'];
 $fname = $_POST['fname'];
 $lname = $_POST['lname'];
@@ -18,7 +19,7 @@ where customer_id = $id;
 ";
 
 if($conn->query($sql)) {
-    header("location: ../my_profile.php?profile=true&success=true");
+    header("location: ../../my_profile.php?profile=true&success=true");
 }
 
 ?>
