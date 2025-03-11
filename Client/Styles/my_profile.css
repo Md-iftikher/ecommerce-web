@@ -200,7 +200,7 @@ body {
 
 }
 
-.save-address {
+.save-address, .edit-address {
     border: none;
     background-color: transparent;
     width: fit-content;

@@ -24,10 +24,17 @@ function getDisabled() {
 
 function toggleEditMode(address) {
 
-  inputs = document.getElementsByTagName("input");
-  for(let i = 0; i < inputs.length; i++) {
-    inputs[i].disabled = false;
+  const editIcons = document.getElementsByClassName("edit-address");
+
+  for(let i = 0; i < editIcons.length; i++){
+    if(editIcons[i].id != `edit-icon-${address}`)
+    {
+      editIcons[i].disabled = true;
+    }
   }
+  
+  input = document.getElementById(`address-input-${address}`);
+  input.disabled = false;
   
   // Get the edit icon and save button elements by their IDs
   const editIcon = document.getElementById(`edit-icon-${address}`);

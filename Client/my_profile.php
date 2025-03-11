@@ -124,9 +124,13 @@ if(isset($_GET['profile'])){
                               <div class="address-input">
                                   <input type="hidden" name="id" value= "1">  
                                   <input type="hidden" name="old_address" value ="<?=$row['address'] ?>">  
-                                  <input type="text" name="address" value ="<?=$row['address'] ?>" disabled />
-                                  <i onclick="toggleEditMode('<?=$row['address']?>')" class="fa-solid fa-pen-to-square" id="edit-icon-<?=$row['address']?>"></i>
-                                  <button id="save-address-<?=$row['address']?>" class="save-address" type="submit" style="display: none;"><i class="fa-solid fa-check fa-lg"></i></button>
+                                  <input id= "address-input-<?=$row['address']?>" type="text" name="address" value ="<?=$row['address'] ?>" disabled />
+                                  <button onclick="toggleEditMode('<?=$row['address']?>')"  id="edit-icon-<?=$row['address']?>" class="edit-address" type="button">
+                                      <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                                  </button>
+                                  <button id="save-address-<?=$row['address']?>" class="save-address" type="submit" style="display: none;">
+                                      <i class="fa-solid fa-check fa-lg"></i>
+                                  </button>
                               </div>
                           </form>
                           <?php endwhile; ?>
