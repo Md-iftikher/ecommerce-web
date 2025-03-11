@@ -5,119 +5,50 @@
     <meta charset="UTF-8">
     <title>All Products - eCommerce</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .category-btn.active {
+            border-bottom: 2px solid #2563eb;
+            color: #2563eb;
+            font-weight: 600;
+        }
+        .product-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
 </head>
 
+<body class="bg-gray-100">
+    <div id="nav-container"></div>
 
-    
-    <header class="bg-blue-600 text-white text-center py-4">
-        <h1 class="text-3xl font-semibold">All Products</h1>
+    <!-- Header -->
+    <header class="bg-[#4a4e69] text-white text-center py-6">
+        <h1 class="text-4xl font-bold">All Products</h1>
     </header>
 
-   
-    <nav class="bg-white shadow-md py-4">
-        <div class="container mx-auto flex justify-center space-x-4 overflow-x-auto">
-            <button class="category-btn px-4 py-2 text-blue-600 border-b-2 border-transparent hover:border-blue-600" onclick="filterProducts('all')">All</button>
-            <button class="category-btn px-4 py-2" onclick="filterProducts('electronics')">Electronics</button>
-            <button class="category-btn px-4 py-2" onclick="filterProducts('fashion')">Fashion</button>
-            <button class="category-btn px-4 py-2" onclick="filterProducts('home')">Home Appliances</button>
-            <button class="category-btn px-4 py-2" onclick="filterProducts('books')">Books</button>
-            <button class="category-btn px-4 py-2" onclick="filterProducts('beauty')">Beauty & Health</button>
-            <button class="category-btn px-4 py-2" onclick="filterProducts('sports')">Sports</button>
-            <button class="category-btn px-4 py-2" onclick="filterProducts('toys')">Toys</button>
-            <button class="category-btn px-4 py-2" onclick="filterProducts('automotive')">Automotive</button>
-            <button class="category-btn px-4 py-2" onclick="filterProducts('groceries')">Groceries</button>
-            <button class="category-btn px-4 py-2" onclick="filterProducts('furniture')">Furniture</button>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md py-4 sticky top-0 z-10">
+        <div id="category-nav" class="container mx-auto flex justify-center space-x-4 overflow-x-auto">
+            <!-- Categories will be dynamically loaded here -->
         </div>
     </nav>
 
-    
+    <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            
-            <!-- Example Product Card (Dynamic in JS) -->
-            
+            <!-- Product Cards will be dynamically inserted here -->
         </div>
     </main>
 
-    
-    <footer class="bg-blue-600 text-white text-center py-4">
-        <p>&copy; 2025 Your eCommerce. All rights reserved.</p>
-    </footer>
+    <!-- footer  -->
+    <div id="footer-container"></div>
 
-    
-    <script>
-        // Sample Product Data (10 categories, 10 products each)
-        const products = [
-            { id: 1, name: "Smartphone", price: "$499", category: "electronics", image: "https://via.placeholder.com/300" },
-            { id: 2, name: "Laptop", price: "$999", category: "electronics", image: "https://via.placeholder.com/300" },
-            { id: 3, name: "Smartwatch", price: "$199", category: "electronics", image: "https://via.placeholder.com/300" },
-            { id: 4, name: "Headphones", price: "$149", category: "electronics", image: "https://via.placeholder.com/300" },
-            
-            { id: 11, name: "Men's T-shirt", price: "$25", category: "fashion", image: "https://via.placeholder.com/300" },
-            { id: 12, name: "Women's Dress", price: "$55", category: "fashion", image: "https://via.placeholder.com/300" },
-            
-            { id: 21, name: "Microwave", price: "$120", category: "home", image: "https://via.placeholder.com/300" },
-            { id: 22, name: "Vacuum Cleaner", price: "$250", category: "home", image: "https://via.placeholder.com/300" },
-            
-            { id: 31, name: "Novel - Mystery", price: "$12", category: "books", image: "https://via.placeholder.com/300" },
-            { id: 32, name: "Science Textbook", price: "$45", category: "books", image: "https://via.placeholder.com/300" },
-            
-            { id: 41, name: "Face Cream", price: "$35", category: "beauty", image: "https://via.placeholder.com/300" },
-            { id: 42, name: "Hair Oil", price: "$15", category: "beauty", image: "https://via.placeholder.com/300" },
-            
-            { id: 51, name: "Football", price: "$30", category: "sports", image: "https://via.placeholder.com/300" },
-            { id: 52, name: "Yoga Mat", price: "$40", category: "sports", image: "https://via.placeholder.com/300" },
-            
-            { id: 61, name: "Toy Car", price: "$20", category: "toys", image: "https://via.placeholder.com/300" },
-            { id: 62, name: "Dollhouse", price: "$70", category: "toys", image: "https://via.placeholder.com/300" },
-            
-            { id: 71, name: "Car Battery", price: "$180", category: "automotive", image: "https://via.placeholder.com/300" },
-            { id: 72, name: "Tire Inflator", price: "$60", category: "automotive", image: "https://via.placeholder.com/300" },
-            
-            { id: 81, name: "Organic Veggies", price: "$30", category: "groceries", image: "https://via.placeholder.com/300" },
-            { id: 82, name: "Gourmet Spices", price: "$15", category: "groceries", image: "https://via.placeholder.com/300" },
-            
-            { id: 91, name: "Wooden Table", price: "$350", category: "furniture", image: "https://via.placeholder.com/300" },
-            { id: 92, name: "Office Chair", price: "$150", category: "furniture", image: "https://via.placeholder.com/300" },
-        ];
-
-       
-        const productGrid = document.getElementById("product-grid");
-
-        function displayProducts(productsToShow) {
-            productGrid.innerHTML = "";
-            productsToShow.forEach(product => {
-                productGrid.innerHTML += `
-                    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-                        <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
-                        <div class="p-4">
-                            <h2 class="text-lg font-semibold">${product.name}</h2>
-                            <p class="text-blue-600 font-bold">${product.price}</p>
-                            <button onclick="viewDetails(${product.id})" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800">Details</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        
-        function filterProducts(category) {
-            if (category === "all") {
-                displayProducts(products);
-            } else {
-                displayProducts(products.filter(product => product.category === category));
-            }
-        }
-
-        
-        function viewDetails(id) {
-            alert("View details for product ID: " + id);
-        }
-
-       
-        displayProducts(products);
-    </script>
-
+    <!-- Link to External JavaScript File -->
+     
+    <script src="/Client/js/AllProduct.js"></script>
 </body>
 
 </html>
