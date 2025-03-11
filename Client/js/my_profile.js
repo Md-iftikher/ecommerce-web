@@ -28,13 +28,14 @@ function toggleEditMode(address) {
   for(let i = 0; i < inputs.length; i++) {
     inputs[i].disabled = false;
   }
- 
+  
+  // Get the edit icon and save button elements by their IDs
   const editIcon = document.getElementById(`edit-icon-${address}`);
   const saveBtn = document.getElementById(`save-address-${address}`);
 
-  
-  editIcon.style.display = 'none';  
-  saveBtn.style.display = 'inline-block';  
+  // Toggle visibility: hide the edit icon and show the save button
+  editIcon.style.display = 'none';  // Hide edit icon
+  saveBtn.style.display = 'inline-block';  // Show the save button
 
 
 }
