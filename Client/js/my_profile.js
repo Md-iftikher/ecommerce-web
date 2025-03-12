@@ -2,7 +2,7 @@
 
 function getEnabled() {
   inputs = document.getElementsByTagName("input");
-  for(let i = 0; i < inputs.length; i++) {
+  for (let i = 0; i < inputs.length; i++) {
     inputs[i].disabled = false;
   }
 
@@ -13,7 +13,7 @@ function getEnabled() {
 
 function getDisabled() {
   inputs = document.getElementsByTagName("input");
-  for(let i = 0; i < inputs.length; i++) {
+  for (let i = 0; i < inputs.length; i++) {
     inputs[i].disabled = true;
   }
 
@@ -26,16 +26,15 @@ function toggleEditMode(address) {
 
   const editIcons = document.getElementsByClassName("edit-address");
 
-  for(let i = 0; i < editIcons.length; i++){
-    if(editIcons[i].id != `edit-icon-${address}`)
-    {
+  for (let i = 0; i < editIcons.length; i++) {
+    if (editIcons[i].id != `edit-icon-${address}`) {
       editIcons[i].disabled = true;
     }
   }
-  
+
   input = document.getElementById(`address-input-${address}`);
   input.disabled = false;
-  
+
   // Get the edit icon and save button elements by their IDs
   const editIcon = document.getElementById(`edit-icon-${address}`);
   const saveBtn = document.getElementById(`save-address-${address}`);
@@ -43,6 +42,27 @@ function toggleEditMode(address) {
   // Toggle visibility: hide the edit icon and show the save button
   editIcon.style.display = 'none';  // Hide edit icon
   saveBtn.style.display = 'inline-block';  // Show the save button
+
+
+}
+
+function toggleAddMode() {
+  const addressInsertForm = document.getElementById("address-insert-form");
+  const addressForms = document.getElementsByClassName("address-form");
+  const insertIcon = document.getElementById("insert-address-icon");
+  const insertInput = document.getElementById("insert-address-input");
+
+  for (let i = 0; i < addressForms.length; i++) {
+    const inputs = addressForms[i].querySelectorAll('input, select, textarea, button');
+
+    inputs.forEach(element => {
+      element.disabled = true; // or false to enable
+    });
+  }
+
+  addressInsertForm.style.display = "flex";
+  insertIcon.style.display = "inline-block";
+  insertInput.focus();
 
 
 }
