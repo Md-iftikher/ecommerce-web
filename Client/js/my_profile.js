@@ -46,7 +46,12 @@ function toggleEditMode(address) {
 
 }
 
-function toggleAddMode() {
+function toggleAddMode(count) {
+  if(count >= 3) {
+    alert("You have reached the maximum limit of 3 addresses");
+    return;
+  }
+
   const addressInsertForm = document.getElementById("address-insert-form");
   const addressForms = document.getElementsByClassName("address-form");
   const insertIcon = document.getElementById("insert-address-icon");

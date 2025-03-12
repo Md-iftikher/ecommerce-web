@@ -1,4 +1,6 @@
 <?php
+include_once __DIR__ . "/./php/functions.php";
+
 if (empty($_GET)) {
   header("Location: ?profile=true");
   exit();
@@ -125,7 +127,7 @@ if(isset($_GET['profile'])){
         <div class="address-form-container">
           <div class="address-form-header">
             <h2><i class="fa-solid fa-location-dot"></i>Delivery Address</h2>
-            <button onclick="toggleAddMode()" id="add-address">
+            <button onclick="toggleAddMode(<?= no_of_addresses() ?>)" id="add-address">
               <i class="fa-solid fa-plus"></i>
             </button>
           </div>
