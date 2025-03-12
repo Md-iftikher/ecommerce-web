@@ -219,7 +219,7 @@ body {
 
 }
 
-.save-address, .edit-address, #add-address, #insert-address-icon {
+.save-address, .edit-address, #add-address, #insert-address-icon, .delete-address {
     border: none;
     background-color: transparent;
     width: fit-content;

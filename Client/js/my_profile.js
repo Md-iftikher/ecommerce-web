@@ -71,3 +71,9 @@ function toggleAddMode(count) {
 
 
 }
+
+function confirmDeletion(event) {
+  if(!confirm("Are you sure you want to proceed with the deletion")) {
+    event.preventDefault();
+  }
+}

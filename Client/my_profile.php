@@ -143,7 +143,7 @@ if(isset($_GET['profile'])){
                 </button>
               </form>
               <?php while($row = $result->fetch_assoc()) : ?>
-              <form class="address-form" name="address-form" action="./php/my_profile/update_address.php" method="POST">
+              <form class="address-form" name="address-form"  method="POST">
                 <div class="address-input">
                   <input type="hidden" name="id" value="1">
                   <input type="hidden" name="old_address" value="<?=$row['address'] ?>">
@@ -153,7 +153,10 @@ if(isset($_GET['profile'])){
                     class="edit-address" type="button">
                     <i class="fa-solid fa-pen-to-square fa-lg"></i>
                   </button>
-                  <button id="save-address-<?=$row['address']?>" class="save-address" type="submit" style="display: none;">
+                  <button onclick="confirmDeletion(event)" class="delete-address" type="submit" formaction="./php/my_profile/delete_address.php">
+                    <i class="fa-solid fa-xmark fa-lg"></i>
+                  </button>
+                  <button id="save-address-<?=$row['address']?>" class="save-address" type="submit" style="display: none;" formaction="./php/my_profile/update_address.php">
                     <i class="fa-solid fa-check fa-lg"></i>
                   </button>
                 </div>
