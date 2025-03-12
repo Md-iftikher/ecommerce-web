@@ -1,8 +1,10 @@
 <?php 
-include __DIR__ . "/../config.php";
+include_once __DIR__ . "/../config.php";
+include_once __DIR__ . "/../functions.php";
 
-$id = (int) $_POST['id'];
-$address = $_POST['address'];
+
+$id = (int) check_input($_POST['id']);
+$address = check_input($_POST['address']);
 
 
 $sql = "

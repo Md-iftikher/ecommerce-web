@@ -1,16 +1,17 @@
 <?php 
-include __DIR__ . "/../config.php";
+include_once __DIR__ . "/../config.php";
+include_once __DIR__ . "/../functions.php";
 
-$id = (int) $_POST['id'];
-$fname = $_POST['fname'];
-$lname = $_POST['lname'];
-$email = $_POST['email'];
-$contact = $_POST['contact'];
-$dob_day = $_POST['dob_day'];
-$dob_month = $_POST['dob_month'];
-$dob_year = $_POST['dob_year'];
+$id = (int) check_input($_POST['id']);
+$fname = check_input($_POST['fname']);
+$lname = check_input($_POST['lname']);
+$email = check_input($_POST['email']);
+$contact = check_input($_POST['contact']);
+$dob_day = check_input($_POST['dob_day']);
+$dob_month = check_input($_POST['dob_month']);
+$dob_year = check_input($_POST['dob_year']);
 $dob = "$dob_year-$dob_month-$dob_day";
-$gender = $_POST['gender'];
+$gender = check_input($_POST['gender']);
 
 $sql = "
 update customer
