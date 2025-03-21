@@ -8,9 +8,9 @@ $address = check_input($_POST['address']);
 
 
 $sql = "
-update delivery_address
+update delivery_addresses
 set address = '$address'
-where cust_id = $id and address = '$old_address';
+where customer_id = $id and address = '$old_address';
 ";
 
 if($conn->query($sql)) {
