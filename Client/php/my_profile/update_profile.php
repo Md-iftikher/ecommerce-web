@@ -20,7 +20,7 @@ where customer_id = $id;
 ";
 
 if($conn->query($sql)) {
-    header("location: ../../my_profile.php?profile=true&success=true");
+    header("location: ../../Pages/my_profile.php?profile=true&success=true");
 }
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-include_once __DIR__ . "/./php/functions.php";
+include_once __DIR__ . "/../php/functions.php";
 
 if (empty($_GET)) {
   header("Location: ?profile=true");
@@ -7,9 +7,9 @@ if (empty($_GET)) {
 }
 
 if(isset($_GET['profile'])){
-  include __DIR__ . "/./php/my_profile/read_profile.php";
+  include __DIR__ . "/../php/my_profile/read_profile.php";
 } else if(isset($_GET['address'])) {
-  include __DIR__ . "/./php/my_profile/read_address.php";
+  include __DIR__ . "/../php/my_profile/read_address.php";
 }
 
 ?>
@@ -22,7 +22,7 @@ if(isset($_GET['profile'])){
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <link rel="stylesheet" href="Styles/my_profile.css" />
+  <link rel="stylesheet" href="../Styles/my_profile.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -66,7 +66,7 @@ if(isset($_GET['profile'])){
             <h2><i class="fa-solid fa-user"></i>My Profile</h2>
             <i onclick="getEnabled()" class="fa-solid fa-pen-to-square" id="edit-icon"></i>
           </div>
-          <form id="profile-form" action="./php/my_profile/update_profile.php" method="POST">
+          <form id="profile-form" action="../php/my_profile/update_profile.php" method="POST">
             <!-- Row 1: First Name / Last Name -->
             <div class="profile-form-row">
               <div class="form-group">
@@ -135,7 +135,7 @@ if(isset($_GET['profile'])){
           <div class="address-form-row">
             <div class="form-group">
               <!-- insert address -->
-              <form id="address-insert-form" action="./php/my_profile/insert_address.php" method="POST" style="display: none;">
+              <form id="address-insert-form" action="../php/my_profile/insert_address.php" method="POST" style="display: none;">
                 <input type="hidden" name="id" value="1">
                 <input id="insert-address-input" type="text" name="address" placeholder="Enter new Address" >
                 <button  id="insert-address-icon" type="submit" style="display: none;">
@@ -153,10 +153,10 @@ if(isset($_GET['profile'])){
                     class="edit-address" type="button">
                     <i class="fa-solid fa-pen-to-square fa-lg"></i>
                   </button>
-                  <button onclick="confirmDeletion(event)" class="delete-address" type="submit" formaction="./php/my_profile/delete_address.php">
+                  <button onclick="confirmDeletion(event)" class="delete-address" type="submit" formaction="../php/my_profile/delete_address.php">
                     <i class="fa-solid fa-xmark fa-lg"></i>
                   </button>
-                  <button id="save-address-<?=$row['address']?>" class="save-address" type="submit" style="display: none;" formaction="./php/my_profile/update_address.php">
+                  <button id="save-address-<?=$row['address']?>" class="save-address" type="submit" style="display: none;" formaction="../php/my_profile/update_address.php">
                     <i class="fa-solid fa-check fa-lg"></i>
                   </button>
                 </div>
@@ -202,7 +202,7 @@ if(isset($_GET['profile'])){
 
       </div>
     </div>
-    <script src="./js/my_profile.js"></script>
+    <script src="../js/my_profile.js"></script>
   </section>
 </body>
 
