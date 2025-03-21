@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Mar 21, 2025 at 05:47 PM
+-- Generation Time: Mar 21, 2025 at 06:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -87,6 +87,13 @@ CREATE TABLE `customers` (
   `gender` enum('M','F','O') DEFAULT 'O'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `customers`
+--
+
+INSERT INTO `customers` (`customer_id`, `first_name`, `last_name`, `email`, `hashed_password`, `contact`, `dob`, `gender`) VALUES
+(1, 'nazeef', 'jalal', 'nazeef.jalal@northsouth.edu', '', '01798584499', '2002-09-22', 'M');
+
 -- --------------------------------------------------------
 
 --
@@ -98,6 +105,13 @@ CREATE TABLE `delivery_addresses` (
   `customer_id` int(11) NOT NULL,
   `address` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `delivery_addresses`
+--
+
+INSERT INTO `delivery_addresses` (`address_id`, `customer_id`, `address`) VALUES
+(1, 1, 'West Nakhalpara, Tejgaon, Dhaka-1215');
 
 -- --------------------------------------------------------
 
@@ -238,13 +252,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `delivery_addresses`
 --
 ALTER TABLE `delivery_addresses`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `orders`
