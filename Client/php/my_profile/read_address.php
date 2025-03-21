@@ -2,7 +2,7 @@
 include_once __DIR__ . "/../config.php";
 
 $fname_query = "
-select * from customer 
+select * from customers 
 where customer_id = 1; 
 ";
 

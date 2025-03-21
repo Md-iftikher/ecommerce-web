@@ -8,7 +8,7 @@ $address = check_input($_POST['address']);
 
 
 $sql = "
-insert into delivery_address
+insert into delivery_addresses(customer_id, address)
 values ( $id, '$address');
 ";
 
