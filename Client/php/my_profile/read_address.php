@@ -2,7 +2,7 @@
 include_once __DIR__ . "/../config.php";
 
 $fname_query = "
-select * from customer 
+select * from customers 
 where customer_id = 1; 
 ";
 
@@ -11,8 +11,8 @@ $fname = $fname_result->fetch_assoc()['first_name'];
 
 
 $sql = "
-select * from delivery_address
-where cust_id = 1;
+select * from delivery_addresses
+where customer_id = 1;
 ";
 
 $result = $conn->query($sql);

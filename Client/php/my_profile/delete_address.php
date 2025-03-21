@@ -7,8 +7,8 @@ $address = check_input($_POST['old_address']);
 
 
 $sql = "
-delete from delivery_address
-where cust_id = $id and address = '$address';
+delete from delivery_addresses
+where customer_id = $id and address = '$address';
 ";
 
 if($conn->query($sql)) {

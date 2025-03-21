@@ -3,7 +3,7 @@ include_once __DIR__ . "/../config.php";
 
 $sql = "
 select first_name, last_name, email, contact, dob, gender 
-from customer
+from customers
 where customer_id = 1;
 ";
 

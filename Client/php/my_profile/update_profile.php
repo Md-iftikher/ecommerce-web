@@ -14,7 +14,7 @@ $dob = "$dob_year-$dob_month-$dob_day";
 $gender = check_input($_POST['gender']);
 
 $sql = "
-update customer
+update customers
 set first_name = '$fname', last_name = '$lname', email = '$email', contact = '$contact', dob = '$dob', gender = '$gender'
 where customer_id = $id;
 ";

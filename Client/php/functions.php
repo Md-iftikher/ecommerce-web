@@ -13,8 +13,8 @@ function no_of_addresses() {
   global $conn;
 
   $sql = "
-  select count(address) as addressNo from delivery_address
-  where cust_id = 1;
+  select count(address) as addressNo from delivery_addresses
+  where customer_id = 1;
   ";
   $result = $conn->query($sql);
   $row = $result->fetch_assoc();
