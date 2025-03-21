@@ -38,7 +38,7 @@ if(isset($_GET['profile'])){
       <div class="sidebar-header">
         <div class="logo"></div>
         <div class="writing">
-          <p>Nazeef</p>
+          <p><?= ucfirst($fname)?></p>
           <div class="clock" id="clock"></div>
         </div>
       </div>
@@ -57,7 +57,7 @@ if(isset($_GET['profile'])){
       </div>
     </div>
     <div class="content-area">
-      <p>Good Morning Nazeef</p>
+      <p>Good Morning <?= ucfirst($fname) ?></p>
       <div class="display-box" id="display-box">
         <?php if(isset($_GET['profile'])): ?>
 
