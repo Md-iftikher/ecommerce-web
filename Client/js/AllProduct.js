@@ -64,10 +64,10 @@ async function loadComponent(url, targetId) {
 }
 
 // Loading navbar
-loadComponent("/Client/Component/navbar.html", 'nav-container');
+loadComponent("../Component/navbar.html", 'nav-container');
 
 // Loading footer
-loadComponent("/Client/Component/footer.html", 'footer-container')
+loadComponent("../Component/footer.html", 'footer-container')
 
 
 // all categories funallity section 
