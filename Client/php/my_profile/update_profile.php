@@ -7,10 +7,7 @@ $fname = check_input($_POST['fname']);
 $lname = check_input($_POST['lname']);
 $email = check_input($_POST['email']);
 $contact = check_input($_POST['contact']);
-$dob_day = check_input($_POST['dob_day']);
-$dob_month = check_input($_POST['dob_month']);
-$dob_year = check_input($_POST['dob_year']);
-$dob = "$dob_year-$dob_month-$dob_day";
+$dob = check_input($_POST['dob']);
 $gender = check_input($_POST['gender']);
 
 $sql = "

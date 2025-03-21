@@ -95,13 +95,9 @@ if(isset($_GET['profile'])){
 
             <!-- Row 3: Birthdate / Gender -->
             <div class="profile-form-row">
-              <div class="form-group birthdate-group">
+              <div class="form-group">
                 <label>Birthdate</label>
-                <div class="birthdate-fields">
-                  <input type="text" placeholder="DD" name="dob_day" value="<?= $dob_day ?>" disabled />
-                  <input type="text" placeholder="MM" name="dob_month" value="<?= $dob_month ?>" disabled />
-                  <input type="text" placeholder="YYYY" name="dob_year" value="<?= $dob_year ?>" disabled />
-                </div>
+                <input type="date" id="dob"  placeholder="date of birth" name="dob" value="<?= $dob ?>" disabled/>
               </div>
               <div class="form-group gender-group">
                 <label>Gender</label>

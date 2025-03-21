@@ -14,10 +14,10 @@ $fname = $row['first_name'];
 $lname = $row['last_name'];
 $email = $row['email'];
 $contact = $row['contact'];
-$dob = explode("-", $row['dob']);
-$dob_year = $dob[0];
-$dob_month = $dob[1];
-$dob_day = $dob[2];
+$dob = $row['dob'];
+// $dob_year = $dob[0];
+// $dob_month = $dob[1];
+// $dob_day = $dob[2];
 $gender = $row['gender'];
 
 ?>
