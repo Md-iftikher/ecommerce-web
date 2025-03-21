@@ -31,7 +31,7 @@ if(isset($_GET['profile'])){
 <body>
 
   <div class="navbar">
-    <a href="index.html"><i class="fa-solid fa-house"></i>Home</a>
+    <a href="index.php"><i class="fa-solid fa-house"></i>Home</a>
   </div>
   <section class="container">
     <div class="sidebar">
