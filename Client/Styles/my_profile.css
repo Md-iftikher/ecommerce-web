@@ -257,7 +257,8 @@ body {
 }
 
 .form-group input[type="text"],
-.form-group input[type="email"] {
+.form-group input[type="email"],
+.form-group input[type="date"] {
     padding: 0.6rem;
     border: 1px solid #ccc;
     border-radius: 0.25rem;
@@ -271,10 +272,7 @@ body {
 }
 
 
-.birthdate-fields {
-    display: flex;
-    gap: 1rem;
-}
+
 
 .gender-options {
     display: flex;
