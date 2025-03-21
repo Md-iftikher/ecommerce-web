@@ -146,7 +146,7 @@ body {
 
 
 
-.profile-form-container {
+.profile-form-container, .address-form-container {
     background-color: #f8f9fa;
     border-radius: 0.75rem;
     padding: 1.5rem;
@@ -155,7 +155,7 @@ body {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-.profile-form-header {
+.profile-form-header, .address-form-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -167,6 +167,25 @@ body {
     font-size: 1.25rem;
 }
 
+.address-form-header {
+    justify-content: flex-start;
+    gap: 1em;
+}
+
+.address-form-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+
+
+.fa-plus {
+    transition: transform 200ms linear;
+}
+
+.fa-plus:hover {
+    transform: scale(1.2);
+}
 
 .edit-icon {
     cursor: pointer;
@@ -175,7 +194,7 @@ body {
 }
 
 
-.profile-form-row {
+.profile-form-row, .address-form-row {
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
@@ -187,7 +206,7 @@ body {
     flex-direction: column;
 }
 
-#saveBtn, #saveBtn-address {
+#saveBtn {
     visibility: hidden;
     padding: 0.6rem;
     border: 1px solid #ccc;
@@ -198,6 +217,31 @@ body {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     transition: transform 300ms ease, box-shadow 300ms ease;
 
+}
+
+.save-address, .edit-address, #add-address, #insert-address-icon, .delete-address {
+    border: none;
+    background-color: transparent;
+    width: fit-content;
+    height: fit-content;
+}
+
+
+.address-input, #address-insert-form {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    padding-bottom: 1em;
+}
+
+
+
+.address-input input[type="text"] {
+    width: 95%;
+}
+
+#address-insert-form  input[type='text'] {
+    width: 95%;
 }
 
 #saveBtn:hover {
