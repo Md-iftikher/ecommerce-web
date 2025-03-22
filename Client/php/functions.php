@@ -22,4 +22,19 @@ function no_of_addresses() {
 
 }
 
+function email_exists($email) {
+  global $conn;
+
+  $sql = "
+  select email 
+  from customers
+  where email = '$email';
+  ";
+  $result = $conn->query($sql);
+  if($result->fetch_assoc()) {
+    return true;
+  }
+  else return false;
+}
+
 ?>

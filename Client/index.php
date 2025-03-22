@@ -1,3 +1,9 @@
+<?php 
+if(isset($_GET['signed_up'])) {
+  echo '<script>window.onload = function() { alert("Account created successfully"); }</script>';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,7 +22,7 @@
 
     <!-- Navbar Container -->
     <div id="nav-container"></div>
-
+    
     <main>
         <!-- Slider Section -->
         <section>

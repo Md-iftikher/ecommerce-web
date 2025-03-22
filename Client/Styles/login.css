@@ -10,7 +10,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #4a4e69, #9a8c98); /* Deep purple to light purple gradient */
+    background: linear-gradient(135deg, #4a4e69, #9a8c98); 
   }
   
   .login-container {
@@ -25,7 +25,7 @@
   .login-container h2 {
     text-align: center;
     margin-bottom: 20px;
-    color: #4a4e69; /* Deep purple text */
+    color: #4a4e69;
   }
   
   .input-group {
@@ -35,7 +35,7 @@
   .input-group label {
     display: block;
     font-size: 14px;
-    color: #4a4e69; /* Deep purple labels */
+    color: #4a4e69;
     margin-bottom: 5px;
   }
   
@@ -49,15 +49,15 @@
   }
   
   .input-group input:focus {
-    border-color: #4a4e69; /* Deep purple focus border */
-    box-shadow: 0 0 5px rgba(74, 78, 105, 0.5); /* Soft purple shadow */
+    border-color: #4a4e69; 
+    box-shadow: 0 0 5px rgba(74, 78, 105, 0.5);
   }
   
   .login-button {
     width: 100%;
     padding: 12px;
     border: none;
-    background: #4a4e69; /* Deep purple button */
+    background: #4a4e69; 
     color: #fff;
     font-size: 16px;
     border-radius: 8px;
@@ -66,18 +66,18 @@
   }
   
   .login-button:hover {
-    background: #3a3f5c; /* Darker purple on hover */
+    background: #3a3f5c;
   }
   
   .signup-link {
     text-align: center;
     margin-top: 15px;
     font-size: 14px;
-    color: #4a4e69; /* Deep purple text */
+    color: #4a4e69; 
   }
   
   .signup-link a {
-    color: #4a4e69; /* Deep purple link color */
+    color: #4a4e69; 
     text-decoration: none;
     transition: 0.3s;
   }
@@ -86,7 +86,6 @@
     text-decoration: underline;
   }
   
-  /* Responsive adjustments */
   @media (max-width: 480px) {
     .login-container {
       padding: 30px 20px;
