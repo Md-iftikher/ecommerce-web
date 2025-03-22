@@ -1,4 +1,10 @@
-<?php 
+<?php
+session_start();
+$login_flag = false;
+if(isset($_SESSION['customer_id'])){
+    $login_flag = true;
+}
+
 if(isset($_GET['signed_up'])) {
   echo '<script>window.onload = function() { alert("Account created successfully"); }</script>';
 }

@@ -13,7 +13,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
         event.preventDefault();  
         alert('Enter a valid last name!');
     }
-    
+
     else if(password != confirmPassword) {
         event.preventDefault();
         alert("Passwords do not match!");
@@ -34,23 +34,4 @@ function inValidPassword(password) {
     return !passwordPattern.test(password);
 }
 
-// async function email_exists(email) {
-//     var data = { email: email };
 
-//     try {
-//         const response = await fetch('../php/functions.php', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify(data),
-//         });
-
-//         const responseData = await response.json();
-//         return responseData.status;  // Returns true or false based on email existence
-//     } catch (error) {
-//         console.error('Error:', error);
-//         alert('An error occurred.');
-//         return false;
-//     }
-// }

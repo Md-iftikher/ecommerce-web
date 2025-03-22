@@ -27,6 +27,4 @@ if($conn->query($sql)){
     exit();
 }
 
-
-
 ?>
