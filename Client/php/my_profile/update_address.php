@@ -9,12 +9,18 @@ $address = check_input($_POST['address']);
 
 $sql = "
 update delivery_addresses
-set address = '$address'
-where customer_id = $id and address = '$old_address';
+set address = ?
+where customer_id = ? and address = ?;
 ";
 
-if($conn->query($sql)) {
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sis", $address, $id, $old_address);
+
+
+if($stmt->execute()) {
+    $stmt->close();
     header("location: ../../Pages/my_profile.php?address=true&success=true");
+    exit();
 }
 
 ?>

@@ -9,10 +9,15 @@ $password = $data['password'];
 
 $sql = "
 select hashed_password from customers
-where email = '$email';
+where email = ?;
 ";
 
-$result = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+
+
+$result = $stmt->get_result();
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $hash = $row['hashed_password'];

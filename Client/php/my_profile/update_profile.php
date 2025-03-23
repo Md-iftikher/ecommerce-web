@@ -13,13 +13,20 @@ $gender = check_input($_POST['gender']);
 
 $sql = "
 update customers
-set first_name = '$fname', last_name = '$lname', email = '$email', contact = '$contact', dob = '$dob', gender = '$gender'
-where customer_id = $id;
+set first_name = ?, last_name = ?, email = ?, contact = ?, dob = ?, gender = ?
+where customer_id = ?;
 ";
 
-if($conn->query($sql)) {
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ssssssi", $fname, $lname, $email, $contact, $dob, $gender, $id);
+
+
+if($stmt->execute()) {
+    $stmt->close();
     $_SESSION['first_name'] = $fname;
     header("location: ../../Pages/my_profile.php?profile=true&success=true");
+    exit();
 }
 
 ?>

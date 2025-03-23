@@ -4,20 +4,18 @@ $customer_id = (int)$_SESSION['customer_id'];
 
 include_once __DIR__ . "/../config.php";
 
-$fname_query = "
-select * from customers 
-where customer_id = $customer_id; 
-";
-
-$fname_result = $conn->query($fname_query);
-$fname = $fname_result->fetch_assoc()['first_name'];
-
-
 $sql = "
 select * from delivery_addresses
-where customer_id = $customer_id;
+where customer_id = ?;
 ";
 
-$result = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $customer_id);
+$stmt->execute();
+
+
+$result = $stmt->get_result();
+
+$stmt->close();
 
 ?>
