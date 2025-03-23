@@ -26,10 +26,7 @@ if(password_verify($password, $hash)) {
     header("location: ../../index.php");
     exit();
 }
-else {
-    header("location: ../../Pages/login.php?incorrect_pass=true");
-    exit();
-}
+
 
 
 

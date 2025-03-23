@@ -1,9 +1,3 @@
-<?php 
-if(isset($_GET['incorrect_pass'])) {
-  echo '<script>window.onload = function() { alert("Incorrect Password"); }</script>';
-}
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
