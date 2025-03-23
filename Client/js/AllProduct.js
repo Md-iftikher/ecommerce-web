@@ -1,53 +1,27 @@
+let products = [];
 
-const products = [
-    {
-        id: 1,
-        name: "Wireless Headphones",
-        description: "Noise-cancelling over-ear headphones with Bluetooth 5.0.",
-        price: 199.99,
-        stock: 50,
-        image: "../assets/Images/headphone.png",
-        category: "Audio"
-    },
-    {
-        id: 2,
-        name: "Smartwatch",
-        description: "Fitness tracker with heart rate monitor and GPS.",
-        price: 149.99,
-        stock: 30,
-        image: "../assets/Images/SmartWatch.png",
-        category: "Wearables"
-    },
-    {
-        id: 3,
-        name: "Gaming Keyboard",
-        description: "Mechanical RGB gaming keyboard with customizable keys.",
-        price: 89.99,
-        stock: 20,
-        image: "../assets/Images/headphone.png",
-        category: "Accessories"
-    },
-    {
-        id: 4,
-        name: "Bluetooth Speaker",
-        description: "Portable waterproof speaker with 20-hour battery life.",
-        price: 59.99,
-        stock: 40,
-        image: "../assets/Images/headphone.png",
-        category: "Audio"
-    },
-    {
-        id: 5,
-        name: "4K Monitor",
-        description: "27-inch 4K UHD monitor with HDR support.",
-        price: 399.99,
-        stock: 15,
-        image: "../assets/Images/headphone.png",
-        category: "Displays"
+async function fetchProducts() {
+    try {
+        const response = await fetch('../php/products/retrieve_products.php');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return [];
     }
-];
+}
 
-// function to -load-component 
+window.addEventListener('load', async function() {
+    products = await fetchProducts();
+    loadCategories();
+    filterProducts("all"); 
+
+});
+
 async function loadComponent(url, targetId) {
     try {
         const response = await fetch(url);
@@ -63,8 +37,7 @@ async function loadComponent(url, targetId) {
     }
 }
 
-// Loading navbar
-loadComponent("../Component/navbar.html", 'nav-container');
+
 
 // Loading footer
 loadComponent("../Component/footer.html", 'footer-container')
@@ -77,7 +50,7 @@ const productGrid = document.getElementById("product-grid");
 
 // Function to Load Categories Dynamically
 function loadCategories() {
-    const categories = [...new Set(products.map(product => product.category))];
+    const categories = [...new Set(products.map(product => product.category_name))];
     categories.unshift("all");
     categoryNav.innerHTML = categories.map(category => `
         <button class="category-btn px-4 py-2 text-gray-600 hover:text-blue-600 transition-all" onclick="filterProducts('${category}')">
@@ -88,17 +61,18 @@ function loadCategories() {
 
 // Function to Display Products in cards
 function displayProducts(productsToShow) {
+    console.log(productsToShow);
     productGrid.innerHTML = productsToShow.map(product => `
 <div class="product-card bg-white shadow-md rounded-lg overflow-hidden">
-    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+    <img src="${product.image_url}" alt="${product.product_name}" class="w-full h-48 object-cover">
     <div class="p-4">
-        <h2 class="text-lg font-semibold">${product.name}</h2>
-        <p class="text-blue-600 font-bold">$${product.price.toFixed(2)}</p>
+        <h2 class="text-lg font-semibold">${product.product_name}</h2>
+        <p class="text-blue-600 font-bold">$${parseFloat(product.price).toFixed(2)}</p>
         <p class="text-gray-600 text-sm mt-2">${product.description}</p>
-        <p class="text-sm text-gray-500 mt-2">Remaining Stock: ${product.stock}</p>
+        <p class="text-sm text-gray-500 mt-2">Remaining Stock: ${product.quantity}</p>
         <div class="mt-4 flex space-x-2">
             <a href="#" class="flex-1 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800 transition-all">View Details</a>
-            <button onclick="addToCart(${product.id})" class="flex-1 text-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 transition-all">Add to Cart</button>
+            <button onclick="addToCart(${product.product_id})" class="flex-1 text-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 transition-all">Add to Cart</button>
         </div>
     </div>
 </div>
@@ -110,7 +84,7 @@ function filterProducts(category) {
     if (category === "all") {
         displayProducts(products);
     } else {
-        displayProducts(products.filter(product => product.category === category));
+        displayProducts(products.filter(product => product.category_name === category));
     }
     document.querySelectorAll(".category-btn").forEach(btn => btn.classList.remove("active"));
     document.querySelector(`.category-btn[onclick="filterProducts('${category}')"]`).classList.add("active");
@@ -118,11 +92,10 @@ function filterProducts(category) {
 
 // function to add product to Cart
 function addToCart(id) {
-    const product = products.find(product => product.id === id);
-    alert(`Added to Cart: ${product.name} - $${product.price.toFixed(2)}`);
+    const product = products.find(product => product.product_id === id);
+    alert(`Added to Cart: ${product.product_name} - $${parseFloat(product.price).toFixed(2)}`);
 }
 
 
-loadCategories();
-filterProducts("all"); 
+
 

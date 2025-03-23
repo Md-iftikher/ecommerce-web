@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Mar 23, 2025 at 01:34 AM
+-- Generation Time: Mar 23, 2025 at 11:20 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -70,6 +70,16 @@ CREATE TABLE `categories` (
   `category_name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`category_id`, `category_name`) VALUES
+(1, 'Audio'),
+(2, 'Wearables'),
+(3, 'Accessories'),
+(4, 'Displays');
+
 -- --------------------------------------------------------
 
 --
@@ -93,7 +103,8 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`customer_id`, `first_name`, `last_name`, `email`, `hashed_password`, `contact`, `dob`, `gender`) VALUES
 (5, 'david', 'johnson', 'david@yahoo.com', '$2y$10$vdlrTuJ0KxFGSpIuuhV09eVMrk4u/YNwjPm8fhMFuhcQsKUqo2Mku', '01232423221', '1996-02-05', 'O'),
-(6, 'Iftikher', 'Azam', 'iftikher.azam@northsouth.edu', '$2y$10$X6S8F1qBvK7Evk2.qXlA.u7iSRF88P9YP1gyXdTvgGhYt4hIkz0rS', '01627355279', '2002-02-01', 'M');
+(6, 'Iftikher', 'Azam', 'iftikher.azam@northsouth.edu', '$2y$10$X6S8F1qBvK7Evk2.qXlA.u7iSRF88P9YP1gyXdTvgGhYt4hIkz0rS', '01627355279', '2002-02-01', 'M'),
+(7, 'Ifitikher', 'Tawfeeq', 'nazeef.tawfeeq@gmail.com', '$2y$10$hV0M0gAc16HMrbhq45DS0O/8fY5E7vjLMsBUOJTVipIGFImFNh.Bm', '01798584499', '2002-09-22', 'M');
 
 -- --------------------------------------------------------
 
@@ -116,7 +127,9 @@ INSERT INTO `delivery_addresses` (`address_id`, `customer_id`, `address`) VALUES
 (5, 5, 'BAF Shaheen English Medium School, Cantonment, Dhaka'),
 (6, 5, 'Independent University Bangladesh, Dhaka, Bangladesh'),
 (7, 6, 'North South University, Bashundhara Residential Area, Dhaka'),
-(8, 6, 'Independent University Bangladesh, BRA, Dhaka');
+(8, 6, 'Independent University Bangladesh, BRA, Dhaka'),
+(10, 7, 'West Nakhalpara, Tejgaon, Dhaka-1215'),
+(11, 7, 'BAF Shaheen English Medium School, Cantonment, Dhaka');
 
 -- --------------------------------------------------------
 
@@ -161,6 +174,17 @@ CREATE TABLE `products` (
   `image_url` varchar(255) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `quantity`, `image_url`, `category_id`) VALUES
+(1, 'Wireless Headphones', 'Experience high-quality sound without the hassle of wires. These wireless headphones offer crystal-clear audio, comfortable design, and long battery life—perfect for music, calls, and on-the-go convenience.', 199.99, 50, '/ecommerce-frontend/Client/assets/Images/headphone.png', 1),
+(2, 'Bluetooth Speaker', 'Portable Bluetooth speakers with powerful sound and deep bass. Enjoy wireless music streaming, long battery life, and a compact design—perfect for parties, travel, and outdoor fun.', 59.99, 40, '/ecommerce-frontend/Client/assets/Images/headphone.png', 1),
+(3, 'Smart Watch', 'Stay connected and track your fitness with this sleek smart watch. Featuring health monitoring, notifications, and long battery life, it’s the perfect companion for your active lifestyle.', 149.99, 20, '/ecommerce-frontend/Client/assets/Images/SmartWatch.png', 2),
+(4, 'Gaming Keyboard', 'Enhance your gameplay with this high-performance gaming keyboard. Featuring responsive mechanical keys, customizable RGB lighting, and durable design for ultimate precision and speed.', 89.99, 30, '/ecommerce-frontend/Client/assets/Images/SmartWatch.png', 3),
+(5, '4k Monitor', 'Experience stunning clarity and vibrant colors with this 4K UHD monitor. Perfect for gaming, design, and productivity, it delivers ultra-sharp visuals and smooth performance.', 499.99, 10, '/ecommerce-frontend/Client/assets/Images/SmartWatch.png', 4);
 
 --
 -- Indexes for dumped tables
@@ -251,19 +275,19 @@ ALTER TABLE `carts`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `delivery_addresses`
 --
 ALTER TABLE `delivery_addresses`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -275,7 +299,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
