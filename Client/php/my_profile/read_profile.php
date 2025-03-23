@@ -1,10 +1,13 @@
 <?php
+// session_start();
+$customer_id = (int)$_SESSION['customer_id'];
+
 include_once __DIR__ . "/../config.php";
 
 $sql = "
 select first_name, last_name, email, contact, dob, gender 
 from customers
-where customer_id = 1;
+where customer_id = $customer_id;
 ";
 
 $result = $conn->query($sql);

@@ -73,7 +73,7 @@ if(isset($_GET['account_exists'])) {
       <button type="submit" class="signup-button">Sign Up</button>
     </form>
     <div class="login-link">
-      Already have an account? <a href="#">Login</a>
+      Already have an account? <a href="login.php">Login</a>
     </div>
   </div>
   <script src="../js/signup.js"></script>

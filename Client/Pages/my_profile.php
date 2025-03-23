@@ -1,5 +1,10 @@
 <?php
+session_start();
+$customer_id = (int)$_SESSION['customer_id'];
+$first_name = $_SESSION['first_name'];
+
 include_once __DIR__ . "/../php/functions.php";
+
 
 if (empty($_GET)) {
   header("Location: ?profile=true");
@@ -38,7 +43,7 @@ if(isset($_GET['profile'])){
       <div class="sidebar-header">
         <div class="logo"></div>
         <div class="writing">
-          <p><?= ucfirst($fname)?></p>
+          <p><?= ucfirst($first_name)?></p>
           <div class="clock" id="clock"></div>
         </div>
       </div>
@@ -57,7 +62,7 @@ if(isset($_GET['profile'])){
       </div>
     </div>
     <div class="content-area">
-      <p>Good Morning <?= ucfirst($fname) ?></p>
+      <p>Good Morning <?= ucfirst($first_name) ?></p>
       <div class="display-box" id="display-box">
         <?php if(isset($_GET['profile'])): ?>
 
@@ -113,7 +118,7 @@ if(isset($_GET['profile'])){
             </div>
             <div class="form-group">
               <!-- have to change id value -->
-              <input type="hidden" name="id" value="1">
+              <input type="hidden" name="id" value="<?= $customer_id ?>">
               <button id="saveBtn" class="button" type="submit" name="save" disabled>Save</button>
             </div>
           </form>
@@ -132,7 +137,7 @@ if(isset($_GET['profile'])){
             <div class="form-group">
               <!-- insert address -->
               <form id="address-insert-form" action="../php/my_profile/insert_address.php" method="POST" style="display: none;">
-                <input type="hidden" name="id" value="1">
+                <input type="hidden" name="id" value="<?= $customer_id ?>">
                 <input id="insert-address-input" type="text" name="address" placeholder="Enter new Address" >
                 <button  id="insert-address-icon" type="submit" style="display: none;">
                     <i class="fa-solid fa-check fa-lg"></i>
@@ -141,7 +146,7 @@ if(isset($_GET['profile'])){
               <?php while($row = $result->fetch_assoc()) : ?>
               <form class="address-form" name="address-form"  method="POST">
                 <div class="address-input">
-                  <input type="hidden" name="id" value="1">
+                  <input type="hidden" name="id" value="<?= $customer_id ?>">
                   <input type="hidden" name="old_address" value="<?=$row['address'] ?>">
                   <input id="address-input-<?=$row['address']?>" type="text" name="address"
                     value="<?=$row['address'] ?>" disabled />
