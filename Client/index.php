@@ -72,7 +72,8 @@ if(isset($_GET['signed_up'])) {
                         </div>
                         <?php if($login_flag): ?>
                         <div class="dropdown dropdown-end">
-                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle"> 
+                                <!-- removed avatar class (wasn't letting display be flex) -->
                                 <div class="flex items-center justify-center w-10 h-10 rounded-full ">
                                     <i class="fa-solid fa-user fa-lg"></i>
                                 </div>
