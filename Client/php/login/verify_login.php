@@ -9,10 +9,14 @@ $password = $_POST['password'];
 
 $sql = "
 select first_name, hashed_password, customer_id from customers
-where email = '$email';
+where email = ?;
 ";
 
-$result = $conn->query($sql);
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+
+$result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $hash = $row['hashed_password'];
 $customer_id = $row['customer_id'];

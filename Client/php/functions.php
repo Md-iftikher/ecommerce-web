@@ -20,9 +20,14 @@ function no_of_addresses() {
 
   $sql = "
   select count(address) as addressNo from delivery_addresses
-  where customer_id = $customer_id;
+  where customer_id = ?;
   ";
-  $result = $conn->query($sql);
+
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("i", $customer_id);
+  $stmt->execute();
+  
+  $result = $stmt->get_result();
   $row = $result->fetch_assoc();
   return $row['addressNo'];
 
@@ -34,9 +39,15 @@ function email_exists($email) {
   $sql = "
   select email 
   from customers
-  where email = '$email';
+  where email = ?;
   ";
-  $result = $conn->query($sql);
+
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("s", $email);
+  $stmt->execute();
+  
+  $result = $stmt->get_result();
+  
   if($result->fetch_assoc()) {
     return true;
   }

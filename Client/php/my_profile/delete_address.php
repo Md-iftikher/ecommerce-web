@@ -8,11 +8,18 @@ $address = check_input($_POST['old_address']);
 
 $sql = "
 delete from delivery_addresses
-where customer_id = $id and address = '$address';
+where customer_id = ? and address = ?;
 ";
 
-if($conn->query($sql)) {
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("is", $id, $address);
+
+if($stmt->execute()) {
+    $stmt->close();
     header("location: ../../Pages/my_profile.php?address=true&success=true");
+    exit();
 }
+
+
 
 ?>

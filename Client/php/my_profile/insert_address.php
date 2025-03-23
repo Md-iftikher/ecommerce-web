@@ -9,11 +9,17 @@ $address = check_input($_POST['address']);
 
 $sql = "
 insert into delivery_addresses(customer_id, address)
-values ( $id, '$address');
+values ( ?, ?);
 ";
 
-if($conn->query($sql)) {
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("is", $id, $address);
+
+if($stmt->execute()) {
+    $stmt->close();
     header("location: ../../Pages/my_profile.php?address=true&success=true");
+    exit();
 }
+
 
 ?>
