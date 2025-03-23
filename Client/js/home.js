@@ -91,7 +91,7 @@ async function loadComponent(url, targetId) {
 }
 
 // Load Navbar and Footer
-loadComponent("Component/navbar.html", 'nav-container');
+// loadComponent("Component/navbar.html", 'nav-container');
 loadComponent('Component/footer.html', 'footer-container');
 
 // Function to Update Cart Count in Navbar

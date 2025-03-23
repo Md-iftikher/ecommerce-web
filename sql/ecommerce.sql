@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Mar 21, 2025 at 06:32 PM
+-- Generation Time: Mar 23, 2025 at 01:34 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -83,7 +83,7 @@ CREATE TABLE `customers` (
   `email` varchar(255) NOT NULL,
   `hashed_password` varchar(255) NOT NULL,
   `contact` varchar(15) NOT NULL,
-  `dob` date DEFAULT NULL,
+  `dob` date NOT NULL,
   `gender` enum('M','F','O') DEFAULT 'O'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -92,7 +92,8 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`customer_id`, `first_name`, `last_name`, `email`, `hashed_password`, `contact`, `dob`, `gender`) VALUES
-(1, 'nazeef', 'jalal', 'nazeef.jalal@northsouth.edu', '', '01798584499', '2002-09-22', 'M');
+(5, 'david', 'johnson', 'david@yahoo.com', '$2y$10$vdlrTuJ0KxFGSpIuuhV09eVMrk4u/YNwjPm8fhMFuhcQsKUqo2Mku', '01232423221', '1996-02-05', 'O'),
+(6, 'Iftikher', 'Azam', 'iftikher.azam@northsouth.edu', '$2y$10$X6S8F1qBvK7Evk2.qXlA.u7iSRF88P9YP1gyXdTvgGhYt4hIkz0rS', '01627355279', '2002-02-01', 'M');
 
 -- --------------------------------------------------------
 
@@ -111,7 +112,11 @@ CREATE TABLE `delivery_addresses` (
 --
 
 INSERT INTO `delivery_addresses` (`address_id`, `customer_id`, `address`) VALUES
-(1, 1, 'West Nakhalpara, Tejgaon, Dhaka-1215');
+(4, 5, 'North South University, Dhaka, Bangladesh'),
+(5, 5, 'BAF Shaheen English Medium School, Cantonment, Dhaka'),
+(6, 5, 'Independent University Bangladesh, Dhaka, Bangladesh'),
+(7, 6, 'North South University, Bashundhara Residential Area, Dhaka'),
+(8, 6, 'Independent University Bangladesh, BRA, Dhaka');
 
 -- --------------------------------------------------------
 
@@ -252,13 +257,13 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `delivery_addresses`
 --
 ALTER TABLE `delivery_addresses`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `orders`

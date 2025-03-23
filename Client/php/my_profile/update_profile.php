@@ -1,4 +1,5 @@
-<?php 
+<?php
+session_start();
 include_once __DIR__ . "/../config.php";
 include_once __DIR__ . "/../functions.php";
 
@@ -17,6 +18,7 @@ where customer_id = $id;
 ";
 
 if($conn->query($sql)) {
+    $_SESSION['first_name'] = $fname;
     header("location: ../../Pages/my_profile.php?profile=true&success=true");
 }
 

@@ -1,3 +1,16 @@
+<?php
+session_start();
+
+
+$login_flag = false;
+if(isset($_SESSION['customer_id'])){
+    $login_flag = true;
+}
+if(isset($_GET['signed_up'])) {
+  echo '<script>window.onload = function() { alert("Account created successfully"); }</script>';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +28,76 @@
 <body>
 
     <!-- Navbar Container -->
-    <div id="nav-container"></div>
+    <div id="nav-container">
+        <nav class="bg-base-100 shadow-md">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-xl font-bold text-gray-800">ECOM</span>
+                    </div>
+                    <div class="flex space-x-8 items-center">
+                        <a href="/ecommerce-frontend/Client/index.php"
+                            class="text-gray-800 hover:text-gray-600">Home</a>
+                        <a href="./Pages/AllProduct.html" class="text-gray-800 hover:text-gray-600">AllProducts</a>
+                        <a href="#" class="text-gray-800 hover:text-gray-600">Blog</a>
+                        <a href="#" class="text-red-400 hover:text-gray-600">Discounts & Offers</a>
+                        <a href="#" class="text-gray-800 hover:text-gray-600">About Us</a>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="dropdown dropdown-end">
+                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                                <div class="indicator">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    <span class="badge badge-sm indicator-item">0</span> <!-- Cart Count -->
+                                </div>
+                            </div>
+                            <div tabindex="0"
+                                class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
+                                <div class="card-body">
+                                    <span class="text-lg font-bold">${cart.length} Items</span>
+                                    <span class="text-info">Subtotal: $${cart.reduce((sum, item) => sum + item.price,
+                                        0).toFixed(2)}</span>
+                                    <div class="card-actions">
+                                        <button class="btn btn-primary btn-block">View cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php if($login_flag): ?>
+                        <div class="dropdown dropdown-end">
+                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                                <div class="w-10 rounded-full">
+                                    <img alt="Tailwind CSS Navbar component"
+                                        src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                </div>
+                            </div>
+                            <ul tabindex="0"
+                                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                                <li>
+                                    <a class="justify-between" href="./Pages/my_profile.php">
+                                        Profile
+                                    </a>
+                                </li>
+                                <li><a>Settings</a></li>
+                                <li><a href="php/login/logout.php">Logout</a></li>
+                            </ul>
+                        </div>
+                        <?php else : ?>
+                        <div class="button-container">
+                            <a href="Pages/signup.php" class="button signup-btn">Sign Up</a>
+                            <a href="Pages/login.php" class="button login-btn">Log in</a>
+                        </div>
+                        <?php endif; ?>
+
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
 
     <main>
         <!-- Slider Section -->

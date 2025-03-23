@@ -1,3 +1,8 @@
+<?php 
+if(isset($_GET['success'])) {
+  echo '<script>window.onload = function() { alert("Incorrect Password"); }</script>';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +14,7 @@
 <body>
   <div class="login-container">
     <h2>Login</h2>
-    <form action="#" method="POST">
+    <form action="../php/login/verify_login.php" method="POST">
       <div class="input-group">
         <label for="email">Email</label>
         <input type="email" id="email" name="email" placeholder="Enter your email" required/>
@@ -21,7 +26,7 @@
       <button type="submit" class="login-button">Login</button>
     </form>
     <div class="signup-link">
-      Don't have an account? <a href="#">Sign up</a>
+      Don't have an account? <a href="signup.php">Sign up</a>
     </div>
   </div>
 </body>
