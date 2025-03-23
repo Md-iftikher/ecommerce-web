@@ -6,9 +6,7 @@ $login_flag = false;
 if(isset($_SESSION['customer_id'])){
     $login_flag = true;
 }
-if(isset($_GET['signed_up'])) {
-  echo '<script>window.onload = function() { alert("Account created successfully"); }</script>';
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -16,21 +14,15 @@ if(isset($_GET['signed_up'])) {
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link href="./Styles/style.css" rel="stylesheet">
+    <title>All Products - eCommerce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../Styles/AllProduct.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- Tailwind CSS CDN -->
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5.0.0-beta.8/daisyui.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body>
-
-    <!-- Navbar Container -->
+<body class="bg-gray-100">
     <div id="nav-container">
         <nav class="bg-base-100 shadow-md">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -102,34 +94,31 @@ if(isset($_GET['signed_up'])) {
         </nav>
     </div>
 
-    <main>
-        <!-- Slider Section -->
-        <section>
-            <div class="relative">
-                <div id="banner-slider" class="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
-                    <!-- Slider content goes here -->
-                </div>
-                <div class="absolute top-1/2 transform -translate-y-1/2 w-full flex justify-between px-4">
-                    <button id="prev-slide" class="bg-gray-800 text-white rounded-full p-2">&lt;</button>
-                    <button id="next-slide" class="bg-gray-800 text-white rounded-full p-2">&gt;</button>
-                </div>
-            </div>
-        </section>
+    <!-- Header -->
+    <header class="bg-[#4a4e69] text-white text-center py-6">
+        <h1 class="text-4xl font-bold">All Products</h1>
+    </header>
 
-        <!-- Recently Added Products Section -->
-        <section class="container mx-auto px-4 py-8">
-            <h2 class="text-3xl font-bold text-center mb-8">Recently Added Products</h2>
-            <div id="recently-added-products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Product cards will be dynamically inserted here -->
-            </div>
-        </section>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md py-4 sticky top-0 z-10">
+        <div id="category-nav" class="container mx-auto flex justify-center space-x-4 overflow-x-auto">
+            <!-- Categories will be dynamically loaded here -->
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Product Cards will be dynamically inserted here -->
+        </div>
     </main>
 
-    <!-- Footer Container -->
+    <!-- footer  -->
     <div id="footer-container"></div>
 
-    <!-- JavaScript File -->
-    <script src="./js/home.js"></script>
+    <!-- Link to External JavaScript File -->
+
+    <script src="../js/AllProduct.js"></script>
 </body>
 
 </html>

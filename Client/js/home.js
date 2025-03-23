@@ -118,7 +118,7 @@ function updateCartDropdown() {
 
 // Function to Add Product to Cart
 function addToCart(id) {
-    const product = bestSellingProducts.find(product => product.id === id);
+    const product = recentProducts.find(product => product.product_id === id);
     if (!cart.some(item => item.id === id)) {
         cart.push(product);
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -130,81 +130,46 @@ function addToCart(id) {
     }
 }
 
-// Sample Best Selling Products Data
-const bestSellingProducts = [
-    {
-        id: 1,
-        name: "Wireless Headphones",
-        price: 199.99,
-        image: "https://via.placeholder.com/300",
-        description: "Noise-cancelling over-ear headphones with Bluetooth 5.0."
-    },
-    {
-        id: 2,
-        name: "Smartwatch",
-        price: 149.99,
-        image: "https://via.placeholder.com/300",
-        description: "Fitness tracker with heart rate monitor and GPS."
-    },
-    {
-        id: 3,
-        name: "Gaming Keyboard",
-        price: 89.99,
-        image: "https://via.placeholder.com/300",
-        description: "Mechanical RGB gaming keyboard with customizable keys."
-    },
-    {
-        id: 4,
-        name: "Bluetooth Speaker",
-        price: 59.99,
-        image: "https://via.placeholder.com/300",
-        description: "Portable waterproof speaker with 20-hour battery life."
-    },
-    {
-        id: 5,
-        name: "4K Monitor",
-        price: 399.99,
-        image: "https://via.placeholder.com/300",
-        description: "27-inch 4K UHD monitor with HDR support."
-    },
-    {
-        id: 6,
-        name: "Wireless Earbuds",
-        price: 129.99,
-        image: "https://via.placeholder.com/300",
-        description: "True wireless earbuds with 24-hour playtime."
-    },
-    {
-        id: 7,
-        name: "Laptop Backpack",
-        price: 49.99,
-        image: "https://via.placeholder.com/300",
-        description: "Durable and stylish backpack for laptops up to 15.6 inches."
-    },
-    {
-        id: 8,
-        name: "Desk Lamp",
-        price: 29.99,
-        image: "https://via.placeholder.com/300",
-        description: "Adjustable LED desk lamp with touch control."
-    }
-];
 
-// Function to Display Best Selling Products
-function displayBestSellingProducts() {
-    const productGrid = document.getElementById("best-selling-products");
-    productGrid.innerHTML = bestSellingProducts.map(product => `
+
+let recentProducts = [];
+
+async function fetchProducts() {
+    try {
+        const response = await fetch('/ecommerce-frontend/Client/php/products/retrieve_recent_products.php');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return [];
+    }
+}
+
+window.addEventListener('load', async function() {
+    recentProducts = await fetchProducts();
+    displayRecentProducts();
+    
+});
+
+
+// Function to Display the Recently Added Products
+function displayRecentProducts() {
+    const productGrid = document.getElementById("recently-added-products");
+    productGrid.innerHTML = recentProducts.map(product => `
         <div class="product-card bg-white shadow-md rounded-lg overflow-hidden">
-            <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+            <img src="${product.image_url}" alt="${product.product_name}" class="w-full h-48 object-cover">
             <div class="p-4">
-                <h2 class="text-lg font-semibold">${product.name}</h2>
-                <p class="text-blue-600 font-bold">$${product.price.toFixed(2)}</p>
+                <h2 class="text-lg font-semibold">${product.product_name}</h2>
+                <p class="text-blue-600 font-bold">$${parseFloat(product.price).toFixed(2)}</p>
                 <p class="text-gray-600 text-sm mt-2">${product.description}</p>
-                <button onclick="addToCart(${product.id})" class="mt-4 w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 transition-all">Buy Now</button>
+                <button onclick="addToCart(${product.product_id})" class="mt-4 w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 transition-all">Buy Now</button>
             </div>
         </div>
     `).join("");
 }
 
-// Load Best Selling Products on Page Load
-displayBestSellingProducts();
+
