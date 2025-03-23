@@ -1,5 +1,8 @@
 <?php
-$customer_id = (int)$_SESSION['customer_id'];
+if(isset($_SESSION['customer_id'])) {
+  $customer_id = (int)$_SESSION['customer_id'];
+}
+
 
 include_once __DIR__ . "/./config.php";
 
