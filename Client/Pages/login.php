@@ -1,6 +1,9 @@
 <?php 
-if(isset($_GET['success'])) {
+if(isset($_GET['incorrect_pass'])) {
   echo '<script>window.onload = function() { alert("Incorrect Password"); }</script>';
+}
+else if(isset($_GET['unregistered_email'])) {
+  echo '<script>window.onload = function() { alert("Account not registered!"); }</script>';
 }
 ?>
 <!DOCTYPE html>
