@@ -11,10 +11,6 @@ $contact = check_input($_POST['contact']);
 $dob = check_input($_POST['dob']);
 $gender = check_input($_POST['gender']);
 
-if(email_exists($email)){
-    header("location: ../../Pages/signup.php?account_exists=true");
-    exit();
-}
 
 $sql = "
 insert into customers(first_name, last_name, email, hashed_password, contact, dob, gender)

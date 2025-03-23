@@ -1,9 +1,3 @@
-<?php 
-if(isset($_GET['account_exists'])) {
-  echo '<script>window.onload = function() { alert("Account already exists!"); }</script>';
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

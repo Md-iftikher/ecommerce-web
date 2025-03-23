@@ -6,11 +6,6 @@ include_once __DIR__ . "/../functions.php";
 $email = check_input($_POST['email']);
 $password = $_POST['password'];
 
-if(!email_exists($email)){
-    header("location: ../../Pages/login.php?unregistered_email=true");
-    exit();
-}
-
 
 $sql = "
 select first_name, hashed_password, customer_id from customers
@@ -31,10 +26,7 @@ if(password_verify($password, $hash)) {
     header("location: ../../index.php");
     exit();
 }
-else {
-    header("location: ../../Pages/login.php?incorrect_pass=true");
-    exit();
-}
+
 
 
 

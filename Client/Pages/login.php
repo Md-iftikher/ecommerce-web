@@ -1,11 +1,3 @@
-<?php 
-if(isset($_GET['incorrect_pass'])) {
-  echo '<script>window.onload = function() { alert("Incorrect Password"); }</script>';
-}
-else if(isset($_GET['unregistered_email'])) {
-  echo '<script>window.onload = function() { alert("Account not registered!"); }</script>';
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,7 +9,7 @@ else if(isset($_GET['unregistered_email'])) {
 <body>
   <div class="login-container">
     <h2>Login</h2>
-    <form action="../php/login/verify_login.php" method="POST">
+    <form id="login-form" action="../php/login/verify_login.php" method="POST">
       <div class="input-group">
         <label for="email">Email</label>
         <input type="email" id="email" name="email" placeholder="Enter your email" required/>
@@ -32,5 +24,6 @@ else if(isset($_GET['unregistered_email'])) {
       Don't have an account? <a href="signup.php">Sign up</a>
     </div>
   </div>
+  <script src="../js/login.js"></script>
 </body>
 </html>
