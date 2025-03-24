@@ -66,11 +66,6 @@ const slides = [
   setInterval(nextSlide, 3000);
 
 
-  
-
-// Global Cart State
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
 // Function to Load Components (Navbar and Footer)
 async function loadComponent(url, targetId) {
     try {
@@ -93,43 +88,6 @@ async function loadComponent(url, targetId) {
 // Load Navbar and Footer
 // loadComponent("Component/navbar.html", 'nav-container');
 loadComponent('Component/footer.html', 'footer-container');
-
-// Function to Update Cart Count in Navbar
-function updateCartCount() {
-    const cartCountElement = document.querySelector('.indicator .badge');
-    if (cartCountElement) {
-        cartCountElement.textContent = cart.length;
-    }
-}
-
-// Function to Update Cart Dropdown
-function updateCartDropdown() {
-    const cartDropdown = document.querySelector('.dropdown-content .card-body');
-    if (cartDropdown) {
-        cartDropdown.innerHTML = `
-            <span class="text-lg font-bold">${cart.length} Items</span>
-            <span class="text-info">Subtotal: $${cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}</span>
-            <div class="card-actions">
-                <button class="btn btn-primary btn-block">View cart</button>
-            </div>
-        `;
-    }
-}
-
-// Function to Add Product to Cart
-function addToCart(id) {
-    const product = recentProducts.find(product => product.product_id === id);
-    if (!cart.some(item => item.id === id)) {
-        cart.push(product);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount(); // Update cart count in navbar
-        updateCartDropdown(); // Update cart dropdown content
-        alert(`Added to Cart: ${product.name} - $${product.price.toFixed(2)}`);
-    } else {
-        alert(`${product.name} is already in your cart.`);
-    }
-}
-
 
 
 let recentProducts = [];

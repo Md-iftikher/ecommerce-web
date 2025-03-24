@@ -1,5 +1,5 @@
 <?php
-session_start();
+ session_start();
 
 
 $login_flag = false;
@@ -130,6 +130,7 @@ if(isset($_GET['signed_up'])) {
 
     <!-- JavaScript File -->
     <script src="./js/home.js"></script>
+    <script src="./js/cart.js"></script>
 </body>
 
 </html>
