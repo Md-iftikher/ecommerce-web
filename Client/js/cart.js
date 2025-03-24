@@ -1,19 +1,21 @@
 // Function to Add Product to Cart
-async function addToCart(productId, price) {
+async function addToCart(productId, price, quantity = 1) {
     try {
-        const response = await fetch('../php/cart/add_to_cart.php', {
+        console.log(`Adding to cart: Product ID: ${productId}, Quantity: ${quantity}, Price: ${price}`); 
+
+        const response = await fetch('/ecommerce-frontend/Client/php/cart/add_to_cart.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
-            body: `product_id=${productId}&quantity=1&price=${price}`,
+            body: JSON.stringify({ product_id: productId, quantity: quantity, price: price }),
         });
-        const data = await response.json();
-        if (data.error) {
-            throw new Error(data.error);
-        }
-        alert(data.success);
+
+        // Log the response status for debugging
+        console.log('Response Status:', response.status);
+
         updateCartCount(); // Update cart count in the navbar
+        updateCartDropdown(); // Update cart dropdown content
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);
@@ -30,12 +32,18 @@ async function removeFromCart(productId) {
             },
             body: `product_id=${productId}`,
         });
+
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('Invalid response from server');
+        }
+
         const data = await response.json();
         if (data.error) {
             throw new Error(data.error);
         }
         alert(data.success);
-        window.location.reload(); // Refresh the page
+        window.location.reload(); // Refresh the page to reflect changes
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);
@@ -48,12 +56,18 @@ async function checkout() {
         const response = await fetch('../php/cart/checkout.php', {
             method: 'POST',
         });
+
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('Invalid response from server');
+        }
+
         const data = await response.json();
         if (data.error) {
             throw new Error(data.error);
         }
         alert(data.success);
-        window.location.href = '../index.php'; // Redirect to home page
+        window.location.href = '../index.php'; // Redirect to home page after checkout
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);
@@ -61,25 +75,48 @@ async function checkout() {
 }
 
 // Function to Update Cart Count in Navbar
-function updateCartCount() {
+async function updateCartCount() {
     const cartCountElement = document.querySelector('.indicator .badge');
     if (cartCountElement) {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        cartCountElement.textContent = cart.length;
+        try {
+            const response = await fetch('/ecommerce-frontend/Client/php/cart/get_cart_items.php');
+            const data = await response.json();
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            cartCountElement.textContent = data.length; 
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 }
 
 // Function to Update Cart Dropdown
-function updateCartDropdown() {
+async function updateCartDropdown() {
     const cartDropdown = document.querySelector('.dropdown-content .card-body');
     if (cartDropdown) {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        cartDropdown.innerHTML = `
-            <span class="text-lg font-bold">${cart.length} Items</span>
-            <span class="text-info">Subtotal: $${cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}</span>
-            <div class="card-actions">
-                <button class="btn btn-primary btn-block">View cart</button>
-            </div>
-        `;
+        try {
+            const response = await fetch('/ecommerce-frontend/Client/php/cart/get_cart_items.php');
+            const data = await response.json();
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            const totalPrice = data.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartDropdown.innerHTML = `
+                <span class="text-lg font-bold">${data.length} Items</span>
+                <span class="text-info">Subtotal: $${totalPrice.toFixed(2)}</span>
+                <div class="card-actions">
+                    <a href="../Pages/view_cart.php" class="btn btn-primary btn-block">View cart</a>
+                </div>
+            `;
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 }
+
+// Initialize Cart UI on Page Load
+document.addEventListener('DOMContentLoaded', () => {
+    updateCartCount(); // Update cart count in the navbar
+    updateCartDropdown(); // Update cart dropdown content
+});
