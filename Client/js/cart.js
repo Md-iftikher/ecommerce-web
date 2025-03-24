@@ -24,13 +24,18 @@ async function addToCart(productId, price, quantity = 1) {
 
 // Function to Remove Product from Cart
 async function removeFromCart(productId) {
+    if (!productId || productId === 'null') {
+        console.error('Error: Product ID is missing');
+        alert('Error: Product ID is missing');
+        return;
+    }
     try {
         const response = await fetch('/ecommerce-frontend/Client/php/cart/remove_from_cart.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: `product_id=${productId}`,
+            body: JSON.stringify({ product_id: productId.trim() }),
         });
 
         const data = await response.json();
@@ -38,12 +43,13 @@ async function removeFromCart(productId) {
             throw new Error(data.error);
         }
         alert(data.success);
-        window.location.reload(); // Refresh the page to reflect changes
+        window.location.reload(); // Refresh to update cart
     } catch (error) {
         console.error('Error:', error);
         alert(error.message);
     }
 }
+
 
 // Function to Checkout
 async function checkout() {
@@ -51,11 +57,6 @@ async function checkout() {
         const response = await fetch('/ecommerce-frontend/Client/php/cart/checkout.php', {
             method: 'POST',
         });
-
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            throw new Error('Invalid response from server');
-        }
 
         const data = await response.json();
         if (data.error) {
@@ -101,7 +102,7 @@ async function updateCartDropdown() {
                 <span class="text-lg font-bold">${data.length} Items</span>
                 <span class="text-info">Subtotal: $${totalPrice.toFixed(2)}</span>
                 <div class="card-actions">
-                    <a href="../Pages/view_cart.php" class="btn btn-primary btn-block">View cart</a>
+                    <a href="/ecommerce-frontend/Client/Pages/view_cart.php" class="btn btn-primary btn-block">View cart</a>
                 </div>
             `;
         } catch (error) {
