@@ -63,7 +63,7 @@ if ($result->num_rows > 0) {
     </main>
 
     <div id="footer-container"></div>
-
-    <script src="../js/home.js"></script>
+    <script src="../js/cart.js"></script>
+    <!-- <script src="../js/home.js"></script> -->
 </body>
 </html>

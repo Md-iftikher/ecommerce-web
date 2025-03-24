@@ -25,18 +25,13 @@ async function addToCart(productId, price, quantity = 1) {
 // Function to Remove Product from Cart
 async function removeFromCart(productId) {
     try {
-        const response = await fetch('../php/cart/remove_from_cart.php', {
+        const response = await fetch('/ecommerce-frontend/Client/php/cart/remove_from_cart.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
             body: `product_id=${productId}`,
         });
-
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            throw new Error('Invalid response from server');
-        }
 
         const data = await response.json();
         if (data.error) {
@@ -53,7 +48,7 @@ async function removeFromCart(productId) {
 // Function to Checkout
 async function checkout() {
     try {
-        const response = await fetch('../php/cart/checkout.php', {
+        const response = await fetch('/ecommerce-frontend/Client/php/cart/checkout.php', {
             method: 'POST',
         });
 

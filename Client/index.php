@@ -64,7 +64,7 @@ if (isset($_GET['signed_up'])) {
                                     <span class="text-lg font-bold">0 Items</span>
                                     <span class="text-info">Subtotal: $0.00</span>
                                     <div class="card-actions">
-                                        <a href="/ecommerce-frontend/Client/Pages/view_cart.php" class="btn btn-primary btn-block">View cart</a>
+                                        <a href="/ecommerce-frontend/Client/Pages/view_cart.php" class="btn btn-primary btn-block">View</a>
                                     </div>
                                 </div>
                             </div>

@@ -9,7 +9,7 @@ if (!isset($_SESSION['customer_id'])) {
 
 $customer_id = $_SESSION['customer_id'];
 
-// Fetch cart items
+// Fetching cart items
 $sql = "SELECT ci.product_id, p.product_name, p.image_url, ci.quantity, ci.price
         FROM cart_items ci
         JOIN products p ON ci.product_id = p.product_id
