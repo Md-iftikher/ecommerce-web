@@ -16,7 +16,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 $product_id = $data['product_id'] ?? null;
 $quantity = $data['quantity'] ?? 1;
 $price = $data['price'] ?? null;
-$customer_id = $_SESSION['customer_id']; // Assuming customer_id is stored in session
+$customer_id = $_SESSION['customer_id'];
 
 // Validate the input data
 if (!$product_id || !$price || $quantity <= 0) {
@@ -25,7 +25,7 @@ if (!$product_id || !$price || $quantity <= 0) {
     exit;
 }
 
-// Check if the user has an active cart
+// Checking if the user has any active cart
 $sql = "SELECT cart_id FROM carts WHERE customer_id = ? AND status = 'active'";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $customer_id);
@@ -36,7 +36,7 @@ if ($result->num_rows > 0) {
     $cart = $result->fetch_assoc();
     $cart_id = $cart['cart_id'];
 } else {
-    // Create a new cart if not found
+    // Creating  a new cart if not found
     $sql = "INSERT INTO carts (customer_id, status) VALUES (?, 'active')";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $customer_id);
