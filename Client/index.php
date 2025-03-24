@@ -1,13 +1,12 @@
 <?php
 session_start();
 
-
 $login_flag = false;
-if(isset($_SESSION['customer_id'])){
+if (isset($_SESSION['customer_id'])) {
     $login_flag = true;
 }
-if(isset($_GET['signed_up'])) {
-  echo '<script>window.onload = function() { alert("Account created successfully"); }</script>';
+if (isset($_GET['signed_up'])) {
+    echo '<script>window.onload = function() { alert("Account created successfully"); }</script>';
 }
 ?>
 
@@ -55,26 +54,25 @@ if(isset($_GET['signed_up'])) {
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
-                                    <span class="badge badge-sm indicator-item">0</span> <!-- Cart Count -->
+                                    <span class="badge badge-sm indicator-item" id="cart-count">0</span> <!-- Dynamic Cart Count -->
                                 </div>
                             </div>
                             <div tabindex="0"
                                 class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
-                                <div class="card-body">
-                                    <span class="text-lg font-bold">${cart.length} Items</span>
-                                    <span class="text-info">Subtotal: $${cart.reduce((sum, item) => sum + item.price,
-                                        0).toFixed(2)}</span>
+                                <div class="card-body" id="cart-dropdown-content">
+                                    <!-- Content will be dynamically updated by cart.js -->
+                                    <span class="text-lg font-bold">0 Items</span>
+                                    <span class="text-info">Subtotal: $0.00</span>
                                     <div class="card-actions">
-                                        <button class="btn btn-primary btn-block">View cart</button>
+                                        <a href="/ecommerce-frontend/Client/Pages/view_cart.php" class="btn btn-primary btn-block">View cart</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <?php if($login_flag): ?>
+                        <?php if ($login_flag): ?>
                         <div class="dropdown dropdown-end">
                             <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                                <!-- removed avatar class (wasn't letting display be flex) -->
-                                <div class="flex items-center justify-center w-10 h-10 rounded-full ">
+                                <div class="flex items-center justify-center w-10 h-10 rounded-full">
                                     <i class="fa-solid fa-user fa-lg"></i>
                                 </div>
                             </div>
@@ -89,13 +87,12 @@ if(isset($_GET['signed_up'])) {
                                 <li><a href="/ecommerce-frontend/Client/php/login/logout.php">Logout</a></li>
                             </ul>
                         </div>
-                        <?php else : ?>
+                        <?php else: ?>
                         <div class="button-container">
                             <a href="/ecommerce-frontend/Client/Pages/signup.php" class="button signup-btn">Sign Up</a>
                             <a href="/ecommerce-frontend/Client/Pages/login.php" class="button login-btn">Log in</a>
                         </div>
                         <?php endif; ?>
-
                     </div>
                 </div>
             </div>
@@ -128,8 +125,15 @@ if(isset($_GET['signed_up'])) {
     <!-- Footer Container -->
     <div id="footer-container"></div>
 
-    <!-- JavaScript File -->
+    <!-- JavaScript Files -->
+    <script src="./js/cart.js"></script>
     <script src="./js/home.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount(); // Update cart count in the navbar
+            updateCartDropdown(); // Update cart dropdown content
+        });
+    </script>
 </body>
 
 </html>
