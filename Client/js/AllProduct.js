@@ -61,7 +61,6 @@ function loadCategories() {
 
 // Function to Display Products in cards
 function displayProducts(productsToShow) {
-    console.log(productsToShow);
     productGrid.innerHTML = productsToShow.map(product => `
 <div class="product-card bg-white shadow-md rounded-lg overflow-hidden">
     <img src="${product.image_url}" alt="${product.product_name}" class="w-full h-48 object-cover">
