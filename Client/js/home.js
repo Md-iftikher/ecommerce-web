@@ -4,14 +4,14 @@ const slides = [
       image: 'assets/Images/welcomr.jpg',
       title: 'Welcome to Our Store',
       description: 'Discover amazing products and deals.',
-      link: '/Client/Pages/AllProduct.html',
+      link: '/ecommerce-frontend/Client/Pages/AllProduct.php',
       buttonText: 'Shop Now',
   },
   {
       image: 'assets/Images/newarival.png',
       title: 'New Arrivals',
       description: 'Check out our latest collection.',
-      link: '#',
+      link: '/ecommerce-frontend/Client/Pages/AllProduct.php',
       buttonText: 'View More',
   },
   
@@ -135,28 +135,21 @@ function displayRecentProducts() {
               
               <!-- Action Buttons -->
               <div class="flex gap-2 mt-4">
-                  <!-- Add to Cart Button -->
-                  <button onclick="addToCart(${product.product_id}, ${product.price})" 
-                          class="flex-1 bg-blue-600 hover:bg-blue-900 text-white text-[15px] px-3 py-2 rounded-md transition-colors flex items-center justify-center">
-                      <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
-                  </button>
-                  
+                 
                   <!-- View Details Button -->
                   <a href="/ecommerce-frontend/Client/Pages/product_details.php?id=${product.product_id}"
                      class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-2 rounded-md text-center transition-colors flex items-center justify-center">
                       <i class="fas fa-info-circle mr-2"></i> Details
                   </a>
+                   <!-- Add to Cart Button -->
+                  <button onclick="addToCart(${product.product_id}, ${product.price})" 
+                          class="flex-1 bg-blue-600 hover:bg-blue-900 text-white text-[15px] px-3 py-2 rounded-md transition-colors flex items-center justify-center">
+                      <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
+                  </button>
               </div>
           </div>
       </div>
   `).join("");
 
-  // Add event listener for quick view buttons
-  document.querySelectorAll('.quick-view-btn').forEach(button => {
-      button.addEventListener('click', (e) => {
-          e.stopPropagation();
-          // Implement quick view functionality here
-          console.log("Quick view clicked");
-      });
-  });
+ 
 }

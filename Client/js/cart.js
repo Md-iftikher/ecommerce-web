@@ -11,8 +11,13 @@ async function checkLoginStatus() {
 }
 
 // Function to Add Product to Cart
-async function addToCart(productId, price, quantity = 1) {
+async function addToCart(productId, price, quantity) {
     try {
+
+        if(!quantity){
+            quantity=1;
+        }
+
         // First check if user is logged in
         const isLoggedIn = await checkLoginStatus();
         if (!isLoggedIn) {

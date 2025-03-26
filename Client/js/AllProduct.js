@@ -59,23 +59,66 @@ function loadCategories() {
     `).join("");
 }
 
-// Function to Display Products in cards
 function displayProducts(productsToShow) {
     productGrid.innerHTML = productsToShow.map(product => `
-<div class="product-card bg-white shadow-md rounded-lg overflow-hidden">
-    <img src="${product.image_url}" alt="${product.product_name}" class="w-full h-48 object-cover">
-    <div class="p-4">
-        <h2 class="text-lg font-semibold">${product.product_name}</h2>
-        <p class="text-blue-600 font-bold">$${parseFloat(product.price).toFixed(2)}</p>
-        <p class="text-gray-600 text-sm mt-2">${product.description}</p>
-        <p class="text-sm text-gray-500 mt-2">Remaining Stock: ${product.quantity}</p>
-        <div class="mt-4 flex space-x-2">
-            <a href="#" class="flex-1 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800 transition-all">View Details</a>
-            <button onclick="addToCart(${product.product_id}, ${product.price})" class="flex-1 text-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 transition-all">Add to Cart</button>
+    <div class="product-card bg-white shadow-lg h-[400px] rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
+        <!-- Product Image with Hover Overlay -->
+        <div class="relative overflow-hidden h-48">
+            <img src="${product.image_url || '../assets/default-product.png'}" 
+                 alt="${product.product_name}" 
+                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+            
+            <!-- Stock Badge -->
+            <div class="absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-bold 
+                       ${product.quantity > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                ${product.quantity > 0 ? `${product.quantity} in stock` : 'Out of stock'}
+            </div>
+            
+            <!-- Quick View Overlay -->
+            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                <a href="/ecommerce-frontend/Client/Pages/product_details.php?id=${product.product_id}" 
+                   class="bg-white text-gray-800 px-4 py-2 rounded-full font-medium shadow-md hover:bg-gray-100 transition-all">
+                    Quick View
+                </a>
+            </div>
+        </div>
+        
+        <!-- Product Info -->
+        <div class="p-4">
+            <!-- Product Name and Price -->
+            <div class="flex justify-between items-start mb-2">
+                <h2 class="text-lg font-semibold text-gray-800 line-clamp-1">${product.product_name}</h2>
+                <p class="text-blue-600 font-bold">$${parseFloat(product.price).toFixed(2)}</p>
+            </div>
+            
+            <!-- Description -->
+            <p class="text-gray-600 text-sm line-clamp-2 mb-3">${product.description || 'No description available'}</p>
+            
+            <!-- Rating Stars (Placeholder) -->
+            <div class="flex items-center mb-4">
+                <div class="flex text-yellow-400 text-sm">
+                    ${'<i class="fas fa-star"></i>'.repeat(5)}
+                </div>
+                <span class="text-gray-500 text-xs ml-1">(24)</span>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex gap-2">
+               
+                <button onclick="addToCart(${product.product_id}, ${product.price})" 
+                        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md transition-colors flex items-center justify-center"
+                        ${product.quantity <= 0 ? 'disabled class="bg-gray-400 cursor-not-allowed"' : ''}>
+                    <i class="fas fa-shopping-cart mr-2"></i> Add
+                </button>
+
+                 <a href="/ecommerce-frontend/Client/Pages/product_details.php?id=${product.product_id}" 
+                   class="flex-1 text-center bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 rounded-md transition-colors flex items-center justify-center">
+                    <i class="fas fa-eye mr-2"></i> Details
+                </a>
+            </div>
         </div>
     </div>
-</div>
-`).join("");
+    `).join("");
 }
 
 // to load category dunamically
