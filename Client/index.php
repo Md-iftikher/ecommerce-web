@@ -1,5 +1,5 @@
 <?php
-session_start();
+ session_start();
 
 $login_flag = false;
 if (isset($_SESSION['customer_id'])) {

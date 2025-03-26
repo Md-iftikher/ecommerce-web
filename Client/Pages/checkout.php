@@ -160,20 +160,6 @@ $conn->close();
                         <h2 class="text-xl font-semibold mb-4 pb-2 border-b border-gray-200">Payment Method</h2>
                         <div class="space-y-3">
                             <div class="flex items-center">
-                                <input id="credit-card" name="payment-method" type="radio" checked
-                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                                <label for="credit-card" class="ml-3 block text-sm font-medium text-gray-700">
-                                    Credit/Debit Card
-                                </label>
-                            </div>
-                            <div class="flex items-center">
-                                <input id="paypal" name="payment-method" type="radio"
-                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                                <label for="paypal" class="ml-3 block text-sm font-medium text-gray-700">
-                                    PayPal
-                                </label>
-                            </div>
-                            <div class="flex items-center">
                                 <input id="cash-on-delivery" name="payment-method" type="radio"
                                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
                                 <label for="cash-on-delivery" class="ml-3 block text-sm font-medium text-gray-700">

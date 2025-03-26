@@ -109,14 +109,54 @@ window.addEventListener('load', async function() {
 function displayRecentProducts() {
   const productGrid = document.getElementById("recently-added-products");
   productGrid.innerHTML = recentProducts.map(product => `
-      <div class="product-card bg-white shadow-md rounded-lg overflow-hidden">
-          <img src="${product.image_url}" alt="${product.product_name}" class="w-full h-48 object-cover">
+      <div class="product-card bg-white shadow-md rounded-lg overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+          <!-- Product Image with hover effect -->
+          <div class="relative overflow-hidden h-48">
+              <img src="${product.image_url}" alt="${product.product_name}" 
+                   class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+
+          </div>
+          
+          <!-- Product Info -->
           <div class="p-4">
-              <h2 class="text-lg font-semibold">${product.product_name}</h2>
-              <p class="text-blue-600 font-bold">$${parseFloat(product.price).toFixed(2)}</p>
-              <p class="text-gray-600 text-sm mt-2">${product.description}</p>
-              <button onclick="addToCart(${product.product_id}, ${product.price})" class="mt-4 w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 transition-all">Buy Now</button>
+              <h2 class="text-lg font-semibold text-gray-800 line-clamp-1">${product.product_name}</h2>
+              
+              <!-- Price and Rating -->
+              <div class="flex items-center justify-between mt-2">
+                  <p class="text-blue-600 font-bold text-lg">$${parseFloat(product.price).toFixed(2)}</p>
+                  <div class="flex items-center">
+                      <i class="fas fa-star text-yellow-400 mr-1"></i>
+                      <span class="text-gray-600 text-sm">4.5</span>
+                  </div>
+              </div>
+              
+              <!-- Short Description -->
+              <p class="text-gray-600 text-sm mt-2 line-clamp-2">${product.description}</p>
+              
+              <!-- Action Buttons -->
+              <div class="flex gap-2 mt-4">
+                  <!-- Add to Cart Button -->
+                  <button onclick="addToCart(${product.product_id}, ${product.price})" 
+                          class="flex-1 bg-blue-600 hover:bg-blue-900 text-white text-[15px] px-3 py-2 rounded-md transition-colors flex items-center justify-center">
+                      <i class="fas fa-shopping-cart mr-2"></i> Add to Cart
+                  </button>
+                  
+                  <!-- View Details Button -->
+                  <a href="/ecommerce-frontend/Client/Pages/product_details.php?id=${product.product_id}"
+                     class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-2 rounded-md text-center transition-colors flex items-center justify-center">
+                      <i class="fas fa-info-circle mr-2"></i> Details
+                  </a>
+              </div>
           </div>
       </div>
   `).join("");
+
+  // Add event listener for quick view buttons
+  document.querySelectorAll('.quick-view-btn').forEach(button => {
+      button.addEventListener('click', (e) => {
+          e.stopPropagation();
+          // Implement quick view functionality here
+          console.log("Quick view clicked");
+      });
+  });
 }
