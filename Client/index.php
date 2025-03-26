@@ -1,5 +1,5 @@
 <?php
-session_start();
+ session_start();
 
 $login_flag = false;
 if (isset($_SESSION['customer_id'])) {
@@ -128,6 +128,7 @@ if (isset($_GET['signed_up'])) {
     <div id="footer-container"></div>
 
     <!-- JavaScript Files -->
+    <script src="./js/toast.js"></script>
     <script src="./js/cart.js"></script>
     <script src="./js/home.js"></script>
     <script>

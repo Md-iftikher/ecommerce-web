@@ -29,7 +29,7 @@ async function loadComponent(url, targetId) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const html = await response.text();
-        console.log(html);
+        
         document.getElementById(targetId).innerHTML = html;
     } catch (error) {
         console.error('Error loading component:', error);
@@ -71,7 +71,7 @@ function displayProducts(productsToShow) {
         <p class="text-sm text-gray-500 mt-2">Remaining Stock: ${product.quantity}</p>
         <div class="mt-4 flex space-x-2">
             <a href="#" class="flex-1 text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800 transition-all">View Details</a>
-            <button onclick="addToCart(${product.product_id})" class="flex-1 text-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 transition-all">Add to Cart</button>
+            <button onclick="addToCart(${product.product_id}, ${product.price})" class="flex-1 text-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-800 transition-all">Add to Cart</button>
         </div>
     </div>
 </div>
@@ -87,12 +87,6 @@ function filterProducts(category) {
     }
     document.querySelectorAll(".category-btn").forEach(btn => btn.classList.remove("active"));
     document.querySelector(`.category-btn[onclick="filterProducts('${category}')"]`).classList.add("active");
-}
-
-// function to add product to Cart
-function addToCart(id) {
-    const product = products.find(product => product.product_id === id);
-    alert(`Added to Cart: ${product.product_name} - $${parseFloat(product.price).toFixed(2)}`);
 }
 
 
