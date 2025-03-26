@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3307
--- Generation Time: Mar 23, 2025 at 11:20 PM
+-- Host: 127.0.0.1
+-- Generation Time: Mar 26, 2025 at 11:00 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -46,6 +46,16 @@ CREATE TABLE `carts` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `carts`
+--
+
+INSERT INTO `carts` (`cart_id`, `customer_id`, `status`, `created_at`) VALUES
+(1, 7, 'active', '2025-03-24 10:35:04'),
+(2, 6, 'completed', '2025-03-26 03:58:06'),
+(3, 6, 'completed', '2025-03-26 04:13:35'),
+(4, 6, 'completed', '2025-03-26 08:26:50');
+
 -- --------------------------------------------------------
 
 --
@@ -58,6 +68,21 @@ CREATE TABLE `cart_items` (
   `quantity` int(11) DEFAULT 1 CHECK (`quantity` >= 0),
   `price` decimal(10,2) NOT NULL CHECK (`price` >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cart_items`
+--
+
+INSERT INTO `cart_items` (`cart_id`, `product_id`, `quantity`, `price`) VALUES
+(1, 1, 1, 199.99),
+(1, 3, 1, 149.99),
+(1, 4, 1, 89.99),
+(1, 5, 2, 499.99),
+(2, 2, 1, 59.99),
+(3, 1, 3, 199.99),
+(4, 2, 2, 59.99),
+(4, 3, 3, 149.99),
+(4, 4, 2, 89.99);
 
 -- --------------------------------------------------------
 
@@ -146,6 +171,15 @@ CREATE TABLE `orders` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `customer_id`, `address_id`, `total_price`, `status`, `created_at`) VALUES
+(1, 6, 8, 59.99, 'pending', '2025-03-26 03:58:46'),
+(2, 6, 8, 599.97, 'pending', '2025-03-26 07:03:56'),
+(3, 6, 7, 749.93, 'pending', '2025-03-26 08:51:25');
+
 -- --------------------------------------------------------
 
 --
@@ -158,6 +192,17 @@ CREATE TABLE `order_items` (
   `quantity` int(11) DEFAULT 1 CHECK (`quantity` >= 0),
   `price` decimal(10,2) NOT NULL CHECK (`price` >= 0)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`order_id`, `product_id`, `quantity`, `price`) VALUES
+(1, 2, 1, 59.99),
+(2, 1, 3, 199.99),
+(3, 2, 2, 59.99),
+(3, 3, 3, 149.99),
+(3, 4, 2, 89.99);
 
 -- --------------------------------------------------------
 
@@ -180,11 +225,11 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `quantity`, `image_url`, `category_id`) VALUES
-(1, 'Wireless Headphones', 'Experience high-quality sound without the hassle of wires. These wireless headphones offer crystal-clear audio, comfortable design, and long battery life—perfect for music, calls, and on-the-go convenience.', 199.99, 50, '/ecommerce-frontend/Client/assets/Images/headphone.png', 1),
-(2, 'Bluetooth Speaker', 'Portable Bluetooth speakers with powerful sound and deep bass. Enjoy wireless music streaming, long battery life, and a compact design—perfect for parties, travel, and outdoor fun.', 59.99, 40, '/ecommerce-frontend/Client/assets/Images/headphone.png', 1),
-(3, 'Smart Watch', 'Stay connected and track your fitness with this sleek smart watch. Featuring health monitoring, notifications, and long battery life, it’s the perfect companion for your active lifestyle.', 149.99, 20, '/ecommerce-frontend/Client/assets/Images/SmartWatch.png', 2),
-(4, 'Gaming Keyboard', 'Enhance your gameplay with this high-performance gaming keyboard. Featuring responsive mechanical keys, customizable RGB lighting, and durable design for ultimate precision and speed.', 89.99, 30, '/ecommerce-frontend/Client/assets/Images/SmartWatch.png', 3),
-(5, '4k Monitor', 'Experience stunning clarity and vibrant colors with this 4K UHD monitor. Perfect for gaming, design, and productivity, it delivers ultra-sharp visuals and smooth performance.', 499.99, 10, '/ecommerce-frontend/Client/assets/Images/SmartWatch.png', 4);
+(1, 'Wireless Headphones', 'Experience high-quality sound without the hassle of wires. These wireless headphones offer crystal-clear audio, comfortable design, and long battery life—perfect for music, calls, and on-the-go convenience.', 199.99, 47, '/ecommerce-frontend/Client/assets/Images/products/wireless_headphone.png', 1),
+(2, 'Bluetooth Speaker', 'Portable Bluetooth speakers with powerful sound and deep bass. Enjoy wireless music streaming, long battery life, and a compact design—perfect for parties, travel, and outdoor fun.', 59.99, 37, '/ecommerce-frontend/Client/assets/Images/products/bluetooth_speaker.jpg', 1),
+(3, 'Smart Watch', 'Stay connected and track your fitness with this sleek smart watch. Featuring health monitoring, notifications, and long battery life, it’s the perfect companion for your active lifestyle.', 149.99, 17, '/ecommerce-frontend/Client/assets/Images/products/smart_watch.png', 2),
+(4, 'Gaming Keyboard', 'Enhance your gameplay with this high-performance gaming keyboard. Featuring responsive mechanical keys, customizable RGB lighting, and durable design for ultimate precision and speed.', 89.99, 28, '/ecommerce-frontend/Client/assets/Images/products/gaming_keyboard_yellow.jpg', 3),
+(5, '4k Monitor', 'Experience stunning clarity and vibrant colors with this 4K UHD monitor. Perfect for gaming, design, and productivity, it delivers ultra-sharp visuals and smooth performance.', 499.99, 10, '/ecommerce-frontend/Client/assets/Images/products/asus_monitor.jpg', 4);
 
 --
 -- Indexes for dumped tables
@@ -269,7 +314,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -293,7 +338,7 @@ ALTER TABLE `delivery_addresses`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `products`

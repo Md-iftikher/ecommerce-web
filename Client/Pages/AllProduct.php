@@ -3,7 +3,7 @@ session_start();
 
 
 $login_flag = false;
-if(isset($_SESSION['customer_id'])){
+if (isset($_SESSION['customer_id'])) {
     $login_flag = true;
 }
 
@@ -20,6 +20,10 @@ if(isset($_SESSION['customer_id'])){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5.0.0-beta.8/daisyui.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -62,30 +66,30 @@ if(isset($_SESSION['customer_id'])){
                                 </div>
                             </div>
                         </div>
-                        <?php if($login_flag): ?>
-                        <div class="dropdown dropdown-end">
-                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                                <!-- removed avatar class (wasn't letting display be flex) -->
-                                <div class="flex items-center justify-center w-10 h-10 rounded-full ">
-                                    <i class="fa-solid fa-user fa-lg"></i>
+                        <?php if ($login_flag): ?>
+                            <div class="dropdown dropdown-end">
+                                <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
+                                    <!-- removed avatar class (wasn't letting display be flex) -->
+                                    <div class="flex items-center justify-center w-10 h-10 rounded-full ">
+                                        <i class="fa-solid fa-user fa-lg"></i>
+                                    </div>
                                 </div>
+                                <ul tabindex="0"
+                                    class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+                                    <li>
+                                        <a class="justify-between" href="/ecommerce-frontend/Client/Pages/my_profile.php">
+                                            Profile
+                                        </a>
+                                    </li>
+                                    <li><a>Settings</a></li>
+                                    <li><a href="/ecommerce-frontend/Client/php/login/logout.php">Logout</a></li>
+                                </ul>
                             </div>
-                            <ul tabindex="0"
-                                class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                                <li>
-                                    <a class="justify-between" href="/ecommerce-frontend/Client/Pages/my_profile.php">
-                                        Profile
-                                    </a>
-                                </li>
-                                <li><a>Settings</a></li>
-                                <li><a href="/ecommerce-frontend/Client/php/login/logout.php">Logout</a></li>
-                            </ul>
-                        </div>
                         <?php else : ?>
-                        <div class="button-container">
-                            <a href="/ecommerce-frontend/Client/Pages/signup.php" class="button signup-btn">Sign Up</a>
-                            <a href="/ecommerce-frontend/Client/Pages/login.php" class="button login-btn">Log in</a>
-                        </div>
+                            <div class="button-container">
+                                <a href="/ecommerce-frontend/Client/Pages/signup.php" class="button signup-btn">Sign Up</a>
+                                <a href="/ecommerce-frontend/Client/Pages/login.php" class="button login-btn">Log in</a>
+                            </div>
                         <?php endif; ?>
 
                     </div>
@@ -117,7 +121,8 @@ if(isset($_SESSION['customer_id'])){
     <div id="footer-container"></div>
 
     <!-- Link to External JavaScript File -->
-
+     <script src="../js/toast.js"></script>
+    <script src="../js/cart.js"></script>
     <script src="../js/AllProduct.js"></script>
 </body>
 
