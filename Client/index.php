@@ -128,6 +128,7 @@ if (isset($_GET['signed_up'])) {
     <div id="footer-container"></div>
 
     <!-- JavaScript Files -->
+    <script src="./js/toast.js"></script>
     <script src="./js/cart.js"></script>
     <script src="./js/home.js"></script>
     <script>

@@ -121,6 +121,7 @@ if (isset($_SESSION['customer_id'])) {
     <div id="footer-container"></div>
 
     <!-- Link to External JavaScript File -->
+     <script src="../js/toast.js"></script>
     <script src="../js/cart.js"></script>
     <script src="../js/AllProduct.js"></script>
 </body>

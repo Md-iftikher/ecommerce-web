@@ -191,26 +191,26 @@ async function updateCartCount() {
   }
   
   // Function to show toast notifications
-function showToast(message, type = 'info', action = null) {
-    const toast = document.createElement('div');
-    toast.className = `fixed top-4 right-4 px-6 py-3 rounded-md shadow-lg text-white flex items-center ${
-        type === 'error' ? 'bg-red-500' : 
-        type === 'success' ? 'bg-green-500' : 
-        'bg-blue-500'
-    }`;
+// function showToast(message, type = 'info', action = null) {
+//     const toast = document.createElement('div');
+//     toast.className = `fixed top-4 right-4 px-6 py-3 rounded-md shadow-lg text-white flex items-center ${
+//         type === 'error' ? 'bg-red-500' : 
+//         type === 'success' ? 'bg-green-500' : 
+//         'bg-blue-500'
+//     }`;
     
-    toast.innerHTML = `
-        <span>${message}</span>
-        ${action ? `<a href="${action.url}" class="ml-3 font-bold underline">${action.text}</a>` : ''}
-    `;
+//     toast.innerHTML = `
+//         <span>${message}</span>
+//         ${action ? `<a href="${action.url}" class="ml-3 font-bold underline">${action.text}</a>` : ''}
+//     `;
     
-    document.body.appendChild(toast);
+//     document.body.appendChild(toast);
     
-    setTimeout(() => {
-        toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
+//     setTimeout(() => {
+//         toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+//         setTimeout(() => toast.remove(), 300);
+//     }, 3000);
+// }
 // Initialize Cart UI on Page Load
 document.addEventListener('DOMContentLoaded', () => {
     updateCartCount(); // Update cart count in the navbar
