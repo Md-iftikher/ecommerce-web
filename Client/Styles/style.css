@@ -1,40 +1,39 @@
+/* login and signup buttons */
 .button-container {
-  display: inline-flex;
-  border-radius: 25px;
-  overflow: hidden;
-  border: 1px solid #ddd;
-  background-color: #f0f0f0; /* light background for contrast */
+  display: flex;
+  gap: 8px;
 }
 
 .button {
-  padding: 10px 20px;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.3s, color 0.3s;
-  font-family: Arial, sans-serif;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+  border: 1.5px solid #4a4e69;
 }
 
 .signup-btn {
-  background-color: #4a4e69; /* primary color */
+  background-color: #4a4e69;
   color: white;
-  font-weight: bold;
 }
 
 .signup-btn:hover {
-  background-color: #3b3e54; /* slightly darker on hover */
+  background-color: transparent;
+  color: #4a4e69;
 }
 
 .login-btn {
   background-color: transparent;
   color: #4a4e69;
-  font-weight: bold;
 }
 
 .login-btn:hover {
-  background-color: rgba(74, 78, 105, 0.1); /* light tint on hover */
+  background-color: #4a4e69;
+  color: white;
 }
+
 
 
 /* toast  */
