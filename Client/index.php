@@ -37,7 +37,7 @@ if (isset($_GET['signed_up'])) {
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16 items-center">
                     <div class="flex-shrink-0">
-                        <span class="text-xl font-bold text-gray-800">ECOM</span>
+                        <span class="text-xl font-bold text-gray-800 logo">ECOM</span>
                     </div>
                     <div class="flex space-x-8 items-center">
                         <a href="/ecommerce-frontend/Client/index.php"
