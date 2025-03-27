@@ -13,43 +13,4 @@
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-/* login and signup buttons */
-.button-container {
-  display: flex;
-  gap: 8px;
-}
 
-.button {
-  text-decoration: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: 500;
-  transition: all 0.3s ease-in-out;
-  border: 1.5px solid #4a4e69;
-}
-
-.signup-btn {
-  background-color: #4a4e69;
-  color: white;
-}
-
-.signup-btn:hover {
-  background-color: transparent;
-  color: #4a4e69;
-}
-
-.login-btn {
-  background-color: transparent;
-  color: #4a4e69;
-}
-
-.login-btn:hover {
-  background-color: #4a4e69;
-  color: white;
-}
-
-/* logo  */
-.logo {
-  color: #343750;
-}

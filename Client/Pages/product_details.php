@@ -44,6 +44,7 @@ $conn->close();
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5.0.0-beta.8/daisyui.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="../Styles/product_details.css" rel="stylesheet">
+    <link href="../Styles/navbar.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100">
