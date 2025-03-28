@@ -289,104 +289,153 @@ body {
 }
 
 
-/* .orders-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+/* orders  */
+
+.order-list {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-.orders-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    border-radius: 0.75rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 300ms ease;
-    min-width: 18em;
+
+.order-card {
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;  /* Allows absolute positioning inside */
+    overflow: hidden;    /* Prevents button overflow */
+    transition: transform 0.3s ease-in-out;
 }
 
-.orders-list li:hover {
-    background-color: #e9ecef;
+.order-card:hover {
+    transform: scale(1.05);  /* Slight zoom effect */
 }
 
-.order-item {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+.get-details {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #6a6f8d;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: 0;  /* Hidden by default */
+    transition: opacity 0.3s ease-in-out;
 }
 
-.order-id {
-    font-weight: 600;
-    font-size: 1rem;
+.order-card:hover .get-details {
+    opacity: 1;  /* Show button on hover */
+}
+
+.get-details:hover {
+    background-color: #4a4e69; 
+}
+
+
+.order-info {
+    margin-bottom: 10px;
+}
+
+.order-info span {
+    display: block;
+    font-size: 16px;
     color: #333;
 }
 
 .order-status {
-    font-size: 0.9rem;
-    font-weight: 500;
-    padding: 0.2rem 0.5rem;
-    border-radius: 0.25rem;
+    margin-bottom: 15px;
 }
 
-.status-delivered {
+.status {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.status.pending {
+    background-color: #ffcc00;
+    color: #fff;
+}
+
+.status.completed {
     background-color: #28a745;
     color: #fff;
 }
 
-.status-processing {
-    background-color: #ffc107;
+.status.canceled {
+    background-color: #dc3545;
     color: #fff;
 }
 
-.status-shipped {
-    background-color: #17a2b8;
-    color: #fff;
-} */
+.order-address {
+    font-size: 14px;
+    color: #555;
+}
 
-.table-container {
-    border-radius: 15px;
-    overflow: hidden; /* Ensures the table follows the border-radius */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+.product-details {
+    display: none; /* Hide initially */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
+    position: relative; /* For positioning the close button */
 }
 
-table {
+.product-details h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.product-details table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-th, td {
+
+.product-details th, td {
     padding: 12px;
     text-align: left;
+    border-bottom: 1px solid #ddd;
 }
-th {
-    background: #a785ff;
-    color: white;
+
+.product-details th {
+    background-color: #f4f4f4;
 }
-tr:nth-child(even) {
-    background: #f9f9f9;
-}
-.paid {
-    color: #20c997;
-}
-.pending {
-    color: #ffbf00;
-}
-.cancel {
-    color: #ff4d4d;
-}
-table a {
-    color: #6a0dad;
-    text-decoration: none;
+
+.product-details tfoot td {
     font-weight: bold;
+    background-color: #f8f8f8;
+    padding: 12px;
+}
+
+.product-details .total-label {
+    text-align: right;
+    padding-right: 10px;
+}
+
+.close-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #333; /* Optional: color for the close button */
 }
 
 
+
+/* responsive  */
 
 @media (max-width: 600px) {
     .profile-form-row {

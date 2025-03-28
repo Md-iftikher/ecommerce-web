@@ -183,40 +183,48 @@ if(isset($_GET['profile'])){
             <h2><i class="fa-solid fa-basket-shopping"></i>My Orders</h2>
           </div>
 
-          <div class="profile-form-row">
-            <div class="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Order No</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Address</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php while($row = $result->fetch_assoc()): ?>
-                  <tr>
-                    <td>#<?= $row['order_id'] ?></td>
-                    <td><a href="#">$<?= $row['total_price'] ?></a></td>
-                    <td><?= $row['date'] ?></td>
-                    <td class="<?= $row['status'] ?>"><?= $row['status'] ?></td>
-                    <td><?= $row['address'] ?></td>
-                  </tr>
-                  <?php endwhile; ?>
-                </tbody>
-              </table>
+          <div id="order-list" class="profile-form-row">
+            <div class="order-list">
+              <?php while($row = $result->fetch_assoc()): ?>
+              <div class="order-card">
+                <div class="order-info">
+                  <span class="order-id">Order ID: #
+                    <?= $row['order_id']?>
+                  </span>
+                  <span class="order-amount">Amount: $
+                    <?= $row['total_price']?>
+                  </span>
+                  <span class="order-date">Date:
+                    <?= $row['date']?>
+                  </span>
+                </div>
+                <div class="order-status">
+                  <span class="status pending">
+                    <?= ucfirst($row['status'])?>
+                  </span>
+                </div>
+                <div class="order-address">
+                  <span>Address:
+                    <?= $row['address']?>
+                  </span>
+                </div>
+                <button class="get-details" order-id="<?=$row['order_id']?>">Get Details</button>
+              </div>
+              <?php endwhile; ?>
             </div>
           </div>
+          <div id="product-details" class="product-details">
+            <button id="close-details" class="close-btn">×</button> <!-- Close button -->
+            <div id="details-content"></div> <!-- Product details will be populated here -->
+          </div>
+
+
+          <?php endif; ?>
+
+
         </div>
-
-        <?php endif; ?>
-
-
       </div>
-    </div>
-    <script src="../js/my_profile.js"></script>
+      <script src="../js/my_profile.js"></script>
   </section>
 </body>
 
