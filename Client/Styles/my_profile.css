@@ -289,7 +289,7 @@ body {
 }
 
 
-.orders-list {
+/* .orders-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -345,6 +345,45 @@ body {
 .status-shipped {
     background-color: #17a2b8;
     color: #fff;
+} */
+
+.table-container {
+    border-radius: 15px;
+    overflow: hidden; /* Ensures the table follows the border-radius */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+th {
+    background: #a785ff;
+    color: white;
+}
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+.paid {
+    color: #20c997;
+}
+.pending {
+    color: #ffbf00;
+}
+.cancel {
+    color: #ff4d4d;
+}
+table a {
+    color: #6a0dad;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 
