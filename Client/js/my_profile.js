@@ -77,3 +77,68 @@ function confirmDeletion(event) {
     event.preventDefault();
   }
 }
+
+
+document.querySelectorAll(".get-details").forEach(button => {
+  button.addEventListener("click", async function() {
+    let orderId = this.getAttribute("order-id");
+
+    // Fetch order details from PHP
+    let response = await fetch("../php/my_profile/product_details.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ order_id: orderId })
+    });
+
+    let data = await response.json();
+    
+    // Access order details and total price
+    console.log("Order Details:", data.order_details); // Array of product details
+    console.log("Total Price:", data.total_price); // Total price
+
+    // Hide the order list and show the product details section
+    document.getElementById("order-list").style.display = "none";
+    document.getElementById("product-details").style.display = "block"; // Show the product details div
+
+    // Populate the product details section
+    document.getElementById("details-content").innerHTML = `
+      <h2>Order Details</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody id="order-items">
+          <!-- Dynamically fill rows here -->
+          ${data.order_details.map(item => `
+            <tr>
+              <td>${item.product_name}</td>
+              <td>$${item.price}</td>
+              <td>${item.quantity}</td>
+              <td>$${item.subtotal}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3" class="total-label">Total Price:</td>
+            <td id="total-price">$${data.total_price}</td>
+          </tr>
+        </tfoot>
+      </table>
+    `;
+  });
+});
+
+// Close functionality
+document.getElementById("close-details").addEventListener("click", function() {
+  // Hide product details and show the order list again
+  document.getElementById("product-details").style.display = "none";
+  document.getElementById("order-list").style.display = "block";
+});
