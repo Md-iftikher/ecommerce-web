@@ -15,6 +15,8 @@ if(isset($_GET['profile'])){
   include __DIR__ . "/../php/my_profile/read_profile.php";
 } else if(isset($_GET['address'])) {
   include __DIR__ . "/../php/my_profile/read_address.php";
+} else if(isset($_GET['my_orders'])) {
+  include __DIR__ . "/../php/my_profile/read_order.php";
 }
 
 ?>
@@ -43,7 +45,9 @@ if(isset($_GET['profile'])){
       <div class="sidebar-header">
         <div class="logo"></div>
         <div class="writing">
-          <p><?= ucfirst($first_name)?></p>
+          <p>
+            <?= ucfirst($first_name)?>
+          </p>
           <div class="clock" id="clock"></div>
         </div>
       </div>
@@ -55,14 +59,16 @@ if(isset($_GET['profile'])){
           <li><a href="my_profile.php?address=true" id="address-link"
               class="<?= (isset($_GET['address'])) ? 'active': ''?>"><i class="fa-solid fa-location-dot"></i>Delivery
               Address</a></li>
-          <li><a href="my_profile.php?myOrders=true" id="orders-link"
-              class="<?= (isset($_GET['myOrders'])) ? 'active': ''?>"><i class="fa-solid fa-basket-shopping"></i>My
+          <li><a href="my_profile.php?my_orders=true" id="orders-link"
+              class="<?= (isset($_GET['my_orders'])) ? 'active': ''?>"><i class="fa-solid fa-basket-shopping"></i>My
               Orders</a></li>
         </ul>
       </div>
     </div>
     <div class="content-area">
-      <p>Good Morning <?= ucfirst($first_name) ?></p>
+      <p>Good Morning
+        <?= ucfirst($first_name) ?>
+      </p>
       <div class="display-box" id="display-box">
         <?php if(isset($_GET['profile'])): ?>
 
@@ -102,7 +108,7 @@ if(isset($_GET['profile'])){
             <div class="profile-form-row">
               <div class="form-group">
                 <label>Birthdate</label>
-                <input type="date" id="dob"  placeholder="date of birth" name="dob" value="<?= $dob ?>" disabled/>
+                <input type="date" id="dob" placeholder="date of birth" name="dob" value="<?= $dob ?>" disabled />
               </div>
               <div class="form-group gender-group">
                 <label>Gender</label>
@@ -136,15 +142,16 @@ if(isset($_GET['profile'])){
           <div class="address-form-row">
             <div class="form-group">
               <!-- insert address -->
-              <form id="address-insert-form" action="../php/my_profile/insert_address.php" method="POST" style="display: none;">
+              <form id="address-insert-form" action="../php/my_profile/insert_address.php" method="POST"
+                style="display: none;">
                 <input type="hidden" name="id" value="<?= $customer_id ?>">
-                <input id="insert-address-input" type="text" name="address" placeholder="Enter new Address" >
-                <button  id="insert-address-icon" type="submit" style="display: none;">
-                    <i class="fa-solid fa-check fa-lg"></i>
+                <input id="insert-address-input" type="text" name="address" placeholder="Enter new Address">
+                <button id="insert-address-icon" type="submit" style="display: none;">
+                  <i class="fa-solid fa-check fa-lg"></i>
                 </button>
               </form>
               <?php while($row = $result->fetch_assoc()) : ?>
-              <form class="address-form" name="address-form"  method="POST">
+              <form class="address-form" name="address-form" method="POST">
                 <div class="address-input">
                   <input type="hidden" name="id" value="<?= $customer_id ?>">
                   <input type="hidden" name="old_address" value="<?=$row['address'] ?>">
@@ -154,10 +161,12 @@ if(isset($_GET['profile'])){
                     class="edit-address" type="button">
                     <i class="fa-solid fa-pen-to-square fa-lg"></i>
                   </button>
-                  <button onclick="confirmDeletion(event)" class="delete-address" type="submit" formaction="../php/my_profile/delete_address.php">
+                  <button onclick="confirmDeletion(event)" class="delete-address" type="submit"
+                    formaction="../php/my_profile/delete_address.php">
                     <i class="fa-solid fa-xmark fa-lg"></i>
                   </button>
-                  <button id="save-address-<?=$row['address']?>" class="save-address" type="submit" style="display: none;" formaction="../php/my_profile/update_address.php">
+                  <button id="save-address-<?=$row['address']?>" class="save-address" type="submit"
+                    style="display: none;" formaction="../php/my_profile/update_address.php">
                     <i class="fa-solid fa-check fa-lg"></i>
                   </button>
                 </div>
@@ -168,33 +177,37 @@ if(isset($_GET['profile'])){
 
         </div>
 
-        <?php elseif(isset($_GET['myOrders'])) : ?>
+        <?php elseif(isset($_GET['my_orders'])) : ?>
         <div class="profile-form-container">
           <div class="profile-form-header">
             <h2><i class="fa-solid fa-basket-shopping"></i>My Orders</h2>
           </div>
 
           <div class="profile-form-row">
-            <ul class="orders-list">
-              <li>
-                <div class="order-item">
-                  <span class="order-id">Order #1</span>
-                  <span class="order-status status-delivered">Status: Delivered</span>
-                </div>
-              </li>
-              <li>
-                <div class="order-item">
-                  <span class="order-id">Order #2</span>
-                  <span class="order-status status-processing">Status: Processing</span>
-                </div>
-              </li>
-              <li>
-                <div class="order-item">
-                  <span class="order-id">Order #3</span>
-                  <span class="order-status status-shipped">Status: Shipped</span>
-                </div>
-              </li>
-            </ul>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Order No</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php while($row = $result->fetch_assoc()): ?>
+                  <tr>
+                    <td>#<?= $row['order_id'] ?></td>
+                    <td><a href="#">$<?= $row['total_price'] ?></a></td>
+                    <td><?= $row['date'] ?></td>
+                    <td class="<?= $row['status'] ?>"><?= $row['status'] ?></td>
+                    <td><?= $row['address'] ?></td>
+                  </tr>
+                  <?php endwhile; ?>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 

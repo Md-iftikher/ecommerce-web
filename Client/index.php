@@ -18,6 +18,7 @@ if (isset($_GET['signed_up'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link href="./Styles/style.css" rel="stylesheet">
+    <link href="./Styles/navbar.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -37,7 +38,7 @@ if (isset($_GET['signed_up'])) {
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16 items-center">
                     <div class="flex-shrink-0">
-                        <span class="text-xl font-bold text-gray-800">ECOM</span>
+                        <span class="text-xl font-bold text-gray-800 logo">ECOM</span>
                     </div>
                     <div class="flex space-x-8 items-center">
                         <a href="/ecommerce-frontend/Client/index.php"

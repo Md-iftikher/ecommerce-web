@@ -53,7 +53,7 @@ function loadCategories() {
     const categories = [...new Set(products.map(product => product.category_name))];
     categories.unshift("all");
     categoryNav.innerHTML = categories.map(category => `
-        <button class="category-btn px-4 py-2 text-gray-600 hover:text-blue-600 transition-all" onclick="filterProducts('${category}')">
+        <button class="category-btn px-4 py-2 text-[#6c728d] hover:text-[#343750] transition-all" onclick="filterProducts('${category}')">
             ${category.charAt(0).toUpperCase() + category.slice(1)}
         </button>
     `).join("");

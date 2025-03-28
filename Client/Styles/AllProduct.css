@@ -1,6 +1,6 @@
 .category-btn.active {
-    border-bottom: 2px solid #2563eb;
-    color: #2563eb;
+    border-bottom: 2px solid #4a4e69;
+    color: #4a4e69;
     font-weight: 600;
 }
 
@@ -13,40 +13,4 @@
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.button-container {
-    display: inline-flex;
-    border-radius: 25px;
-    overflow: hidden;
-    border: 1px solid #ddd;
-    background-color: #f0f0f0; /* light background for contrast */
-  }
-  
-  .button {
-    padding: 10px 20px;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s, color 0.3s;
-    font-family: Arial, sans-serif;
-  }
-  
-  .signup-btn {
-    background-color: #4a4e69; /* primary color */
-    color: white;
-    font-weight: bold;
-  }
-  
-  .signup-btn:hover {
-    background-color: #3b3e54; /* slightly darker on hover */
-  }
-  
-  .login-btn {
-    background-color: transparent;
-    color: #4a4e69;
-    font-weight: bold;
-  }
-  
-  .login-btn:hover {
-    background-color: rgba(74, 78, 105, 0.1); /* light tint on hover */
-  }
+
