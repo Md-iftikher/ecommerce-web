@@ -112,9 +112,22 @@ if (isset($_SESSION['customer_id'])) {
 
     <!-- Navigation -->
     <nav class="bg-white shadow-md py-4 sticky top-0 z-10">
-        <div id="category-nav" class="container mx-auto flex justify-center space-x-4 overflow-x-auto">
-            <!-- Categories will be dynamically loaded here -->
-        </div>
+    <div id="category-nav" class="container mx-auto flex justify-between items-center flex-wrap gap-4 py-4">
+    <!-- Left: Categories -->
+    <div id="category-buttons" class="flex flex-wrap gap-2">
+    </div>
+
+    <!-- Right: Sort Dropdown -->
+    <div class="sort-dropdown flex items-center">
+        <label for="sort" class="mr-2 font-medium text-[#4a4e69]">Sort by:</label>
+        <select id="sort" class="border border-[#4a4e69] text-[#4a4e69] rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-[#4a4e69]">
+            <option value="default">Default</option>
+            <option value="low-high">Price (Low &gt; High)</option>
+            <option value="high-low">Price (High &gt; Low)</option>
+        </select>
+    </div>
+</div>
+
     </nav>
 
     <!-- Main Content -->
