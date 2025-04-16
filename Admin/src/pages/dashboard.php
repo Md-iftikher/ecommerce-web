@@ -8,7 +8,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 // Database connection
 require_once __DIR__ . '/../PHP/config.php';
 
-$totalRevenue = 0; 
+$totalRevenue = 0;
 $newCustomers = 0;
 
 
@@ -29,7 +29,7 @@ try {
     // New Customers (last 7 days)
     $stmt = $conn->query("SELECT COUNT(*) AS newCustomers FROM customers WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)");
     $result = $stmt->fetch_assoc();
-    $newCustomers = $result['newCustomers'] ?? 0; 
+    $newCustomers = $result['newCustomers'] ?? 0;
 
     // Recent 5 Orders
     $stmt = $conn->query("
@@ -54,6 +54,8 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/styles.css">
     <script>
@@ -240,6 +242,7 @@ try {
                     </div>
                 </div>
 
+
                 <!-- Recent Orders -->
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
                     <div class="p-6 border-b border-gray-100">
@@ -287,6 +290,24 @@ try {
                         <a href="orders.php" class="text-sm font-medium text-primary hover:text-indigo-700">View All Orders →</a>
                     </div>
                 </div>
+
+                <!-- Product Detail Modal -->
+                <div id="productModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50">
+                    <div class="bg-white p-6 rounded-lg w-96 shadow-card">
+                        <h2 class="text-xl font-bold mb-4" id="modalProductName">Product Name</h2>
+                        <p class="text-sm mb-2" id="modalProductDescription">Product description...</p>
+                        <p class="text-sm mb-4" id="modalProductPrice">Price: $0</p>
+                        <label class="block mb-2 text-sm font-medium">Update Status:</label>
+                        <select id="statusSelect" class="w-full p-2 border rounded">
+                            <option value="Pending">Pending</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                        <button onclick="updateStatus()" class="mt-4 w-full bg-primary text-white px-4 py-2 rounded">Update Status</button>
+                        <button onclick="closeModal()" class="mt-2 w-full text-dark border border-dark px-4 py-2 rounded">Close</button>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>

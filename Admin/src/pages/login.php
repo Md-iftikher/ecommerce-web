@@ -11,7 +11,7 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
     <meta charset="UTF-8">
     <title>Admin Login</title>
     <link rel="stylesheet" href="../css/styles.css"> <!-- Tailwind or your custom CSS -->
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
