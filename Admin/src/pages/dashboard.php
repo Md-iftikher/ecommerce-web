@@ -8,6 +8,10 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 // Database connection
 require_once __DIR__ . '/../PHP/config.php';
 
+$totalRevenue = 0; 
+$newCustomers = 0;
+
+
 // Fetch data from database
 try {
     // Total Orders
@@ -18,13 +22,14 @@ try {
     $stmt = $conn->query("SELECT COUNT(*) AS pendingOrders FROM orders WHERE status = 'Pending'");
     $pendingOrders = $stmt->fetch_assoc()['pendingOrders'];
 
-    // Total Revenue
     $stmt = $conn->query("SELECT COALESCE(SUM(total_amount), 0) AS totalRevenue FROM orders WHERE status = 'Completed'");
-    $totalRevenue = $stmt->fetch_assoc()['totalRevenue'];
+    $result = $stmt->fetch_assoc();
+    $totalRevenue = $result['totalRevenue'] ?? 0;
 
     // New Customers (last 7 days)
     $stmt = $conn->query("SELECT COUNT(*) AS newCustomers FROM customers WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)");
-    $newCustomers = $stmt->fetch_assoc()['newCustomers'];
+    $result = $stmt->fetch_assoc();
+    $newCustomers = $result['newCustomers'] ?? 0; 
 
     // Recent 5 Orders
     $stmt = $conn->query("
@@ -37,13 +42,13 @@ try {
         LIMIT 5
     ");
     $recentOrders = $stmt->fetch_all(MYSQLI_ASSOC);
-
 } catch (Exception $e) {
     $error = "Database error: " . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -66,6 +71,7 @@ try {
         }
     </script>
 </head>
+
 <body class="bg-gray-50 font-sans">
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
@@ -78,13 +84,13 @@ try {
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
-            
+
             <div class="p-4">
                 <!-- Admin Profile -->
                 <div class="flex items-center space-x-4 p-4 mb-6 bg-gray-800 rounded-lg">
                     <div class="relative">
-                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=4f46e5&color=fff" 
-                             alt="Admin" class="w-12 h-12 rounded-full">
+                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=4f46e5&color=fff"
+                            alt="Admin" class="w-12 h-12 rounded-full">
                         <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800"></span>
                     </div>
                     <div>
@@ -92,7 +98,7 @@ try {
                         <p class="text-xs text-gray-400">Administrator</p>
                     </div>
                 </div>
-                
+
                 <!-- Navigation -->
                 <nav>
                     <ul class="space-y-2">
@@ -124,7 +130,7 @@ try {
                     </ul>
                 </nav>
             </div>
-            
+
             <!-- Logout Section -->
             <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
                 <a href="../PHP/logout.php" class="flex items-center p-3 rounded-lg hover:bg-gray-800 text-gray-300 hover:text-white group">
@@ -142,7 +148,7 @@ try {
                     <div class="flex items-center space-x-4">
                         <h2 class="text-xl font-semibold text-gray-800">Dashboard Overview</h2>
                     </div>
-                    
+
                     <div class="flex items-center space-x-4">
                         <button class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600">
                             <i class="fas fa-bell"></i>
@@ -151,8 +157,8 @@ try {
                         <div class="relative">
                             <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none">
                                 <span class="text-sm font-medium"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></span>
-                                <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=4f46e5&color=fff" 
-                                     alt="User" class="w-8 h-8 rounded-full">
+                                <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=4f46e5&color=fff"
+                                    alt="User" class="w-8 h-8 rounded-full">
                             </button>
                             <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
                                 <a href="../PHP/logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
@@ -185,14 +191,16 @@ try {
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm font-medium text-gray-500">Total Revenue</p>
-                                <p class="text-2xl font-semibold mt-1">$<?= number_format($totalRevenue, 2) ?></p>
+                                <p class="text-2xl font-semibold mt-1">
+                                    $<?= isset($totalRevenue) && $totalRevenue !== null ? number_format($totalRevenue, 2) : '0.00' ?>
+                                </p>
                             </div>
                             <div class="p-3 rounded-full bg-primary bg-opacity-10 text-primary">
                                 <i class="fas fa-dollar-sign"></i>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-secondary">
                         <div class="flex items-center justify-between">
                             <div>
@@ -204,7 +212,7 @@ try {
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500">
                         <div class="flex items-center justify-between">
                             <div>
@@ -216,12 +224,14 @@ try {
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500">
                         <div class="flex items-center justify-between">
                             <div>
                                 <p class="text-sm font-medium text-gray-500">New Customers</p>
-                                <p class="text-2xl font-semibold mt-1"><?= $newCustomers ?></p>
+                                <p class="text-2xl font-semibold mt-1">
+                                    <?= isset($newCustomers) && $newCustomers !== null ? $newCustomers : '0' ?>
+                                </p>
                             </div>
                             <div class="p-3 rounded-full bg-purple-500 bg-opacity-10 text-purple-500">
                                 <i class="fas fa-user-plus"></i>
@@ -250,20 +260,20 @@ try {
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <?php if (!empty($recentOrders)): ?>
                                     <?php foreach ($recentOrders as $order): ?>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= htmlspecialchars($order['order_id']) ?></td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= htmlspecialchars($order['customer']) ?></td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= $order['date'] ?></td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$<?= number_format($order['amount'], 2) ?></td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 py-1 text-xs font-semibold rounded-full <?= $order['status'] === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' ?>">
-                                                <?= htmlspecialchars($order['status']) ?>
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href="orders.php?id=<?= $order['order_id'] ?>" class="text-primary hover:text-indigo-900">View</a>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= htmlspecialchars($order['order_id']) ?></td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= htmlspecialchars($order['customer']) ?></td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= $order['date'] ?></td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$<?= number_format($order['amount'], 2) ?></td>
+                                            <td class="px-6 py-4 whitespace-nowrap">
+                                                <span class="px-2 py-1 text-xs font-semibold rounded-full <?= $order['status'] === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' ?>">
+                                                    <?= htmlspecialchars($order['status']) ?>
+                                                </span>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                <a href="orders.php?id=<?= $order['order_id'] ?>" class="text-primary hover:text-indigo-900">View</a>
+                                            </td>
+                                        </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
                                     <tr>
@@ -287,7 +297,7 @@ try {
             // User menu toggle
             const userMenuButton = document.getElementById('userMenuButton');
             const userMenu = document.getElementById('userMenu');
-            
+
             if (userMenuButton && userMenu) {
                 userMenuButton.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -309,4 +319,5 @@ try {
         });
     </script>
 </body>
+
 </html>
