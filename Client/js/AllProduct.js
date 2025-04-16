@@ -1,26 +1,55 @@
 let products = [];
 
-async function fetchProducts() {
-    try {
-        const response = await fetch('../php/products/retrieve_products.php');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+async function fetchProducts(pattern) {
+    if (!pattern) {
+        try {
+            const response = await fetch('../php/products/retrieve_products.php');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('There was a problem with the fetch operation:', error);
-        return [];
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+            return [];
+        }
+    } else {
+        try {
+            const response = await fetch('../php/products/search_products.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ pattern: pattern })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+            return [];
+        }
     }
 }
-
 window.addEventListener('load', async function() {
     products = await fetchProducts();
     loadCategories();
     filterProducts("all"); 
 
 });
+
+document.getElementById("search-products").addEventListener("input", async function(event) {
+    pattern = event.target.value;
+    products = await fetchProducts(pattern);
+    loadCategories();
+    filterProducts("all"); 
+
+  });
 
 async function loadComponent(url, targetId) {
     try {
@@ -60,6 +89,15 @@ function loadCategories() {
 }
 
 function displayProducts(productsToShow) {
+    if (productsToShow.length === 0) {
+        productGrid.innerHTML = `
+            <div class="col-span-full text-center text-gray-500 text-lg py-10">
+                <i class="fas fa-box-open text-4xl mb-4 text-gray-400"></i>
+                <p>No products found.</p>
+            </div>
+        `;
+        return;
+    }
     productGrid.innerHTML = productsToShow.map(product => `
     <div class="product-card bg-white shadow-lg h-[400px] rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group">
         <!-- Product Image with Hover Overlay -->
@@ -131,6 +169,10 @@ function filterProducts(category) {
     document.querySelectorAll(".category-btn").forEach(btn => btn.classList.remove("active"));
     document.querySelector(`.category-btn[onclick="filterProducts('${category}')"]`).classList.add("active");
 }
+
+
+
+
 
 
 

@@ -100,8 +100,14 @@ if (isset($_SESSION['customer_id'])) {
     </div>
 
     <!-- Header -->
-    <header class="bg-[#4a4e69] text-white text-center py-6">
+    <header class="bg-[#4a4e69] text-white text-center py-6 all-products">
         <h1 class="text-4xl font-bold">All Products</h1>
+        <div class="search-bar">
+        <label for="search-products">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="search-products" name="search-products" type="text" placeholder="Search products..">
+        </label>
+        </div>
     </header>
 
     <!-- Navigation -->
