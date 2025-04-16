@@ -8,12 +8,12 @@ $sql = "
 SELECT p.*, c.category_name
 FROM products p
 INNER JOIN categories c ON p.category_id = c.category_id
-WHERE p.product_name LIKE ?;
+WHERE p.product_name LIKE ? or c.category_name LIKE ?;
 ";
 
 $stmt = $conn->prepare($sql);
 $likePattern = "%" . $pattern . "%";
-$stmt->bind_param("s", $likePattern);
+$stmt->bind_param("ss", $likePattern, $likePattern);
 $stmt->execute();
 
 $result = $stmt->get_result();

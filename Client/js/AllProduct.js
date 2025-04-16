@@ -74,7 +74,7 @@ loadComponent("../Component/footer.html", 'footer-container')
 
 // all categories funallity section 
 
-const categoryNav = document.getElementById("category-nav");
+const categoryNav = document.getElementById("category-buttons");
 const productGrid = document.getElementById("product-grid");
 
 // Function to Load Categories Dynamically
