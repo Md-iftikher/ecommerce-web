@@ -1,9 +1,18 @@
 let products = [];
 
 async function fetchProducts(pattern) {
+    sort = document.getElementById("sort").value;
     if (!pattern) {
         try {
-            const response = await fetch('../php/products/retrieve_products.php');
+            const response = await fetch('../php/products/retrieve_products.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type' : 'application/json',
+                }, 
+                body : JSON.stringify({
+                    sort: sort
+                })
+            });
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -21,7 +30,10 @@ async function fetchProducts(pattern) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ pattern: pattern })
+                body: JSON.stringify({ 
+                    pattern: pattern,
+                    sort: sort
+                })
             });
 
             if (!response.ok) {
@@ -36,6 +48,8 @@ async function fetchProducts(pattern) {
         }
     }
 }
+
+// update on load
 window.addEventListener('load', async function() {
     products = await fetchProducts();
     loadCategories();
@@ -43,12 +57,22 @@ window.addEventListener('load', async function() {
 
 });
 
+
+// update on search input
 document.getElementById("search-products").addEventListener("input", async function(event) {
     pattern = event.target.value;
     products = await fetchProducts(pattern);
     filterProducts(getActiveCategory()); 
 
   });
+
+
+// update on sort by 
+document.getElementById("sort").addEventListener("change", async function(event) {
+    products = await fetchProducts(document.getElementById("search-products").value);
+    filterProducts(getActiveCategory()); 
+});
+  
 
 async function loadComponent(url, targetId) {
     try {
@@ -91,6 +115,19 @@ function getActiveCategory() {
     category = document.querySelector('.category-btn.active');
     return category ? category.dataset.category : "all";
 }
+
+// to load category dunamically
+function filterProducts(category) {
+    if (category === "all") {
+        displayProducts(products);
+    } else {
+        displayProducts(products.filter(product => product.category_name === category));
+    }
+    document.querySelectorAll(".category-btn").forEach(btn => btn.classList.remove("active"));
+    document.querySelector(`.category-btn[onclick="filterProducts('${category}')"]`).classList.add("active");
+}
+
+
 
 
 function displayProducts(productsToShow) {
@@ -164,16 +201,7 @@ function displayProducts(productsToShow) {
     `).join("");
 }
 
-// to load category dunamically
-function filterProducts(category) {
-    if (category === "all") {
-        displayProducts(products);
-    } else {
-        displayProducts(products.filter(product => product.category_name === category));
-    }
-    document.querySelectorAll(".category-btn").forEach(btn => btn.classList.remove("active"));
-    document.querySelector(`.category-btn[onclick="filterProducts('${category}')"]`).classList.add("active");
-}
+
 
 
 
