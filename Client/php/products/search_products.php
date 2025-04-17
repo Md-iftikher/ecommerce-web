@@ -28,7 +28,7 @@ switch($sort) {
         }
     case 'latest':
         {
-            $order_by = "order by p.product_id asc";
+            $order_by = "order by p.product_id desc";
             break;
         }
     case 'popular':
@@ -43,6 +43,10 @@ switch($sort) {
         }
 }
 
+
+// using order_quantity to order by most popular 
+// coalesce returns the next not null value
+// group by works because product_id is the primary key so all other non-aggregated selected columns are functionally dependent on it (only works in mysql)
 $sql = "
 select p.*, c.category_name, COALESCE(sum(o.quantity), 0) as ordered_quantity
 from products p
