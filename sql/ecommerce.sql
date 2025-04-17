@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Apr 16, 2025 at 07:47 PM
+-- Generation Time: Apr 17, 2025 at 01:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,9 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `admins` (
   `admin_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `hashed_password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
 
 -- --------------------------------------------------------
 
@@ -43,7 +42,7 @@ CREATE TABLE `admins` (
 CREATE TABLE `carts` (
   `cart_id` int(11) NOT NULL,
   `customer_id` int(11) NOT NULL,
-  `status` enum('active','abandoned','completed','pending','cancelled','expired','paid') NOT NULL DEFAULT 'active',
+  `status` enum('active','completed') NOT NULL DEFAULT 'active',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -56,7 +55,9 @@ INSERT INTO `carts` (`cart_id`, `customer_id`, `status`, `created_at`) VALUES
 (3, 6, 'completed', '2025-03-26 04:13:35'),
 (4, 6, 'completed', '2025-03-26 08:26:50'),
 (8, 6, 'active', '2025-03-28 10:32:55'),
-(9, 12, 'completed', '2025-04-16 13:38:27');
+(9, 12, 'completed', '2025-04-16 13:38:27'),
+(10, 12, 'completed', '2025-04-17 08:35:34'),
+(11, 12, 'active', '2025-04-17 11:17:10');
 
 -- --------------------------------------------------------
 
@@ -88,7 +89,11 @@ INSERT INTO `cart_items` (`cart_id`, `product_id`, `quantity`, `price`) VALUES
 (8, 5, 1, 499.99),
 (9, 5, 1, 499.99),
 (9, 12, 1, 59.99),
-(9, 27, 1, 329.99);
+(9, 27, 1, 329.99),
+(10, 1, 1, 199.99),
+(10, 4, 3, 89.99),
+(10, 5, 2, 499.99),
+(11, 5, 1, 499.99);
 
 -- --------------------------------------------------------
 
@@ -172,7 +177,7 @@ CREATE TABLE `orders` (
   `customer_id` int(11) NOT NULL,
   `address_id` int(11) NOT NULL,
   `total_price` decimal(10,2) NOT NULL CHECK (`total_price` >= 0),
-  `status` enum('pending','processing','out_for_delivery','delivered') NOT NULL DEFAULT 'pending',
+  `status` enum('pending','delivered') NOT NULL DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -184,7 +189,8 @@ INSERT INTO `orders` (`order_id`, `customer_id`, `address_id`, `total_price`, `s
 (1, 6, 8, 59.99, 'pending', '2025-03-26 03:58:46'),
 (2, 6, 8, 599.97, 'pending', '2025-03-26 07:03:56'),
 (3, 6, 7, 749.93, 'pending', '2025-03-26 08:51:25'),
-(8, 12, 15, 889.97, 'pending', '2025-04-16 13:38:35');
+(8, 12, 15, 889.97, 'pending', '2025-04-16 13:38:35'),
+(9, 12, 15, 1469.94, 'pending', '2025-04-17 08:35:54');
 
 -- --------------------------------------------------------
 
@@ -211,7 +217,10 @@ INSERT INTO `order_items` (`order_id`, `product_id`, `quantity`, `price`) VALUES
 (3, 4, 2, 89.99),
 (8, 5, 1, 499.99),
 (8, 12, 1, 59.99),
-(8, 27, 1, 329.99);
+(8, 27, 1, 329.99),
+(9, 1, 1, 199.99),
+(9, 4, 3, 89.99),
+(9, 5, 2, 499.99);
 
 -- --------------------------------------------------------
 
@@ -234,11 +243,11 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `quantity`, `image_url`, `category_id`) VALUES
-(1, 'Wireless Headphones', 'Experience high-quality sound without the hassle of wires. These wireless headphones offer crystal-clear audio, comfortable design, and long battery life—perfect for music, calls, and on-the-go convenience.', 199.99, 47, '/ecommerce-frontend/Client/assets/Images/products/wireless_headphone.png', 1),
+(1, 'Wireless Headphones', 'Experience high-quality sound without the hassle of wires. These wireless headphones offer crystal-clear audio, comfortable design, and long battery life—perfect for music, calls, and on-the-go convenience.', 199.99, 46, '/ecommerce-frontend/Client/assets/Images/products/wireless_headphone.png', 1),
 (2, 'Bluetooth Speaker', 'Portable Bluetooth speakers with powerful sound and deep bass. Enjoy wireless music streaming, long battery life, and a compact design—perfect for parties, travel, and outdoor fun.', 59.99, 36, '/ecommerce-frontend/Client/assets/Images/products/bluetooth_speaker.jpg', 1),
 (3, 'Smart Watch', 'Stay connected and track your fitness with this sleek smart watch. Featuring health monitoring, notifications, and long battery life, it’s the perfect companion for your active lifestyle.', 149.99, 15, '/ecommerce-frontend/Client/assets/Images/products/smart_watch.png', 2),
-(4, 'Gaming Keyboard', 'Enhance your gameplay with this high-performance gaming keyboard. Featuring responsive mechanical keys, customizable RGB lighting, and durable design for ultimate precision and speed.', 89.99, 25, '/ecommerce-frontend/Client/assets/Images/products/gaming_keyboard_yellow.jpg', 3),
-(5, '4k Monitor', 'Experience stunning clarity and vibrant colors with this 4K UHD monitor. Perfect for gaming, design, and productivity, it delivers ultra-sharp visuals and smooth performance.', 499.99, 3, '/ecommerce-frontend/Client/assets/Images/products/asus_monitor.jpg', 4),
+(4, 'Gaming Keyboard', 'Enhance your gameplay with this high-performance gaming keyboard. Featuring responsive mechanical keys, customizable RGB lighting, and durable design for ultimate precision and speed.', 89.99, 22, '/ecommerce-frontend/Client/assets/Images/products/gaming_keyboard_yellow.jpg', 3),
+(5, '4k Monitor', 'Experience stunning clarity and vibrant colors with this 4K UHD monitor. Perfect for gaming, design, and productivity, it delivers ultra-sharp visuals and smooth performance.', 499.99, 1, '/ecommerce-frontend/Client/assets/Images/products/asus_monitor.jpg', 4),
 (6, 'USB-C Charger', 'Fast charging USB-C power adapter.', 29.99, 50, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
 (7, 'Mechanical Keyboard', 'Tactile keys with RGB lighting.', 89.99, 20, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
 (8, 'Gaming Mouse', 'Precision gaming mouse with customizable DPI.', 49.99, 35, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
@@ -373,7 +382,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -397,7 +406,7 @@ ALTER TABLE `delivery_addresses`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `products`
