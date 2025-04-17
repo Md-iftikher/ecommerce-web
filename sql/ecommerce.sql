@@ -177,7 +177,7 @@ CREATE TABLE `orders` (
   `customer_id` int(11) NOT NULL,
   `address_id` int(11) NOT NULL,
   `total_price` decimal(10,2) NOT NULL CHECK (`total_price` >= 0),
-  `status` enum('pending','delivered') NOT NULL DEFAULT 'pending',
+  `status` enum('pending','processing','out_for_delivery','delivered') NOT NULL DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
