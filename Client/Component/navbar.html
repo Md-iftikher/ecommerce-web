@@ -1,12 +1,15 @@
+<link href="https://cdn.jsdelivr.net/npm/daisyui@5.0.0-beta.8/daisyui.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
 <nav class="bg-base-100 shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
             <div class="flex-shrink-0">
-                <span class="text-xl font-bold text-gray-800">ECOM</span>
+                <span class="text-xl font-bold text-gray-800">ELCON</span>
             </div>
             <div class="flex space-x-8 items-center">
-                <a href="/ecommerce-frontend/Client/index.php" class="text-gray-800 hover:text-gray-600">Home</a>
-                <a href="./Pages/AllProduct.php" class="text-gray-800 hover:text-gray-600">AllProducts</a>
+                <a href="#" class="text-gray-800 hover:text-gray-600">Home</a>
+                <a href="#" class="text-gray-800 hover:text-gray-600">AllProducts</a>
                 <a href="#" class="text-gray-800 hover:text-gray-600">Blog</a>
                 <a href="#" class="text-red-400 hover:text-gray-600">Discounts & Offers</a>
                 <a href="#" class="text-gray-800 hover:text-gray-600">About Us</a>
@@ -20,13 +23,13 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
-                            <span class="badge badge-sm indicator-item">0</span> Cart Count
-                         </div>
+                            <span class="badge badge-sm indicator-item">8</span>
+                        </div>
                     </div>
                     <div tabindex="0" class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
                         <div class="card-body">
-                            <span class="text-lg font-bold">${cart.length} Items</span>
-                            <span class="text-info">Subtotal: $${cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}</span>
+                            <span class="text-lg font-bold">8 Items</span>
+                            <span class="text-info">Subtotal: $999</span>
                             <div class="card-actions">
                                 <button class="btn btn-primary btn-block">View cart</button>
                             </div>
@@ -43,7 +46,7 @@
                     <ul tabindex="0"
                         class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
                         <li>
-                            <a class="justify-between" href="./Pages/my_profile.php">
+                            <a class="justify-between">
                                 Profile
                             </a>
                         </li>
