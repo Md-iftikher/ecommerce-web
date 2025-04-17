@@ -30,8 +30,16 @@ SET time_zone = "+00:00";
 CREATE TABLE `admins` (
   `admin_id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
-  `hashed_password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`admin_id`, `username`, `password`) VALUES
+(1, 'Imon', '$2y$10$a15VJcdWN6GK52kxaOXNWeTPCC1U1XyAGebdU9qZUyt45N7bBzEuG'),
+(2, 'Nazeef', '$2y$10$a15VJcdWN6GK52kxaOXNWeTPCC1U1XyAGebdU9qZUyt45N7bBzEuG');
 
 -- --------------------------------------------------------
 
