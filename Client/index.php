@@ -10,6 +10,7 @@ if (isset($_GET['signed_up'])) {
 }
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 
