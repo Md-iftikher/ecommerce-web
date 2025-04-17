@@ -122,8 +122,12 @@ if (isset($_SESSION['customer_id'])) {
         <label for="sort" class="mr-2 font-medium text-[#4a4e69]">Sort by:</label>
         <select id="sort" class="border border-[#4a4e69] text-[#4a4e69] rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-[#4a4e69]">
             <option value="default">Default</option>
-            <option value="low-high">Price (Low &gt; High)</option>
-            <option value="high-low">Price (High &gt; Low)</option>
+            <option value="name_asc">Name A–Z</option>
+            <option value="name_desc">Name Z–A</option>
+            <option value="popular">Popular</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="latest">Latest</option>
         </select>
     </div>
 </div>
