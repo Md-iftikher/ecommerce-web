@@ -27,7 +27,7 @@ switch($sort) {
         }
     case 'latest':
         {
-            $order_by = "order by p.product_id asc";
+            $order_by = "order by p.product_id desc";
             break;
         }
     case 'popular':
