@@ -94,7 +94,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 <nav>
                     <ul class="space-y-1">
                         <li>
-                            <a href="dashboard.php" class="flex items-center p-3 rounded-lg bg-blue-50 text-blue-600">
+                            <a href="dashboard.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-blue-600">
                                 <i class="fas fa-tachometer-alt mr-3 text-blue-500"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -106,7 +106,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                             </a>
                         </li>
                         <li>
-                            <a href="orders.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-gray-600">
+                            <a href="orders.php" class="flex items-center p-3 rounded-lg bg-blue-50 text-gray-600">
                                 <i class="fas fa-shopping-cart mr-3 text-gray-500"></i>
                                 <span>Orders</span>
                                 <span class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full" id="pending-stat-sidebar">0</span>
