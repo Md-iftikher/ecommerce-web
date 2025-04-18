@@ -141,7 +141,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                     <div class="flex items-center space-x-4">
                         <div class="relative">
                             <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none">
-                            <span class="text-sm text-gray-600"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></span>
+                                <span class="text-sm text-gray-600"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></span>
                                 <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=3b82f6&color=fff"
                                     alt="User" class="w-8 h-8 rounded-full">
                             </button>
@@ -166,7 +166,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                         <p class="text-sm text-gray-500">Processing</p>
                         <p class="text-2xl font-bold" id="processing-order">0</p>
                     </a>
-                   
+
                     <a href="#" class="status-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-500 hover:bg-gray-50 transition" data-status="delivered">
                         <p class="text-sm text-gray-500">Delivered</p>
                         <p class="text-2xl font-bold" id="delivered-count">0</p>
@@ -362,30 +362,30 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
             // Functions
             function loadStatusCounts() {
-    fetch('../PHP/get_order_counts.php')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log(data.counts);
-                const {
-                    all,
-                    pending,
-                    processing,
-                    delivered,
-                    out_for_delivery
-                } = data.counts;
+                fetch('../PHP/get_order_counts.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log(data.counts);
+                            const {
+                                all,
+                                pending,
+                                processing,
+                                delivered,
+                                out_for_delivery
+                            } = data.counts;
 
-                document.getElementById('all-count').textContent = all;
-                document.getElementById('pending-count-card').textContent = pending;
-                document.getElementById('processing-order').textContent = processing; // Changed from pending to processing
-                document.getElementById('delivered-count').textContent = delivered;
-                document.getElementById('out-for-delivery-count').textContent = out_for_delivery;
-                document.getElementById('pending-stat-sidebar').textContent = pending;
+                            document.getElementById('all-count').textContent = all;
+                            document.getElementById('pending-count-card').textContent = pending;
+                            document.getElementById('processing-order').textContent = processing; // Changed from pending to processing
+                            document.getElementById('delivered-count').textContent = delivered;
+                            document.getElementById('out-for-delivery-count').textContent = out_for_delivery;
+                            document.getElementById('pending-stat-sidebar').textContent = pending;
 
+                        }
+                    })
+                    .catch(error => console.error('Error loading status counts:', error));
             }
-        })
-        .catch(error => console.error('Error loading status counts:', error));
-}
 
             function loadOrders() {
                 const params = new URLSearchParams();
