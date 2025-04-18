@@ -10,6 +10,7 @@ require_once __DIR__ . '/../PHP/config.php';
 
 $totalRevenue = 0;
 $newCustomers = 0;
+$recentOrders = []; // Initialize as empty array
 
 // Fetch data from database
 try {
@@ -18,10 +19,11 @@ try {
     $totalOrders = $stmt->fetch_assoc()['totalOrders'];
 
     // Pending Orders
-    $stmt = $conn->query("SELECT COUNT(*) AS pendingOrders FROM orders WHERE status = 'Pending'");
+    $stmt = $conn->query("SELECT COUNT(*) AS pendingOrders FROM orders WHERE status = 'pending'");
     $pendingOrders = $stmt->fetch_assoc()['pendingOrders'];
 
-    $stmt = $conn->query("SELECT COALESCE(SUM(total_amount), 0) AS totalRevenue FROM orders WHERE status = 'Completed'");
+    // Total Revenue from delivered orders
+    $stmt = $conn->query("SELECT COALESCE(SUM(total_price), 0) AS totalRevenue FROM orders WHERE status = 'delivered'");
     $result = $stmt->fetch_assoc();
     $totalRevenue = $result['totalRevenue'] ?? 0;
 
@@ -29,20 +31,9 @@ try {
     $stmt = $conn->query("SELECT COUNT(*) AS newCustomers FROM customers WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)");
     $result = $stmt->fetch_assoc();
     $newCustomers = $result['newCustomers'] ?? 0;
-
-    // Recent 5 Orders
-    $stmt = $conn->query("
-        SELECT o.order_id, CONCAT(c.first_name, ' ', c.last_name) AS customer, 
-       DATE_FORMAT(o.created_at, '%Y-%m-%d') AS date, 
-       o.total_price AS amount, o.status
-FROM orders o
-JOIN customers c ON o.customer_id = c.customer_id
-ORDER BY o.created_at DESC
-LIMIT 5;
-    ");
-    $recentOrders = $stmt->fetch_all(MYSQLI_ASSOC);
 } catch (Exception $e) {
     $error = "Database error: " . $e->getMessage();
+    error_log($error);
 }
 ?>
 <!DOCTYPE html>
@@ -77,6 +68,33 @@ LIMIT 5;
         .card:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-processing {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .status-delivered {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-out_for_delivery {
+            background-color: #ffedd5;
+            color: #9a3412;
         }
     </style>
 </head>
@@ -173,9 +191,9 @@ LIMIT 5;
                             <h2 class="text-xl font-semibold text-gray-800 mb-1">Welcome back, <?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?>!</h2>
                             <p class="text-gray-600">Here's your store summary for today.</p>
                         </div>
-                        <a href="dashboard.php" class="mt-3 md:mt-0 inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+                        <button id="refresh-btn" class="mt-3 md:mt-0 inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
                             <i class="fas fa-sync-alt mr-2 text-gray-500"></i> Refresh
-                        </a>
+                        </button>
                     </div>
                 </div>
 
@@ -234,53 +252,40 @@ LIMIT 5;
                     </div>
                 </div>
 
-                <!-- Recent Orders -->
-                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden mb-6">
-                    <div class="p-4 border-b border-gray-200">
-                        <h3 class="font-medium text-gray-800">Recent Orders</h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <?php if (!empty($recentOrders)): ?>
-                                    <?php foreach ($recentOrders as $order): ?>
-                                        <tr class="hover:bg-gray-50">
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800"><?= htmlspecialchars($order['order_id']) ?></td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600"><?= htmlspecialchars($order['customer']) ?></td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600"><?= $order['date'] ?></td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">$<?= number_format($order['amount'], 2) ?></td>
-                                            <td class="px-4 py-3 whitespace-nowrap">
-                                                <span class="px-2 py-1 text-xs font-medium rounded-full <?= $order['status'] === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' ?>">
-                                                    <?= htmlspecialchars($order['status']) ?>
-                                                </span>
-                                            </td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                                                <a href="orders.php?id=<?= $order['order_id'] ?>" class="text-blue-600 hover:text-blue-800">View</a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
+                <div class="mb-10">
+                    <!-- Recent Orders -->
+                    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden mb-6">
+                        <div class="p-4 border-b border-gray-200">
+                            <h3 class="font-medium text-gray-800">Recent Orders</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
                                     <tr>
-                                        <td colspan="6" class="px-4 py-4 text-center text-gray-500">No recent orders found</td>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                     </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200" id="recent-orders-table">
+                                    <tr>
+                                        <td colspan="5" class="px-4 py-4 text-center text-gray-500">Loading recent orders...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
                     </div>
                     <div class="p-3 border-t border-gray-200 flex justify-end">
                         <a href="orders.php" class="text-sm font-medium text-blue-600 hover:text-blue-800">View All Orders →</a>
                     </div>
                 </div>
+
+
+
             </main>
         </div>
     </div>
@@ -294,6 +299,77 @@ LIMIT 5;
                     document.querySelector('aside').classList.toggle('hidden');
                 });
             }
+
+            // Load recent orders via AJAX
+            function loadRecentOrders() {
+                fetch('../PHP/get_recent_orders.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success && data.orders.length > 0) {
+                            const ordersTable = document.getElementById('recent-orders-table');
+                            ordersTable.innerHTML = '';
+
+                            data.orders.forEach(order => {
+                                const row = document.createElement('tr');
+                                row.className = 'hover:bg-gray-50';
+                                row.innerHTML = `
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">${order.order_id}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">${order.customer_name}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">${order.order_date}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">$${parseFloat(order.amount).toFixed(2)}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <span class="status-badge ${getStatusClass(order.status)}">
+                                            ${formatStatus(order.status)}
+                                        </span>
+                                    </td>
+                                `;
+                                ordersTable.appendChild(row);
+                            });
+                        } else {
+                            document.getElementById('recent-orders-table').innerHTML = `
+                                <tr>
+                                    <td colspan="5" class="px-4 py-4 text-center text-gray-500">No recent orders found</td>
+                                </tr>
+                            `;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading recent orders:', error);
+                        document.getElementById('recent-orders-table').innerHTML = `
+                            <tr>
+                                <td colspan="5" class="px-4 py-4 text-center text-gray-500">Error loading orders</td>
+                            </tr>
+                        `;
+                    });
+            }
+
+            // Helper functions for status display
+            function getStatusClass(status) {
+                switch (status) {
+                    case 'pending':
+                        return 'status-pending';
+                    case 'processing':
+                        return 'status-processing';
+                    case 'delivered':
+                        return 'status-delivered';
+                    case 'out_for_delivery':
+                        return 'status-out_for_delivery';
+                    default:
+                        return 'status-pending';
+                }
+            }
+
+            function formatStatus(status) {
+                return status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            }
+
+            // Refresh button functionality
+            document.getElementById('refresh-btn').addEventListener('click', function() {
+                loadRecentOrders();
+            });
+
+            // Initial load
+            loadRecentOrders();
         });
     </script>
 </body>
