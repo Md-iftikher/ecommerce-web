@@ -70,60 +70,68 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 </head>
 
 <body class="bg-gray-50 font-sans">
+    <!-- Mobile Sidebar Toggle -->
+    <button id="sidebar-toggle" class="md:hidden fixed z-50 top-4 left-4 bg-white p-2 rounded-full shadow-md">
+        <i class="fas fa-bars text-gray-600"></i>
+    </button>
+
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
-        <aside class="w-64 bg-white border-r border-gray-200 sidebar">
+        <aside id="sidebar" class="md:translate-x-0 transform -translate-x-full fixed md:relative z-40 w-64 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out flex flex-col">
             <div class="p-4 border-b border-gray-200">
                 <h1 class="text-xl font-semibold text-gray-800">
                     <span class="text-blue-500">Admin</span>Panel
                 </h1>
             </div>
 
-            <div class="p-4">
-                <!-- Admin Profile -->
-                <div class="flex items-center space-x-3 p-3 mb-6 bg-gray-50 rounded-lg">
-                    <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=3b82f6&color=fff"
-                        alt="Admin" class="w-10 h-10 rounded-full">
-                    <div>
-                        <h3 class="font-medium text-gray-800"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></h3>
-                        <p class="text-xs text-gray-500">Administrator</p>
+            <!-- Scrollable content area -->
+            <div class="flex-1 overflow-y-auto">
+                <div class="p-4">
+                    <!-- Admin Profile -->
+                    <div class="flex items-center space-x-3 p-3 mb-6 bg-gray-50 rounded-lg">
+                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=3b82f6&color=fff"
+                            alt="Admin" class="w-10 h-10 rounded-full">
+                        <div>
+                            <h3 class="font-medium text-gray-800"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></h3>
+                            <p class="text-xs text-gray-500">Administrator</p>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Navigation -->
-                <nav>
-                    <ul class="space-y-1">
-                        <li>
-                            <a href="dashboard.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-blue-600">
-                                <i class="fas fa-tachometer-alt mr-3 text-blue-500"></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="products.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-gray-600">
-                                <i class="fas fa-box-open mr-3 text-gray-500"></i>
-                                <span>Products</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="orders.php" class="flex items-center p-3 rounded-lg bg-blue-50 text-gray-600">
-                                <i class="fas fa-shopping-cart mr-3 text-gray-500"></i>
-                                <span>Orders</span>
-                                <span class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full" id="pending-stat-sidebar">0</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="customers.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-gray-600">
-                                <i class="fas fa-users mr-3 text-gray-500"></i>
-                                <span>Customers</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                    <!-- Navigation -->
+                    <nav>
+                        <ul class="space-y-1">
+                            <li>
+                                <a href="dashboard.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-gray-600">
+                                    <i class="fas fa-tachometer-alt mr-3 text-gray-500"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="products.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-gray-600">
+                                    <i class="fas fa-box-open mr-3 text-gray-500"></i>
+                                    <span>Products</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="orders.php" class="flex items-center p-3 rounded-lg bg-blue-50 text-blue-600">
+                                    <i class="fas fa-shopping-cart mr-3 text-blue-500"></i>
+                                    <span>Orders</span>
+                                    <span class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full" id="pending-stat-sidebar">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="customers.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-gray-600">
+                                    <i class="fas fa-users mr-3 text-gray-500"></i>
+                                    <span>Customers</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
 
-            <!-- Logout Section -->
-            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
+            <!-- Fixed logout section at bottom -->
+            <div class="p-4 border-t border-gray-200 bg-white">
                 <a href="../PHP/logout.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-gray-600">
                     <i class="fas fa-sign-out-alt mr-3 text-gray-500"></i>
                     <span>Logout</span>
@@ -136,44 +144,42 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             <header class="bg-white shadow-sm">
                 <div class="flex items-center justify-between p-4">
                     <div class="flex items-center space-x-4">
-                        <h2 class="text-xl font-semibold text-gray-800">Order Management</h2>
+                        <h2 class="text-lg md:text-xl font-semibold text-gray-800">Order Management</h2>
                     </div>
                     <div class="flex items-center space-x-4">
                         <div class="relative">
                             <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none">
-                                <span class="text-sm text-gray-600"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></span>
+                                <span class="text-sm text-gray-600 hidden sm:inline"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></span>
                                 <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=3b82f6&color=fff"
                                     alt="User" class="w-8 h-8 rounded-full">
                             </button>
                         </div>
                     </div>
                 </div>
-
             </header>
 
-            <main class="p-6">
+            <main class="p-4 md:p-6">
                 <!-- Status Cards -->
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
                     <a href="#" class="status-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-500 hover:bg-gray-50 transition" data-status="all">
                         <p class="text-sm text-gray-500">All Orders</p>
-                        <p class="text-2xl font-bold" id="all-count">0</p>
+                        <p class="text-xl md:text-2xl font-bold" id="all-count">0</p>
                     </a>
                     <a href="#" class="status-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-yellow-500 hover:bg-gray-50 transition" data-status="pending">
                         <p class="text-sm text-gray-500">Pending</p>
-                        <p class="text-2xl font-bold" id="pending-count-card">0</p>
+                        <p class="text-xl md:text-2xl font-bold" id="pending-count-card">0</p>
                     </a>
-                    <a href="#" class="status-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-purple-500 hover:bg-gray-50 transition" data-status="pending">
+                    <a href="#" class="status-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-purple-500 hover:bg-gray-50 transition" data-status="processing">
                         <p class="text-sm text-gray-500">Processing</p>
-                        <p class="text-2xl font-bold" id="processing-order">0</p>
+                        <p class="text-xl md:text-2xl font-bold" id="processing-order">0</p>
                     </a>
-
                     <a href="#" class="status-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-green-500 hover:bg-gray-50 transition" data-status="delivered">
                         <p class="text-sm text-gray-500">Delivered</p>
-                        <p class="text-2xl font-bold" id="delivered-count">0</p>
+                        <p class="text-xl md:text-2xl font-bold" id="delivered-count">0</p>
                     </a>
                     <a href="#" class="status-card bg-white p-4 rounded-lg shadow-sm border-l-4 border-orange-500 hover:bg-gray-50 transition" data-status="out_for_delivery">
                         <p class="text-sm text-gray-500">Out for Delivery</p>
-                        <p class="text-2xl font-bold" id="out-for-delivery-count">0</p>
+                        <p class="text-xl md:text-2xl font-bold" id="out-for-delivery-count">0</p>
                     </a>
                 </div>
 
@@ -183,13 +189,13 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                    <th class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                    <th class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Date</th>
+                                    <th class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
+                                    <th class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                    <th class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200" id="orders-table-body">
@@ -243,7 +249,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                 <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl w-full">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
@@ -284,10 +290,10 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                                         <table class="min-w-full divide-y divide-gray-200">
                                             <thead class="bg-gray-50">
                                                 <tr>
-                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
-                                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
+                                                    <th class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                                                    <th class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                                    <th class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                                                    <th class="px-4 md:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Subtotal</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="bg-white divide-y divide-gray-200" id="modal-order-items">
@@ -314,6 +320,26 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Mobile sidebar toggle
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                sidebar.classList.toggle('translate-x-0');
+            });
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth < 768 && 
+                    !sidebar.contains(e.target) && 
+                    e.target !== sidebarToggle && 
+                    !sidebarToggle.contains(e.target)) {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebar.classList.remove('translate-x-0');
+                }
+            });
+
             // Global variables
             let currentPage = 1;
             let totalPages = 1;
@@ -377,11 +403,10 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
                             document.getElementById('all-count').textContent = all;
                             document.getElementById('pending-count-card').textContent = pending;
-                            document.getElementById('processing-order').textContent = processing; // Changed from pending to processing
+                            document.getElementById('processing-order').textContent = processing;
                             document.getElementById('delivered-count').textContent = delivered;
                             document.getElementById('out-for-delivery-count').textContent = out_for_delivery;
                             document.getElementById('pending-stat-sidebar').textContent = pending;
-
                         }
                     })
                     .catch(error => console.error('Error loading status counts:', error));
@@ -421,30 +446,30 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                     const row = document.createElement('tr');
                     row.className = 'hover:bg-gray-50';
                     row.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                             #${order.order_id}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap">
                             <div class="text-sm font-medium text-gray-900">${order.customer_name}</div>
-                            <div class="text-sm text-gray-500">${order.customer_email}</div>
+                            <div class="text-sm text-gray-500 hidden sm:block">${order.customer_email}</div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden sm:table-cell">
                             ${new Date(order.order_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             ${order.item_count}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             $${parseFloat(order.total_amount).toFixed(2)}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-3 py-1 text-xs leading-5 font-semibold rounded-full 
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 text-xs leading-5 font-semibold rounded-full 
                                 ${getStatusClass(order.status)}">
                                 ${formatStatus(order.status)}
                             </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <button class="view-order-btn text-primary hover:text-primary-dark" data-id="${order.order_id}" title="View Details">
+                        <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button class="view-order-btn text-blue-600 hover:text-blue-800" data-id="${order.order_id}" title="View Details">
                                 <i class="fas fa-eye"></i>
                             </button>
                         </td>
@@ -498,7 +523,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
                 for (let i = startPage; i <= endPage; i++) {
                     const pageBtn = document.createElement('button');
-                    pageBtn.className = `relative inline-flex items-center px-4 py-2 border text-sm font-medium ${i === page ? 'z-10 bg-primary border-primary text-white' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'}`;
+                    pageBtn.className = `relative inline-flex items-center px-4 py-2 border text-sm font-medium ${i === page ? 'z-10 bg-blue-600 border-blue-600 text-white' : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'}`;
                     pageBtn.textContent = i;
                     pageBtn.addEventListener('click', () => {
                         currentPage = i;
@@ -554,16 +579,16 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                                 const row = document.createElement('tr');
                                 row.className = 'hover:bg-gray-50';
                                 row.innerHTML = `
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                    <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                         ${item.product_name}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         $${parseFloat(item.price).toFixed(2)}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         ${item.quantity}
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         $${parseFloat(item.price * item.quantity).toFixed(2)}
                                     </td>
                                 `;
@@ -612,5 +637,4 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
         });
     </script>
 </body>
-
 </html>
