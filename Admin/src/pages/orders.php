@@ -263,12 +263,12 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                                         <div class="mt-2 space-y-2 text-sm text-gray-500">
                                             <p><strong>Order ID:</strong> <span id="modal-order-id"></span></p>
                                             <p><strong>Date:</strong> <span id="modal-order-date"></span></p>
-                                            <p><strong>Status:</strong>
-                                                <select id="modal-order-status" class="ml-2 px-2 py-1 text-xs leading-5 font-semibold rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
-                                                    <option value="pending">Pending</option>
-                                                    <option value="processing">Processing</option>
-                                                    <option value="out_for_delivery">Out for Delivery</option>
-                                                    <option value="delivered">Delivered</option>
+                                            <p class=""><strong>Status:</strong>
+                                                <select id="modal-order-status" class="ml-2 px-2 py-1 bg-green-100 text-xs leading-5 font-semibold rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary">
+                                                    <option class="font-bold"  value="pending">Pending</option>
+                                                    <option  class="font-bold" value="processing">Processing</option>
+                                                    <option  class="font-bold" value="out_for_delivery">Out for Delivery</option>
+                                                    <option class="font-bold"  value="delivered">Delivered</option>
                                                 </select>
                                             </p>
                                             <p><strong>Total Amount:</strong> $<span id="modal-order-total"></span></p>

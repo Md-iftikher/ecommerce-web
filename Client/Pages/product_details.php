@@ -61,8 +61,8 @@ $conn->close();
                             class="text-gray-800 hover:text-gray-600">Home</a>
                         <a href="/ecommerce-frontend/Client/Pages/AllProduct.php" class="text-gray-800 hover:text-gray-600">AllProducts</a>
                         <a href="#" class="text-gray-800 hover:text-gray-600">Blog</a>
-                        <a href="#" class="text-red-400 hover:text-gray-600">Discounts & Offers</a>
-                        <a href="#" class="text-gray-800 hover:text-gray-600">About Us</a>
+                       
+                        <a href="aboutus.php" class="text-gray-800 hover:text-gray-600">About Us</a>
                     </div>
                     <div class="flex items-center space-x-4">
                         <div class="dropdown dropdown-end">

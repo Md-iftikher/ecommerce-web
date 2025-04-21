@@ -1,5 +1,5 @@
 <?php
- session_start();
+session_start();
 
 $login_flag = false;
 if (isset($_SESSION['customer_id'])) {
@@ -9,7 +9,6 @@ if (isset($_GET['signed_up'])) {
     echo '<script>window.onload = function() { alert("Account created successfully"); }</script>';
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,33 +22,42 @@ if (isset($_GET['signed_up'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Tailwind CSS CDN -->
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5.0.0-beta.8/daisyui.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body>
+<body class="bg-gray-50">
 
     <!-- Navbar Container -->
     <div id="nav-container">
         <nav class="bg-base-100 shadow-md">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
                 <div class="flex justify-between h-16 items-center">
-                    <div class="flex-shrink-0">
+                    <!-- Mobile menu button -->
+                    <div class="flex items-center md:hidden">
+                        <button type="button" id="mobile-menu-button" class="text-gray-800 hover:text-gray-600">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="flex-shrink-0 ml-4 md:ml-0">
                         <span class="text-xl font-bold text-gray-800 logo">ECOM</span>
                     </div>
-                    <div class="flex space-x-8 items-center">
-                        <a href="/ecommerce-frontend/Client/index.php"
-                            class="text-gray-800 hover:text-gray-600">Home</a>
+                    
+                    <!-- Desktop Navigation -->
+                    <div class="hidden md:flex space-x-4 lg:space-x-8 items-center">
+                        <a href="/ecommerce-frontend/Client/index.php" class="text-gray-800 hover:text-gray-600">Home</a>
                         <a href="/ecommerce-frontend/Client/Pages/AllProduct.php" class="text-gray-800 hover:text-gray-600">AllProducts</a>
                         <a href="#" class="text-gray-800 hover:text-gray-600">Blog</a>
-                        <a href="#" class="text-red-400 hover:text-gray-600">Discounts & Offers</a>
-                        <a href="#" class="text-gray-800 hover:text-gray-600">About Us</a>
+                        <a href="/ecommerce-frontend/Client/Pages/aboutus.php" class="text-gray-800 hover:text-gray-600">About Us</a>
                     </div>
-                    <div class="flex items-center space-x-4">
+                    
+                    <div class="flex items-center space-x-2 sm:space-x-4">
                         <div class="dropdown dropdown-end">
                             <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
                                 <div class="indicator">
@@ -58,13 +66,12 @@ if (isset($_GET['signed_up'])) {
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                                     </svg>
-                                    <span class="badge badge-sm indicator-item" id="cart-count">0</span> <!-- Dynamic Cart Count -->
+                                    <span class="badge badge-sm indicator-item" id="cart-count">0</span>
                                 </div>
                             </div>
                             <div tabindex="0"
                                 class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
                                 <div class="card-body" id="cart-dropdown-content">
-                                    <!-- Content will be dynamically updated by cart.js -->
                                     <span class="text-lg font-bold">0 Items</span>
                                     <span class="text-info">Subtotal: $0.00</span>
                                     <div class="card-actions">
@@ -76,7 +83,7 @@ if (isset($_GET['signed_up'])) {
                         <?php if ($login_flag): ?>
                         <div class="dropdown dropdown-end">
                             <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                                <div class="flex items-center justify-center w-10 h-10 rounded-full">
+                                <div class="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full">
                                     <i class="fa-solid fa-user fa-lg"></i>
                                 </div>
                             </div>
@@ -92,12 +99,28 @@ if (isset($_GET['signed_up'])) {
                             </ul>
                         </div>
                         <?php else: ?>
-                        <div class="button-container">
+                        <div class="button-container hidden sm:flex">
                             <a href="/ecommerce-frontend/Client/Pages/signup.php" class="button signup-btn">Sign Up</a>
                             <a href="/ecommerce-frontend/Client/Pages/login.php" class="button login-btn">Log in</a>
                         </div>
                         <?php endif; ?>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="hidden md:hidden bg-base-100 pb-4 px-4">
+                <div class="flex flex-col space-y-2">
+                    <a href="/ecommerce-frontend/Client/index.php" class="text-gray-800 hover:text-gray-600 py-2">Home</a>
+                    <a href="/ecommerce-frontend/Client/Pages/AllProduct.php" class="text-gray-800 hover:text-gray-600 py-2">AllProducts</a>
+                    <a href="#" class="text-gray-800 hover:text-gray-600 py-2">Blog</a>
+                    <a href="/ecommerce-frontend/Client/Pages/aboutus.php" class="text-gray-800 hover:text-gray-600 py-2">About Us</a>
+                    <?php if (!$login_flag): ?>
+                    <div class="flex flex-col space-y-2 pt-2">
+                        <a href="/ecommerce-frontend/Client/Pages/signup.php" class="button signup-btn w-full text-center">Sign Up</a>
+                        <a href="/ecommerce-frontend/Client/Pages/login.php" class="button login-btn w-full text-center">Log in</a>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </nav>
@@ -107,20 +130,20 @@ if (isset($_GET['signed_up'])) {
         <!-- Slider Section -->
         <section>
             <div class="relative">
-                <div id="banner-slider" class="h-[300px] sm:h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden">
+                <div id="banner-slider" class="h-[200px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] overflow-hidden">
                     <!-- Slider content goes here -->
                 </div>
-                <div class="absolute top-1/2 transform -translate-y-1/2 w-full flex justify-between px-4">
-                    <button id="prev-slide" class="bg-gray-800 text-white rounded-full p-2">&lt;</button>
-                    <button id="next-slide" class="bg-gray-800 text-white rounded-full p-2">&gt;</button>
+                <div class="absolute top-1/2 transform -translate-y-1/2 w-full flex justify-between px-2 sm:px-4">
+                    <button id="prev-slide" class="bg-gray-800 text-white rounded-full p-2 opacity-75 hover:opacity-100">&lt;</button>
+                    <button id="next-slide" class="bg-gray-800 text-white rounded-full p-2 opacity-75 hover:opacity-100">&gt;</button>
                 </div>
             </div>
         </section>
 
         <!-- Recently Added Products Section -->
-        <section class="container mx-auto px-4 py-8">
-            <h2 class="text-3xl font-bold text-center mb-8">Recently Added Products</h2>
-            <div id="recently-added-products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <section class="container mx-auto px-2 sm:px-4 py-6 sm:py-8">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8">Recently Added Products</h2>
+            <div id="recently-added-products" class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
                 <!-- Product cards will be dynamically inserted here -->
             </div>
         </section>
@@ -137,6 +160,14 @@ if (isset($_GET['signed_up'])) {
         document.addEventListener('DOMContentLoaded', () => {
             updateCartCount(); // Update cart count in the navbar
             updateCartDropdown(); // Update cart dropdown content
+            
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
         });
     </script>
 </body>
