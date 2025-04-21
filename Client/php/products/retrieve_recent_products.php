@@ -6,7 +6,7 @@ select p.*, c.category_name
 from products p
 inner join categories c
 on p.category_id = c.category_id
-order by category_id desc
+order by p.product_id desc
 limit 8;
 ";
 
@@ -16,7 +16,7 @@ $products = [];
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $products[] = $row; // Add each row (assoc array) to the array
+        $products[] = $row;
     }
 }
 

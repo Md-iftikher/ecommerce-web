@@ -359,7 +359,7 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
                     const row = document.createElement('tr');
                     row.className = 'hover:bg-gray-50';
                     
-                    // Format gender for display
+                    
                     let genderDisplay = 'Other';
                     if (customer.gender === 'M') genderDisplay = 'Male';
                     if (customer.gender === 'F') genderDisplay = 'Female';
