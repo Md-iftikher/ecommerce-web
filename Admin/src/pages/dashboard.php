@@ -10,7 +10,7 @@ require_once __DIR__ . '/../PHP/config.php';
 
 $totalRevenue = 0;
 $newCustomers = 0;
-
+$recentOrders = []; // Initialize as empty array
 
 // Fetch data from database
 try {
@@ -19,10 +19,11 @@ try {
     $totalOrders = $stmt->fetch_assoc()['totalOrders'];
 
     // Pending Orders
-    $stmt = $conn->query("SELECT COUNT(*) AS pendingOrders FROM orders WHERE status = 'Pending'");
+    $stmt = $conn->query("SELECT COUNT(*) AS pendingOrders FROM orders WHERE status = 'pending'");
     $pendingOrders = $stmt->fetch_assoc()['pendingOrders'];
 
-    $stmt = $conn->query("SELECT COALESCE(SUM(total_amount), 0) AS totalRevenue FROM orders WHERE status = 'Completed'");
+    // Total Revenue from delivered orders
+    $stmt = $conn->query("SELECT COALESCE(SUM(total_price), 0) AS totalRevenue FROM orders WHERE status = 'delivered'");
     $result = $stmt->fetch_assoc();
     $totalRevenue = $result['totalRevenue'] ?? 0;
 
@@ -30,20 +31,9 @@ try {
     $stmt = $conn->query("SELECT COUNT(*) AS newCustomers FROM customers WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)");
     $result = $stmt->fetch_assoc();
     $newCustomers = $result['newCustomers'] ?? 0;
-
-    // Recent 5 Orders
-    $stmt = $conn->query("
-        SELECT o.order_id, CONCAT(c.first_name, ' ', c.last_name) AS customer, 
-               DATE_FORMAT(o.order_date, '%Y-%m-%d') AS date, 
-               o.total_amount AS amount, o.status
-        FROM orders o
-        JOIN customers c ON o.customer_id = c.customer_id
-        ORDER BY o.order_date DESC
-        LIMIT 5
-    ");
-    $recentOrders = $stmt->fetch_all(MYSQLI_ASSOC);
 } catch (Exception $e) {
     $error = "Database error: " . $e->getMessage();
+    error_log($error);
 }
 ?>
 <!DOCTYPE html>
@@ -54,89 +44,126 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../css/styles.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4f46e5',
-                        secondary: '#10b981',
-                        dark: '#1e293b',
-                        light: '#f8fafc'
-                    }
-                }
-            }
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
         }
-    </script>
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar {
+            transition: all 0.3s;
+        }
+
+        .card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-processing {
+            background-color: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .status-delivered {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-out_for_delivery {
+            background-color: #ffedd5;
+            color: #9a3412;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50 font-sans">
-    <div class="flex h-screen overflow-hidden">
-        <!-- Sidebar -->
-        <aside class="w-64 bg-gradient-to-b from-dark to-gray-900 text-white shadow-xl transform transition-all duration-300 ease-in-out">
-            <div class="p-6 flex items-center justify-between border-b border-gray-700">
-                <h1 class="text-2xl font-bold">
-                    <span class="text-primary">Ecom</span>Admin
-                </h1>
-                <button id="sidebarToggle" class="text-gray-400 hover:text-white lg:hidden">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
+<body class="bg-gray-50">
+    <!-- Mobile Sidebar Toggle -->
+    <button id="sidebar-toggle" class="md:hidden fixed z-50 top-4 left-4 bg-white p-2 rounded-full shadow-md">
+        <i class="fas fa-bars text-gray-600"></i>
+    </button>
 
-            <div class="p-4">
-                <!-- Admin Profile -->
-                <div class="flex items-center space-x-4 p-4 mb-6 bg-gray-800 rounded-lg">
-                    <div class="relative">
-                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=4f46e5&color=fff"
-                            alt="Admin" class="w-12 h-12 rounded-full">
-                        <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800"></span>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></h3>
-                        <p class="text-xs text-gray-400">Administrator</p>
-                    </div>
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar - Fixed height and proper scrolling -->
+        <aside id="sidebar" class="md:translate-x-0 transform -translate-x-full fixed md:relative z-40 w-64 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out flex flex-col">
+            <!-- Scrollable content area -->
+            <div class="flex-1 overflow-y-auto">
+                <div class="p-4 border-b border-gray-200">
+                    <h1 class="text-xl font-semibold text-gray-800">
+                        <span class="text-blue-500">Admin</span>Panel
+                    </h1>
                 </div>
 
-                <!-- Navigation -->
-                <nav>
-                    <ul class="space-y-2">
-                        <li>
-                            <a href="dashboard.php" class="flex items-center p-3 rounded-lg bg-primary text-white group">
-                                <i class="fas fa-tachometer-alt mr-3"></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="products.php" class="flex items-center p-3 rounded-lg hover:bg-gray-800 text-gray-300 hover:text-white group">
-                                <i class="fas fa-box-open mr-3"></i>
-                                <span>Products</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="orders.php" class="flex items-center p-3 rounded-lg hover:bg-gray-800 text-gray-300 hover:text-white group">
-                                <i class="fas fa-shopping-cart mr-3"></i>
-                                <span>Orders</span>
-                                <span class="ml-auto bg-red-500 text-xs px-2 py-1 rounded-full"><?= $pendingOrders ?> pending</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="customers.php" class="flex items-center p-3 rounded-lg hover:bg-gray-800 text-gray-300 hover:text-white group">
-                                <i class="fas fa-users mr-3"></i>
-                                <span>Customers</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <div class="p-4">
+                    <!-- Admin Profile -->
+                    <div class="flex items-center space-x-3 p-3 mb-6 bg-gray-50 rounded-lg">
+                        <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=3b82f6&color=fff"
+                            alt="Admin" class="w-10 h-10 rounded-full">
+                        <div>
+                            <h3 class="font-medium text-gray-800"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></h3>
+                            <p class="text-xs text-gray-500">Administrator</p>
+                        </div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <nav>
+                        <ul class="space-y-1">
+                            <li>
+                                <a href="dashboard.php" class="flex items-center p-3 rounded-lg bg-blue-50 text-blue-600">
+                                    <i class="fas fa-tachometer-alt mr-3 text-blue-500"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="products.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-gray-600">
+                                    <i class="fas fa-box-open mr-3 text-gray-500"></i>
+                                    <span>Products</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="orders.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-gray-600">
+                                    <i class="fas fa-shopping-cart mr-3 text-gray-500"></i>
+                                    <span>Orders</span>
+                                    <span class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full"><?= $pendingOrders ?></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="customers.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-gray-600">
+                                    <i class="fas fa-users mr-3 text-gray-500"></i>
+                                    <span>Customers</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
 
-            <!-- Logout Section -->
-            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
-                <a href="../PHP/logout.php" class="flex items-center p-3 rounded-lg hover:bg-gray-800 text-gray-300 hover:text-white group">
-                    <i class="fas fa-sign-out-alt mr-3"></i>
+            <!-- Logout Section - Fixed at bottom -->
+            <div class="p-4 border-t border-gray-200 bg-white">
+                <a href="../PHP/logout.php" class="flex items-center p-3 rounded-lg hover:bg-gray-100 text-gray-600">
+                    <i class="fas fa-sign-out-alt mr-3 text-gray-500"></i>
                     <span>Logout</span>
                 </a>
             </div>
@@ -145,200 +172,219 @@ try {
         <!-- Main Content -->
         <div class="flex-1 overflow-auto">
             <!-- Top Navigation -->
-            <header class="bg-white shadow-sm">
+            <header class="bg-white border-b border-gray-200">
                 <div class="flex items-center justify-between p-4">
+                    <h2 class="text-lg font-medium text-gray-800">Dashboard Overview</h2>
                     <div class="flex items-center space-x-4">
-                        <h2 class="text-xl font-semibold text-gray-800">Dashboard Overview</h2>
-                    </div>
-
-                    <div class="flex items-center space-x-4">
-                        <button class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600">
+                        <button class="p-2 rounded-full hover:bg-gray-100 text-gray-500">
                             <i class="fas fa-bell"></i>
-                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
                         </button>
                         <div class="relative">
                             <button id="userMenuButton" class="flex items-center space-x-2 focus:outline-none">
-                                <span class="text-sm font-medium"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></span>
-                                <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=4f46e5&color=fff"
+                                <span class="text-sm text-gray-600 hidden sm:inline"><?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?></span>
+                                <img src="https://ui-avatars.com/api/?name=<?= urlencode($_SESSION['username'] ?? 'Admin') ?>&background=3b82f6&color=fff"
                                     alt="User" class="w-8 h-8 rounded-full">
                             </button>
-                            <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
-                                <a href="../PHP/logout.php" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
-                            </div>
                         </div>
                     </div>
                 </div>
             </header>
 
             <!-- Dashboard Content -->
-            <main class="p-6">
+            <main class="p-4 md:p-6">
                 <!-- Welcome Banner -->
-                <div class="bg-gradient-to-r from-primary to-indigo-600 rounded-xl p-6 text-white mb-8 shadow-lg">
+                <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 md:p-6 mb-6">
                     <div class="flex flex-col md:flex-row items-center justify-between">
-                        <div>
-                            <h2 class="text-2xl font-bold mb-2">Welcome back, <?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?>!</h2>
-                            <p class="opacity-90">Here's what's happening with your store today.</p>
+                        <div class="mb-4 md:mb-0">
+                            <h2 class="text-lg md:text-xl font-semibold text-gray-800 mb-1">Welcome back, <?= htmlspecialchars($_SESSION['username'] ?? 'Admin') ?>!</h2>
+                            <p class="text-gray-600">Here's your store summary for today.</p>
                         </div>
-                        <div class="mt-4 md:mt-0">
-                            <a href="dashboard.php" class="inline-flex items-center px-4 py-2 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg transition">
-                                <i class="fas fa-sync-alt mr-2"></i> Refresh
-                            </a>
-                        </div>
+                        <button id="refresh-btn" class="w-full md:w-auto inline-flex items-center justify-center px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50">
+                            <i class="fas fa-sync-alt mr-2 text-gray-500"></i> <span>Refresh</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Stats Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-primary">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white border border-gray-200 rounded-lg p-4 card">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500">Total Revenue</p>
-                                <p class="text-2xl font-semibold mt-1">
+                                <p class="text-sm text-gray-500">Total Revenue</p>
+                                <p class="text-lg md:text-xl font-semibold mt-1 text-gray-800">
                                     $<?= isset($totalRevenue) && $totalRevenue !== null ? number_format($totalRevenue, 2) : '0.00' ?>
                                 </p>
                             </div>
-                            <div class="p-3 rounded-full bg-primary bg-opacity-10 text-primary">
+                            <div class="p-2 rounded-full bg-blue-100 text-blue-600">
                                 <i class="fas fa-dollar-sign"></i>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-secondary">
+                    <div class="bg-white border border-gray-200 rounded-lg p-4 card">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500">Total Orders</p>
-                                <p class="text-2xl font-semibold mt-1"><?= $totalOrders ?></p>
+                                <p class="text-sm text-gray-500">Total Orders</p>
+                                <p class="text-lg md:text-xl font-semibold mt-1 text-gray-800"><?= $totalOrders ?></p>
                             </div>
-                            <div class="p-3 rounded-full bg-secondary bg-opacity-10 text-secondary">
+                            <div class="p-2 rounded-full bg-green-100 text-green-600">
                                 <i class="fas fa-shopping-bag"></i>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-yellow-500">
+                    <div class="bg-white border border-gray-200 rounded-lg p-4 card">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500">Pending Orders</p>
-                                <p class="text-2xl font-semibold mt-1"><?= $pendingOrders ?></p>
+                                <p class="text-sm text-gray-500">Pending Orders</p>
+                                <p class="text-lg md:text-xl font-semibold mt-1 text-gray-800"><?= $pendingOrders ?></p>
                             </div>
-                            <div class="p-3 rounded-full bg-yellow-500 bg-opacity-10 text-yellow-500">
+                            <div class="p-2 rounded-full bg-yellow-100 text-yellow-600">
                                 <i class="fas fa-clock"></i>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-sm p-6 border-l-4 border-purple-500">
+                    <div class="bg-white border border-gray-200 rounded-lg p-4 card">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium text-gray-500">New Customers</p>
-                                <p class="text-2xl font-semibold mt-1">
+                                <p class="text-sm text-gray-500">New Customers</p>
+                                <p class="text-lg md:text-xl font-semibold mt-1 text-gray-800">
                                     <?= isset($newCustomers) && $newCustomers !== null ? $newCustomers : '0' ?>
                                 </p>
                             </div>
-                            <div class="p-3 rounded-full bg-purple-500 bg-opacity-10 text-purple-500">
+                            <div class="p-2 rounded-full bg-purple-100 text-purple-600">
                                 <i class="fas fa-user-plus"></i>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
-                <!-- Recent Orders -->
-                <div class="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
-                    <div class="p-6 border-b border-gray-100">
-                        <h3 class="font-semibold text-lg">Recent Orders</h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <?php if (!empty($recentOrders)): ?>
-                                    <?php foreach ($recentOrders as $order): ?>
-                                        <tr>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><?= htmlspecialchars($order['order_id']) ?></td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= htmlspecialchars($order['customer']) ?></td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= $order['date'] ?></td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$<?= number_format($order['amount'], 2) ?></td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 py-1 text-xs font-semibold rounded-full <?= $order['status'] === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' ?>">
-                                                    <?= htmlspecialchars($order['status']) ?>
-                                                </span>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="orders.php?id=<?= $order['order_id'] ?>" class="text-primary hover:text-indigo-900">View</a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
+                <div class="mb-10">
+                    <!-- Recent Orders -->
+                    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden mb-6">
+                        <div class="p-4 border-b border-gray-200">
+                            <h3 class="font-medium text-gray-800">Recent Orders</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
                                     <tr>
-                                        <td colspan="6" class="px-6 py-4 text-center text-gray-500">No recent orders found</td>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">Date</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                        <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                                     </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="p-4 border-t border-gray-100 flex justify-end">
-                        <a href="orders.php" class="text-sm font-medium text-primary hover:text-indigo-700">View All Orders →</a>
-                    </div>
-                </div>
-
-                <!-- Product Detail Modal -->
-                <div id="productModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div class="bg-white p-6 rounded-lg w-96 shadow-card">
-                        <h2 class="text-xl font-bold mb-4" id="modalProductName">Product Name</h2>
-                        <p class="text-sm mb-2" id="modalProductDescription">Product description...</p>
-                        <p class="text-sm mb-4" id="modalProductPrice">Price: $0</p>
-                        <label class="block mb-2 text-sm font-medium">Update Status:</label>
-                        <select id="statusSelect" class="w-full p-2 border rounded">
-                            <option value="Pending">Pending</option>
-                            <option value="Delivered">Delivered</option>
-                            <option value="Cancelled">Cancelled</option>
-                        </select>
-                        <button onclick="updateStatus()" class="mt-4 w-full bg-primary text-white px-4 py-2 rounded">Update Status</button>
-                        <button onclick="closeModal()" class="mt-2 w-full text-dark border border-dark px-4 py-2 rounded">Close</button>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200" id="recent-orders-table">
+                                    <tr>
+                                        <td colspan="5" class="px-4 py-4 text-center text-gray-500">Loading recent orders...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="p-3 border-t border-gray-200 flex justify-end">
+                            <a href="orders.php" class="text-sm font-medium text-blue-600 hover:text-blue-800">View All Orders →</a>
+                        </div>
                     </div>
                 </div>
-
             </main>
         </div>
     </div>
 
     <script>
-        // Only keep the UI interaction JavaScript
-        document.addEventListener("DOMContentLoaded", function() {
-            // User menu toggle
-            const userMenuButton = document.getElementById('userMenuButton');
-            const userMenu = document.getElementById('userMenu');
-
-            if (userMenuButton && userMenu) {
-                userMenuButton.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    userMenu.classList.toggle('hidden');
-                });
-
-                document.addEventListener('click', function() {
-                    userMenu.classList.add('hidden');
-                });
-            }
-
+      document.addEventListener("DOMContentLoaded", function() {
             // Mobile sidebar toggle
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            if (sidebarToggle) {
-                sidebarToggle.addEventListener('click', function() {
-                    document.querySelector('aside').classList.toggle('hidden');
-                });
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                sidebar.classList.toggle('translate-x-0');
+            });
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth < 768 && 
+                    !sidebar.contains(e.target) && 
+                    e.target !== sidebarToggle && 
+                    !sidebarToggle.contains(e.target)) {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebar.classList.remove('translate-x-0');
+                }
+            });
+            // Load recent orders via AJAX
+            function loadRecentOrders() {
+                fetch('../PHP/get_recent_orders.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success && data.orders.length > 0) {
+                            const ordersTable = document.getElementById('recent-orders-table');
+                            ordersTable.innerHTML = '';
+
+                            data.orders.forEach(order => {
+                                const row = document.createElement('tr');
+                                row.className = 'hover:bg-gray-50';
+                                row.innerHTML = `
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">${order.order_id}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">${order.customer_name}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600 hidden sm:table-cell">${order.order_date}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600">$${parseFloat(order.amount).toFixed(2)}</td>
+                                    <td class="px-4 py-3 whitespace-nowrap">
+                                        <span class="status-badge ${getStatusClass(order.status)}">
+                                            ${formatStatus(order.status)}
+                                        </span>
+                                    </td>
+                                `;
+                                ordersTable.appendChild(row);
+                            });
+                        } else {
+                            document.getElementById('recent-orders-table').innerHTML = `
+                                <tr>
+                                    <td colspan="5" class="px-4 py-4 text-center text-gray-500">No recent orders found</td>
+                                </tr>
+                            `;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error loading recent orders:', error);
+                        document.getElementById('recent-orders-table').innerHTML = `
+                            <tr>
+                                <td colspan="5" class="px-4 py-4 text-center text-gray-500">Error loading orders</td>
+                            </tr>
+                        `;
+                    });
             }
+
+            // Helper functions for status display
+            function getStatusClass(status) {
+                switch (status) {
+                    case 'pending':
+                        return 'status-pending';
+                    case 'processing':
+                        return 'status-processing';
+                    case 'delivered':
+                        return 'status-delivered';
+                    case 'out_for_delivery':
+                        return 'status-out_for_delivery';
+                    default:
+                        return 'status-pending';
+                }
+            }
+
+            function formatStatus(status) {
+                return status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            }
+
+            // Refresh button functionality
+            document.getElementById('refresh-btn').addEventListener('click', function() {
+                window.location.reload();
+            });
+
+            // Initial load
+            loadRecentOrders();
         });
     </script>
 </body>
-
 </html>

@@ -6,7 +6,6 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +15,21 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .quick-link-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .quick-link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-left-color: currentColor;
+        }
+        .quick-link-card.dashboard:hover { border-left-color: #3b82f6; }
+        .quick-link-card.products:hover { border-left-color: #10b981; }
+        .quick-link-card.orders:hover { border-left-color: #8b5cf6; }
+        .quick-link-card.customers:hover { border-left-color: #6366f1; }
+    </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div class="container mx-auto px-4 py-16">
@@ -59,33 +73,63 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
             </div>
         </div>
 
-        <!-- Quick Links -->
-        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <a href="dashboard.php" class="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex items-start">
-                <div class="bg-blue-100 p-3 rounded-full mr-4">
-                    <i class="fas fa-tachometer-alt text-blue-600"></i>
+
+        <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Dashboard Card -->
+            <a href="dashboard.php" class="quick-link-card dashboard bg-white p-6 rounded-lg shadow-md transition flex items-start relative overflow-hidden">
+                <div class="bg-blue-100 p-3 rounded-lg mr-4">
+                    <i class="fas fa-tachometer-alt text-blue-600 text-xl"></i>
                 </div>
-                <div>
-                    <h3 class="font-bold text-gray-800">Dashboard</h3>
-                    <p class="text-sm text-gray-600 mt-1">View system overview and analytics</p>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-800 text-lg">Dashboard</h3>
+                    <p class="text-sm text-gray-600 mt-1">System overview and analytics</p>
                 </div>
-            </a>
-            <a href="products.php" class="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex items-start">
-                <div class="bg-green-100 p-3 rounded-full mr-4">
-                    <i class="fas fa-box-open text-green-600"></i>
-                </div>
-                <div>
-                    <h3 class="font-bold text-gray-800">Products</h3>
-                    <p class="text-sm text-gray-600 mt-1">Manage your product catalog</p>
+                <div class="absolute bottom-0 right-0 p-2 text-blue-500 opacity-10">
+                    <i class="fas fa-tachometer-alt text-4xl"></i>
                 </div>
             </a>
-            <a href="orders.php" class="bg-white p-6 rounded-lg shadow hover:shadow-md transition flex items-start">
-                <div class="bg-purple-100 p-3 rounded-full mr-4">
-                    <i class="fas fa-shopping-cart text-purple-600"></i>
+
+            <!-- Products Card -->
+            <a href="products.php" class="quick-link-card products bg-white p-6 rounded-lg shadow-md transition flex items-start relative overflow-hidden">
+                <div class="bg-green-100 p-3 rounded-lg mr-4">
+                    <i class="fas fa-box-open text-green-600 text-xl"></i>
                 </div>
-                <div>
-                    <h3 class="font-bold text-gray-800">Orders</h3>
-                    <p class="text-sm text-gray-600 mt-1">View and process customer orders</p>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-800 text-lg">Products</h3>
+                    <p class="text-sm text-gray-600 mt-1">Manage product catalog</p>
+        
+                </div>
+                <div class="absolute bottom-0 right-0 p-2 text-green-500 opacity-10">
+                    <i class="fas fa-box-open text-4xl"></i>
+                </div>
+            </a>
+
+            <!-- Orders Card -->
+            <a href="orders.php" class="quick-link-card orders bg-white p-6 rounded-lg shadow-md transition flex items-start relative overflow-hidden">
+                <div class="bg-purple-100 p-3 rounded-lg mr-4">
+                    <i class="fas fa-shopping-cart text-purple-600 text-xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-800 text-lg">Orders</h3>
+                    <p class="text-sm text-gray-600 mt-1">Process customer orders</p>
+                   
+                </div>
+                <div class="absolute bottom-0 right-0 p-2 text-purple-500 opacity-10">
+                    <i class="fas fa-shopping-cart text-4xl"></i>
+                </div>
+            </a>
+
+            <!-- Customers Card -->
+            <a href="customers.php" class="quick-link-card customers bg-white p-6 rounded-lg shadow-md transition flex items-start relative overflow-hidden">
+                <div class="bg-indigo-100 p-3 rounded-lg mr-4">
+                    <i class="fas fa-users text-indigo-600 text-xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-bold text-gray-800 text-lg">Customers</h3>
+                    <p class="text-sm text-gray-600 mt-1">Manage customer accounts</p>
+                </div>
+                <div class="absolute bottom-0 right-0 p-2 text-indigo-500 opacity-10">
+                    <i class="fas fa-users text-4xl"></i>
                 </div>
             </a>
         </div>

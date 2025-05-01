@@ -47,7 +47,7 @@ $conn->close();
 <body class="bg-gray-100">
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8">Your Shopping Cart</h2>
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Your Shopping Cart</h2>
 
             <?php if (empty($cart_items)): ?>
                 <div class="bg-white rounded-lg shadow-md p-6 text-center">

@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3307
--- Generation Time: Apr 17, 2025 at 01:29 PM
+-- Host: 127.0.0.1
+-- Generation Time: Apr 18, 2025 at 05:22 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -62,7 +62,7 @@ INSERT INTO `carts` (`cart_id`, `customer_id`, `status`, `created_at`) VALUES
 (2, 6, 'completed', '2025-03-26 03:58:06'),
 (3, 6, 'completed', '2025-03-26 04:13:35'),
 (4, 6, 'completed', '2025-03-26 08:26:50'),
-(8, 6, 'active', '2025-03-28 10:32:55'),
+(8, 6, 'completed', '2025-03-28 10:32:55'),
 (9, 12, 'completed', '2025-04-16 13:38:27'),
 (10, 12, 'completed', '2025-04-17 08:35:34'),
 (11, 12, 'active', '2025-04-17 11:17:10');
@@ -196,9 +196,10 @@ CREATE TABLE `orders` (
 INSERT INTO `orders` (`order_id`, `customer_id`, `address_id`, `total_price`, `status`, `created_at`) VALUES
 (1, 6, 8, 59.99, 'pending', '2025-03-26 03:58:46'),
 (2, 6, 8, 599.97, 'pending', '2025-03-26 07:03:56'),
-(3, 6, 7, 749.93, 'pending', '2025-03-26 08:51:25'),
-(8, 12, 15, 889.97, 'pending', '2025-04-16 13:38:35'),
-(9, 12, 15, 1469.94, 'pending', '2025-04-17 08:35:54');
+(3, 6, 7, 749.93, 'processing', '2025-03-26 08:51:25'),
+(8, 12, 15, 889.97, 'delivered', '2025-04-16 13:38:35'),
+(9, 12, 15, 1469.94, 'pending', '2025-04-17 08:35:54'),
+(10, 6, 7, 999.95, 'delivered', '2025-04-17 13:26:23');
 
 -- --------------------------------------------------------
 
@@ -228,7 +229,12 @@ INSERT INTO `order_items` (`order_id`, `product_id`, `quantity`, `price`) VALUES
 (8, 27, 1, 329.99),
 (9, 1, 1, 199.99),
 (9, 4, 3, 89.99),
-(9, 5, 2, 499.99);
+(9, 5, 2, 499.99),
+(10, 1, 1, 199.99),
+(10, 2, 1, 59.99),
+(10, 3, 1, 149.99),
+(10, 4, 1, 89.99),
+(10, 5, 1, 499.99);
 
 -- --------------------------------------------------------
 
@@ -243,69 +249,70 @@ CREATE TABLE `products` (
   `price` decimal(10,2) NOT NULL CHECK (`price` >= 0),
   `quantity` int(11) DEFAULT 0 CHECK (`quantity` >= 0),
   `image_url` varchar(255) DEFAULT NULL,
-  `category_id` int(11) DEFAULT NULL
+  `category_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `quantity`, `image_url`, `category_id`) VALUES
-(1, 'Wireless Headphones', 'Experience high-quality sound without the hassle of wires. These wireless headphones offer crystal-clear audio, comfortable design, and long battery life—perfect for music, calls, and on-the-go convenience.', 199.99, 46, '/ecommerce-frontend/Client/assets/Images/products/wireless_headphone.png', 1),
-(2, 'Bluetooth Speaker', 'Portable Bluetooth speakers with powerful sound and deep bass. Enjoy wireless music streaming, long battery life, and a compact design—perfect for parties, travel, and outdoor fun.', 59.99, 36, '/ecommerce-frontend/Client/assets/Images/products/bluetooth_speaker.jpg', 1),
-(3, 'Smart Watch', 'Stay connected and track your fitness with this sleek smart watch. Featuring health monitoring, notifications, and long battery life, it’s the perfect companion for your active lifestyle.', 149.99, 15, '/ecommerce-frontend/Client/assets/Images/products/smart_watch.png', 2),
-(4, 'Gaming Keyboard', 'Enhance your gameplay with this high-performance gaming keyboard. Featuring responsive mechanical keys, customizable RGB lighting, and durable design for ultimate precision and speed.', 89.99, 22, '/ecommerce-frontend/Client/assets/Images/products/gaming_keyboard_yellow.jpg', 3),
-(5, '4k Monitor', 'Experience stunning clarity and vibrant colors with this 4K UHD monitor. Perfect for gaming, design, and productivity, it delivers ultra-sharp visuals and smooth performance.', 499.99, 1, '/ecommerce-frontend/Client/assets/Images/products/asus_monitor.jpg', 4),
-(6, 'USB-C Charger', 'Fast charging USB-C power adapter.', 29.99, 50, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(7, 'Mechanical Keyboard', 'Tactile keys with RGB lighting.', 89.99, 20, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(8, 'Gaming Mouse', 'Precision gaming mouse with customizable DPI.', 49.99, 35, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(9, 'Laptop Stand', 'Ergonomic laptop stand for better posture.', 39.99, 45, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(10, 'Noise Cancelling Headphones', 'Distraction-free listening with ANC.', 129.99, 30, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 1),
-(11, 'Smartphone Tripod', 'Adjustable tripod for mobile phones.', 19.99, 60, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(12, 'Webcam', '1080p webcam with built-in microphone.', 59.99, 39, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 4),
-(13, 'Portable SSD 1TB', 'High-speed external SSD drive.', 99.99, 25, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(14, 'Wireless Mouse', 'Smooth and quiet wireless mouse.', 24.99, 50, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(15, 'Bluetooth Earbuds', 'Compact earbuds with long battery life.', 79.99, 55, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 1),
-(16, 'LED Desk Lamp', 'Dimmable LED desk lamp with USB port.', 34.99, 70, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(17, 'Wireless Router', 'Dual-band wireless router.', 119.99, 18, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(18, 'Power Bank 20000mAh', 'High-capacity portable power bank.', 49.99, 48, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(19, 'Smart Light Bulb', 'WiFi-enabled color-changing LED bulb.', 22.99, 75, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(20, 'Smartwatch Pro', 'Advanced smartwatch with health tracking.', 199.99, 22, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 2),
-(21, 'HDMI Cable 2m', 'High-speed HDMI cable for 4K video.', 12.99, 100, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(22, 'Wireless Charging Pad', 'Fast wireless charging station.', 29.99, 37, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(23, 'Ergonomic Chair', 'Comfortable chair for long hours.', 249.99, 10, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(24, 'External Hard Drive 2TB', 'Reliable portable storage.', 79.99, 27, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(25, 'Tablet Stand', 'Adjustable tablet holder.', 19.99, 53, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(26, 'VR Headset', 'Immersive virtual reality headset.', 299.99, 12, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 2),
-(27, 'Gaming Monitor 27\"', 'High refresh rate monitor.', 329.99, 8, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 4),
-(28, 'Smart Thermostat', 'Control temperature remotely.', 149.99, 16, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(29, 'Graphics Tablet', 'Digital drawing tablet.', 139.99, 20, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(30, 'Bluetooth Car Adapter', 'Stream music and calls in car.', 24.99, 65, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(31, 'Streaming Microphone', 'Clear voice recording.', 89.99, 28, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(32, 'Portable Projector', 'Mini projector for movies.', 219.99, 11, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 4),
-(33, 'Fitness Tracker', 'Track activity and sleep.', 69.99, 32, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 2),
-(34, 'USB Hub', 'Expand your USB ports.', 17.99, 70, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(35, 'Webcam Cover', 'Protect your privacy.', 4.99, 90, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(36, 'WiFi Repeater', 'Boost wireless signal.', 29.99, 45, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(37, 'Laptop Cooling Pad', 'Keep your laptop cool.', 34.99, 33, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(38, 'Stylus Pencil', 'For drawing on tablets.', 24.99, 40, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 2),
-(39, 'Bluetooth Keyboard', 'Wireless keyboard for tablets.', 39.99, 27, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(40, 'Desk Organizer', 'Keep your desk tidy.', 14.99, 60, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(41, 'USB LED Strip Light', 'Decorative USB LED lighting.', 11.99, 66, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(42, 'Gaming Controller', 'Wireless game controller.', 59.99, 23, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(43, 'Router Mount Bracket', 'Wall-mount for routers.', 9.99, 48, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(44, 'Camera Lens Cleaner', 'Keep your lenses spotless.', 8.99, 50, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(45, 'Phone Holder for Car', 'Dashboard phone mount.', 18.99, 42, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(46, 'Surge Protector', 'Protect from power surges.', 24.99, 40, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(47, 'Gaming Chair', 'Comfortable chair for gaming.', 299.99, 7, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(48, 'Multifunction Printer', 'Print, scan, and copy.', 189.99, 15, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 4),
-(49, 'Laptop Backpack', 'Water-resistant backpack.', 59.99, 30, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(50, 'Smart Plug', 'Control your plugs remotely.', 16.99, 58, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(51, 'Digital Alarm Clock', 'LED display with alarms.', 19.99, 45, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(52, 'USB Fan', 'Compact USB-powered fan.', 9.99, 72, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(53, 'Drawing Glove', 'Reduce friction on tablet.', 6.99, 67, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(54, 'USB Microphone', 'Plug-and-play mic.', 39.99, 35, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3),
-(55, 'Smart Scale', 'Track weight and BMI.', 54.99, 25, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 2);
+INSERT INTO `products` (`product_id`, `product_name`, `description`, `price`, `quantity`, `image_url`, `category_id`, `created_at`, `updated_at`) VALUES
+(1, 'Wireless Headphones', 'Experience high-quality sound without the hassle of wires. These wireless headphones offer crystal-clear audio, comfortable design, and long battery life—perfect for music, calls, and on-the-go convenience.', 199.99, 45, '/ecommerce-frontend/Client/assets/Images/products/wireless_headphone.png', 1, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(2, 'Bluetooth Speaker', 'Portable Bluetooth speakers with powerful sound and deep bass. Enjoy wireless music streaming, long battery life, and a compact design—perfect for parties, travel, and outdoor fun.', 59.99, 35, '/ecommerce-frontend/Client/assets/Images/products/bluetooth_speaker.jpg', 1, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(3, 'Smart Watch', 'Stay connected and track your fitness with this sleek smart watch. Featuring health monitoring, notifications, and long battery life, it’s the perfect companion for your active lifestyle.', 149.99, 14, '/ecommerce-frontend/Client/assets/Images/products/smart_watch.png', 2, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(4, 'Gaming Keyboard', 'Enhance your gameplay with this high-performance gaming keyboard. Featuring responsive mechanical keys, customizable RGB lighting, and durable design for ultimate precision and speed.', 89.99, 21, '/ecommerce-frontend/Client/assets/Images/products/gaming_keyboard_yellow.jpg', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(5, '4k Monitor', 'Experience stunning clarity and vibrant colors with this 4K UHD monitor. Perfect for gaming, design, and productivity, it delivers ultra-sharp visuals and smooth performance.', 599.99, 5, '/ecommerce-frontend/Client/assets/Images/products/asus_monitor.jpg', 4, '2025-04-18 12:08:25', '2025-04-18 04:35:24'),
+(6, 'USB-C Charger', 'Fast charging USB-C power adapter.', 29.99, 50, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(7, 'Mechanical Keyboard', 'Tactile keys with RGB lighting.', 89.99, 20, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(8, 'Gaming Mouse', 'Precision gaming mouse with customizable DPI.', 49.99, 35, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(9, 'Laptop Stand', 'Ergonomic laptop stand for better posture.', 39.99, 45, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(10, 'Noise Cancelling Headphones', 'Distraction-free listening with ANC.', 129.99, 30, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 1, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(11, 'Smartphone Tripod', 'Adjustable tripod for mobile phones.', 19.99, 60, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(12, 'Webcam', '1080p webcam with built-in microphone.', 59.99, 39, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 4, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(13, 'Portable SSD 1TB', 'High-speed external SSD drive.', 99.99, 25, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(14, 'Wireless Mouse', 'Smooth and quiet wireless mouse.', 24.99, 50, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(15, 'Bluetooth Earbuds', 'Compact earbuds with long battery life.', 79.99, 55, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 1, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(16, 'LED Desk Lamp', 'Dimmable LED desk lamp with USB port.', 34.99, 70, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(17, 'Wireless Router', 'Dual-band wireless router.', 119.99, 18, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(18, 'Power Bank 20000mAh', 'High-capacity portable power bank.', 49.99, 48, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(19, 'Smart Light Bulb', 'WiFi-enabled color-changing LED bulb.', 22.99, 75, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(20, 'Smartwatch Pro', 'Advanced smartwatch with health tracking.', 199.99, 22, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 2, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(21, 'HDMI Cable 2m', 'High-speed HDMI cable for 4K video.', 12.99, 100, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(22, 'Wireless Charging Pad', 'Fast wireless charging station.', 29.99, 37, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(23, 'Ergonomic Chair', 'Comfortable chair for long hours.', 249.99, 10, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(24, 'External Hard Drive 2TB', 'Reliable portable storage.', 79.99, 27, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(25, 'Tablet Stand', 'Adjustable tablet holder.', 19.99, 53, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(26, 'VR Headset', 'Immersive virtual reality headset.', 299.99, 12, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 2, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(27, 'Gaming Monitor 27\"', 'High refresh rate monitor.', 329.99, 8, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 4, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(28, 'Smart Thermostat', 'Control temperature remotely.', 149.99, 16, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(29, 'Graphics Tablet', 'Digital drawing tablet.', 139.99, 20, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(31, 'Streaming Microphone', 'Clear voice recording.', 89.99, 28, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(32, 'Portable Projector', 'Mini projector for movies.', 219.99, 11, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 4, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(33, 'Fitness Tracker', 'Track activity and sleep.', 69.99, 32, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 2, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(34, 'USB Hub', 'Expand your USB ports.', 17.99, 70, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(35, 'Webcam Cover', 'Protect your privacy.', 4.99, 90, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(36, 'WiFi Repeater', 'Boost wireless signal.', 29.99, 45, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(37, 'Laptop Cooling Pad', 'Keep your laptop cool.', 34.99, 33, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(38, 'Stylus Pencil', 'For drawing on tablets.', 24.99, 40, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 2, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(39, 'Bluetooth Keyboard', 'Wireless keyboard for tablets.', 39.99, 27, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(40, 'Desk Organizer', 'Keep your desk tidy.', 14.99, 60, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(41, 'USB LED Strip Light', 'Decorative USB LED lighting.', 11.99, 66, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(42, 'Gaming Controller', 'Wireless game controller.', 59.99, 23, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(43, 'Router Mount Bracket', 'Wall-mount for routers.', 9.99, 48, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(44, 'Camera Lens Cleaner', 'Keep your lenses spotless.', 8.99, 50, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(45, 'Phone Holder for Car', 'Dashboard phone mount.', 18.99, 42, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(46, 'Surge Protector', 'Protect from power surges.', 24.99, 40, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(47, 'Gaming Chair', 'Comfortable chair for gaming.', 299.99, 7, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(48, 'Multifunction Printer', 'Print, scan, and copy.', 189.99, 15, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 4, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(49, 'Laptop Backpack', 'Water-resistant backpack.', 59.99, 30, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(50, 'Smart Plug', 'Control your plugs remotely.', 16.99, 58, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(51, 'Digital Alarm Clock', 'LED display with alarms.', 19.99, 45, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(52, 'USB Fan', 'Compact USB-powered fan.', 9.99, 72, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(54, 'USB Microphone', 'Plug-and-play mic.', 39.99, 35, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 3, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(55, 'Smart Scale', 'Track weight and BMI.', 54.99, 25, '/ecommerce-frontend/Client/assets/Images/products/default_product.png', 2, '2025-04-18 12:08:25', '2025-04-18 04:30:15'),
+(56, 'P47 - Wireless Bluetooth Headphone - Headphone', 'Experience immersive, high-fidelity sound with the SoundBlast X100. These over-ear wireless headphones feature 40mm dynamic drivers, active noise cancellation, and up to 30 hours of battery life. Designed with comfort and style in mind, the X100 is perfec', 23.00, 25, '/ecommerce-frontend/Client/assets/Images/products/Samsung-03-1.jpg', 1, '2025-04-18 12:13:38', '2025-04-18 12:14:21');
 
 --
 -- Indexes for dumped tables
@@ -384,7 +391,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `carts`
@@ -414,13 +421,13 @@ ALTER TABLE `delivery_addresses`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- Constraints for dumped tables
