@@ -12,6 +12,7 @@ This is a comprehensive e-commerce platform designed to deliver a smooth and int
 - **Interactivity:** AJAX for seamless user experience
 
 
+
 ---
 ## 🖼️ Project Preview
 ## 📄 Full Project Documentation
