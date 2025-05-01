@@ -11,6 +11,7 @@ This is a comprehensive e-commerce platform designed to deliver a smooth and int
 - **Icons:** FontAwesome  
 - **Interactivity:** AJAX for seamless user experience
 
+
 ---
 ## 🖼️ Project Preview
 ## 📄 Full Project Documentation
